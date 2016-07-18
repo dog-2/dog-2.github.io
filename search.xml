@@ -4,7 +4,18 @@
   
     
     <entry>
-      <title><![CDATA[二厨笔记 #1: 食材吸盐度总结]]></title>
+      <title><![CDATA[二厨笔记 #2: 慢炒三丁「菜谱」]]></title>
+      <url>http://dog.wtf/life/dog2s-cooking-notes-2/</url>
+      <content type="html"><![CDATA[<ul>
+<li>Title(EN): <em><strong>Dog2’s Cooing Notes #2:Slowly Frying DingDingDing(Cookbook)</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[二厨笔记 #1: 食材吸盐度小结]]></title>
       <url>http://dog.wtf/life/dog2s-cooking-notes-1/</url>
       <content type="html"><![CDATA[<ul>
 <li>Title(EN): <em><strong>Dog2’s Cooing Notes #1: Salt Absorption Rate of Food Ingredients</strong></em></li>
@@ -12,15 +23,15 @@
 </ul>
 <hr>
 <blockquote>
-<p>学习炒菜已两月有余，觉得有些普适性的经验值得总结，因此在此记录一下。</p>
+<p>学习炒菜已两月有余，觉得有些普适性的经验值得总结，便在此记录一下。</p>
 <p>本篇总结一下不同食材的吸盐度。</p>
 </blockquote>
-<h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>一道菜通常由多种食材混合烹制而成，其咸味轻重会直接影响口感。不同食材对盐的吸收能力不尽相同，因此较好地平衡不同食材的咸度是佳作的重要之一。但网上绝大多数菜谱或教程很少考虑这一点，大多数菜谱都是在所有食材都已入锅且烹制即将完成前放入盐的，这容易造成一道菜最终由于不同食材咸淡不均而影响口感。</p>
+<h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>一道菜通常由多种食材混合烹制而成，其咸味轻重会直接影响口感。不同食材对盐的吸收能力不尽相同，因此较好地平衡不同食材的咸度是佳作的重要因素之一。但网上绝大多数菜谱或教程很少考虑这一点，大多数菜谱都是在所有食材都已入锅且烹制即将完成前放入盐的，这容易造成一道菜最终由于不同食材咸淡不均而影响口感。</p>
 <h2 id="0x02-食材吸盐度表"><a href="#0x02-食材吸盐度表" class="headerlink" title="0x02 食材吸盐度表"></a>0x02 食材吸盐度表</h2><ul>
-<li>下表记录在炒制或煮制过程中不同食材对盐的吸收难易程度，完全根据个人经验，因此未必准确，如有不妥欢迎指正。虽然此处所记录的是吸盐难易，但也可理解为相关食材入味（酸/甜/苦/辣）的难易程度。</li>
+<li>下表记录在炒制或煮制过程中不同食材对盐的吸收难易程度，完全根据个人经验，因此未必准确，如有不妥欢迎指正。</li>
+<li>虽然此表反应的是吸盐难易程度，但也可引申为相关食材入味（酸/甜/苦/辣）的难易程度。</li>
 <li>可以参考下表调整烹制时食材的形状，或调整盐与各种食材入锅的先后，以平衡不同食材的咸度。</li>
 <li>吸盐度0-5分，5分表示极易吸盐，0分表示极难吸盐。</li>
-<li>下表按首字拼音首字母升序排列。</li>
 </ul>
 <a id="more"></a>
 <table>
@@ -35,7 +46,7 @@
 <tr>
 <td style="text-align:center">白菜</td>
 <td style="text-align:center">叶片</td>
-<td style="text-align:center">3</td>
+<td style="text-align:center">2.8</td>
 </tr>
 <tr>
 <td style="text-align:center">白萝卜</td>
@@ -124,12 +135,12 @@
 </tr>
 <tr>
 <td style="text-align:center">猪肉</td>
-<td style="text-align:center">丝</td>
+<td style="text-align:center">丝/丁</td>
 <td style="text-align:center">3.2</td>
 </tr>
 </tbody>
 </table>
-<h2 id="0x03-后话"><a href="#0x03-后话" class="headerlink" title="0x03 后话"></a>0x03 后话</h2><p>尽信书不如无书，菜谱亦然（国内部分书“超然”@_@）。在看完菜谱并了解了其中不同食材的入锅顺序后，我们可以结合上表总结的食材吸盐度来调整盐的放入方式，比如可以将通常的起锅前一次性放入改为分次放入，并合适掌控放入量，甚至可以考虑更改食材的放入顺序，相信有时可以收获超越原菜谱水准的意外惊喜。</p>
+<h2 id="0x03-后话"><a href="#0x03-后话" class="headerlink" title="0x03 后话"></a>0x03 后话</h2><p>尽信书不如无书，菜谱亦然（，我朝一些书“超然”@_@ ，比如某几门教科书。。）。在看完菜谱并了解了其中不同食材的入锅顺序后，我们可以结合上表总结的食材吸盐度来调整盐的放入方式，如可将菜谱中常见的起锅前一次性放入盐的方式改为分次放入，并合适掌控放入量，甚至可以考虑相应地更改食材的放入顺序，相信有时可以收获超越原菜谱水准的意外惊喜。</p>
 <p>接下来的几篇会分享一些基于这种方法改良原有菜谱或者“创造”新菜谱的经验。</p>
 <p>祝君烧得一手好菜~</p>
 ]]></content>
