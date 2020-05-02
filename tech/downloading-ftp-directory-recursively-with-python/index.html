@@ -1,955 +1,843 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next muse use-motion">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
+  <link rel="mask-icon" href="/favicon/eye.ico" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
 
+<link rel="stylesheet" href="/css/main.css">
 
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="FTP,Python," />
-
-
-
-
-
-  <link rel="alternate" href="/rss2.xml" title="雪泥鴻爪" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon/eye.ico?v=5.0.1" />
-
-
-
-
-
-
-<meta name="description" content="Title(EN): Downloading FTP Directory Recursively with Python
-Author: dog2
-
-
-0x00 需求
-快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。
-
-0x01 分析
-核心问题：针对一个FTP Server，要能够下载其指定目录。即递归遍历所有目录，针对每个目录中的子目录，创建本地相应目录；针对每个目录中的文件，下">
+  <meta name="description" content="Title(EN): Downloading FTP Directory Recursively with Python Author: dog2   需求  快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python实现下载FTP服务器的整个目录（文件夹）">
 <meta property="og:url" content="http://dog.wtf/tech/downloading-ftp-directory-recursively-with-python/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Downloading FTP Directory Recursively with Python
-Author: dog2
-
-
-0x00 需求
-快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。
-
-0x01 分析
-核心问题：针对一个FTP Server，要能够下载其指定目录。即递归遍历所有目录，针对每个目录中的子目录，创建本地相应目录；针对每个目录中的文件，下">
-<meta property="og:updated_time" content="2016-06-07T13:56:29.000Z">
+<meta property="og:description" content="Title(EN): Downloading FTP Directory Recursively with Python Author: dog2   需求  快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-09-15T13:22:22.000Z">
+<meta property="article:modified_time" content="2015-09-15T13:22:22.000Z">
+<meta property="article:author" content="dog2">
+<meta property="article:tag" content="FTP">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python实现下载FTP服务器的整个目录（文件夹）">
-<meta name="twitter:description" content="Title(EN): Downloading FTP Directory Recursively with Python
-Author: dog2
+
+<link rel="canonical" href="http://dog.wtf/tech/downloading-ftp-directory-recursively-with-python/">
 
 
-0x00 需求
-快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。
-
-0x01 分析
-核心问题：针对一个FTP Server，要能够下载其指定目录。即递归遍历所有目录，针对每个目录中的子目录，创建本地相应目录；针对每个目录中的文件，下">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Muse',
-    sidebar: {"position":"left","display":"always"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 0,
-      author: 'Author'
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
   };
 </script>
 
+  <title>Python实现下载FTP服务器的整个目录（文件夹） | 雪泥鴻爪</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-71835065-1');
+      }
+    </script>
 
 
 
-  <title> Python实现下载FTP服务器的整个目录（文件夹） | 雪泥鴻爪 </title>
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-71835065-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
 
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <span class="site-title">雪泥鴻爪</span>
+      <h1 class="site-title">雪泥鴻爪</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">dog2's blog</p>
   </div>
-  <p class="site-subtitle">dog2's blog</p>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
 </div>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
-        
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
         <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            About
-          </a>
-        </li>
-      
-        
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
         <li class="menu-item menu-item-commonweal">
-          <a href="/404.html" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            4♡4
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="#" class="st-search-show-outputs">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            Search
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
 
-  
-    <div class="site-search">
-      
-  <form class="site-search-form">
-  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
-</form>
-
-<script type="text/javascript">
-  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-  _st('install', 'FtikxrsD9uQUzCPL8ZzA','2.0.0');
-</script>
-
-
-
-    </div>
-  
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
 </nav>
 
- </div>
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/downloading-ftp-directory-recursively-with-python/">
 
-  
-  
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
 
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Python实现下载FTP服务器的整个目录（文件夹）
-              
-            
-          </h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          Python实现下载FTP服务器的整个目录（文件夹）
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-15T22:22:22+08:00" content="2015-09-15">
-              2015-09-15
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2015-09-15 22:22:22" itemprop="dateCreated datePublished" datetime="2015-09-15T22:22:22+09:00">2015-09-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index">
-                    <span itemprop="name">Tech</span>
-                  </a>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
                 </span>
-
-                
-                
-
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/tech/downloading-ftp-directory-recursively-with-python/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/downloading-ftp-directory-recursively-with-python/" itemprop="commentsCount"></span>
-                </a>
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/downloading-ftp-directory-recursively-with-python/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/downloading-ftp-directory-recursively-with-python/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>5.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
 
-          
-
-          
-          
-
-          
         </div>
       </header>
+
     
-
-
+    
+    
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <ul>
 <li>Title(EN): <em><strong>Downloading FTP Directory Recursively with Python</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h3 id="0x00-需求"><a href="#0x00-需求" class="headerlink" title="0x00 需求"></a>0x00 需求</h3><ul>
+<hr />
+<h3 id="需求">需求</h3>
+<ul>
 <li>快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。</li>
 </ul>
-<h3 id="0x01-分析"><a href="#0x01-分析" class="headerlink" title="0x01 分析"></a>0x01 分析</h3><ul>
+<a id="more"></a>
+<h3 id="分析">分析</h3>
+<ul>
 <li>核心问题：针对一个FTP Server，要能够下载其指定目录。即递归遍历所有目录，针对每个目录中的子目录，创建本地相应目录；针对每个目录中的文件，下载到本地相应目录。</li>
 <li>下载所有文件的过程最好也是可并发的，以加快整个下载过程。</li>
 </ul>
-<h3 id="0x02-前车之轮"><a href="#0x02-前车之轮" class="headerlink" title="0x02 前车之轮"></a>0x02 前车之轮</h3><p>需求及实现思路已经清楚，剩下的就是编码测试了。</p>
-<p>按照惯例，为避免重复造轮子，在开工前有必要上谷歌百度一下，确定前人是否已经造出了好用的轮子。<br>找到如下几个：</p>
-<ol>
-<li><a href="http://www.jb51.net/article/33986.htm" target="_blank" rel="external">通过python下载FTP上的文件夹的实现代码</a></li>
-<li><a href="http://canlynet.iteye.com/blog/836996" target="_blank" rel="external">python实现的ftp自动上传下载程序（支持目录递归操作）</a></li>
-<li><a href="http://www.jb51.net/article/67196.htm" target="_blank" rel="external">python实现支持目录FTP上传下载文件的方法</a></li>
-<li><a href="https://pypi.python.org/pypi/ftputil/3.2" target="_blank" rel="external">python第三方库 ftputil</a></li>
-<li><a href="https://pypi.python.org/pypi/pyftpsync/1.0.3" target="_blank" rel="external">python第三方库 pyftpsync</a></li>
+<h3 id="前车之轮">前车之轮</h3>
+<p>需求及实现思路已经清楚，剩下的就是编码测试了。</p>
+<p>按照惯例，为避免重复造轮子，在开工前有必要上谷歌百度一下，确定前人是否已经造出了好用的轮子。 找到如下几个：</p>
+<ol type="1">
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5qYjUxLm5ldC9hcnRpY2xlLzMzOTg2Lmh0bQ==">通过python下载FTP上的文件夹的实现代码<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL2Nhbmx5bmV0Lml0ZXllLmNvbS9ibG9nLzgzNjk5Ng==">python实现的ftp自动上传下载程序（支持目录递归操作）<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5qYjUxLm5ldC9hcnRpY2xlLzY3MTk2Lmh0bQ==">python实现支持目录FTP上传下载文件的方法<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9weXBpLnB5dGhvbi5vcmcvcHlwaS9mdHB1dGlsLzMuMg==">python第三方库 ftputil<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9weXBpLnB5dGhvbi5vcmcvcHlwaS9weWZ0cHN5bmMvMS4wLjM=">python第三方库 pyftpsync<i class="fa fa-external-link-alt"></i></span></li>
 </ol>
 <p>逐一测试，都不太好用。</p>
 <p>1在现实时使用os.chdir切换本地下载目录，批量下载（多线程并发下载多个服务器目录）时会产生目录混乱。</p>
 <p>3在下载每个文件都需要执行ls函数确认其存在于远程目录，性能很低。</p>
 <p>使用2 4 5没有成功下载过，可能是用法不对，粗略扫了下文档和源码，也没找到正确用法。如果你知道正确用法，还请指点。</p>
-<h3 id="0x03-实现"><a href="#0x03-实现" class="headerlink" title="0x03 实现"></a>0x03 实现</h3><p>既然前人的轮子都不太好用，只好再造一个。相对其他协议而言，FTP协议还是比较复杂的，因此最好基于已有的FTP库来实现，python的自带FTP库是ftplib，这里就选用它。</p>
+<h3 id="实现">实现</h3>
+<p>既然前人的轮子都不太好用，只好再造一个。相对其他协议而言，FTP协议还是比较复杂的，因此最好基于已有的FTP库来实现，python的自带FTP库是ftplib，这里就选用它。</p>
 <ul>
-<li><a href="https://docs.python.org/2/library/ftplib.html" target="_blank" rel="external">文档</a></li>
-<li><a href="https://github.com/python/cpython/blob/2.7/Lib/ftplib.py" target="_blank" rel="external">源码</a></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L2Z0cGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi9mdHBsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <p>大概实现思路及流程已在0x01中指出，这里可能需要用到ftplib中的两个函数</p>
 <ul>
-<li><strong>ftplib.FTP.dir()</strong> : 用于列举目录信息，其内部实现调用的是FTP协议中的LIST请求，输出格式类似linux下的命令<em><strong>ls -alh</strong></em>。这里需要注意，默认情况下，该函数是不返回目录信息的字符串的，它在内部实现中调用了ftplib.FTP.retrlines()函数得到返回数据的每一行，并默认使用println函数处理每行数据，即打印至标准输出。当然，处理每行数据的函数是可以被替换的，在dir()函数的参数中指出即可。尽管如此还是难以将目录信息存入到一个字符串并返回，以供我们后续调用。在0x02中提到的3是通过是给dir函数传入自定义类的实例函数，并将目录信息存储在自定义类的实例变量中来得到这个值的。当然，也可以通过自定义函数结合全局变量的方式来得到这个值。这种实现略显蹩脚，因此在这里，我们参照原有dir函数的实现方式，在自定义类中实现一个新的dir函数，它不用再传入处理每行数据的函数，且能够返回目录信息。</li>
+<li><strong>ftplib.FTP.dir()</strong> : 用于列举目录信息，其内部实现调用的是FTP协议中的LIST请求，输出格式类似linux下的命令_<strong>ls -alh</strong>_。这里需要注意，默认情况下，该函数是不返回目录信息的字符串的，它在内部实现中调用了ftplib.FTP.retrlines()函数得到返回数据的每一行，并默认使用println函数处理每行数据，即打印至标准输出。当然，处理每行数据的函数是可以被替换的，在dir()函数的参数中指出即可。尽管如此还是难以将目录信息存入到一个字符串并返回，以供我们后续调用。在0x02中提到的3是通过是给dir函数传入自定义类的实例函数，并将目录信息存储在自定义类的实例变量中来得到这个值的。当然，也可以通过自定义函数结合全局变量的方式来得到这个值。这种实现略显蹩脚，因此在这里，我们参照原有dir函数的实现方式，在自定义类中实现一个新的dir函数，它不用再传入处理每行数据的函数，且能够返回目录信息。</li>
 <li><strong>ftplib.FTP.retrbinary()</strong> : 用于指定并发送某种FTP请求，并以二进制数据接收响应。这里使用它来执行FTP协议中的RETR命令，以下载FTP服务器上指定路径的文件。</li>
 </ul>
-<a id="more"></a>
-<h3 id="0x04-代码"><a href="#0x04-代码" class="headerlink" title="0x04 代码"></a>0x04 代码</h3><p>实现代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> ftplib</span><br><span class="line"><span class="keyword">import</span> traceback</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FtpDownloader</span><span class="params">(object)</span>:</span></span><br><span class="line">    PATH_TYPE_UNKNOWN = <span class="number">-1</span></span><br><span class="line">    PATH_TYPE_FILE = <span class="number">0</span></span><br><span class="line">    PATH_TYPE_DIR = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, user=None, passwd=None, port=<span class="number">21</span>, timeout=<span class="number">10</span>)</span>:</span></span><br><span class="line">        self.conn = ftplib.FTP(</span><br><span class="line">            host=host,</span><br><span class="line">            user=user,</span><br><span class="line">            passwd=passwd,</span><br><span class="line">            timeout=timeout</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dir</span><span class="params">(self, *args)</span>:</span></span><br><span class="line">        <span class="string">'''</span><br><span class="line">        by defualt, ftplib.FTP.dir() does not return any value.</span><br><span class="line">        Instead, it prints the dir info to the stdout.</span><br><span class="line">        So we re-implement it in FtpDownloader, which is able to return the dir info.</span><br><span class="line">        '''</span></span><br><span class="line">        info = []</span><br><span class="line">        cmd = <span class="string">'LIST'</span></span><br><span class="line">        <span class="keyword">for</span> arg <span class="keyword">in</span> args:</span><br><span class="line">            <span class="keyword">if</span> arg:</span><br><span class="line">                cmd = cmd + (<span class="string">' '</span> + arg)</span><br><span class="line">        self.conn.retrlines(cmd, <span class="keyword">lambda</span> x: info.append(x.strip().split()))</span><br><span class="line">        <span class="keyword">return</span> info</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tree</span><span class="params">(self, rdir=None, init=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span><br><span class="line">        recursively get the tree structure of a directory on FTP Server.</span><br><span class="line">        args:</span><br><span class="line">            rdir - remote direcotry path of the FTP Server.</span><br><span class="line">            init - flag showing whether in a recursion.</span><br><span class="line">        '''</span></span><br><span class="line">        <span class="keyword">if</span> init <span class="keyword">and</span> rdir <span class="keyword">in</span> (<span class="string">'.'</span>, <span class="keyword">None</span>):</span><br><span class="line">            rdir = self.conn.pwd()</span><br><span class="line">        tree = []</span><br><span class="line">        tree.append((rdir, self.PATH_TYPE_DIR))</span><br><span class="line"></span><br><span class="line">        dir_info = self.dir(rdir)</span><br><span class="line">        <span class="keyword">for</span> info <span class="keyword">in</span> dir_info:</span><br><span class="line">            attr = info[<span class="number">0</span>]  <span class="comment"># attribute</span></span><br><span class="line">            name = info[<span class="number">-1</span>]</span><br><span class="line">            path = os.path.join(rdir, name)</span><br><span class="line">            <span class="keyword">if</span> attr.startswith(<span class="string">'-'</span>):</span><br><span class="line">                tree.append((path, self.PATH_TYPE_FILE))</span><br><span class="line">            <span class="keyword">elif</span> attr.startswith(<span class="string">'d'</span>):</span><br><span class="line">                <span class="keyword">if</span> (name == <span class="string">'.'</span> <span class="keyword">or</span> name == <span class="string">'..'</span>):  <span class="comment"># skip . and ..</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                tree.extend(self.tree(rdir=path,init=<span class="keyword">False</span>))  <span class="comment"># recurse</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tree.append(path, self.PATH_TYPE_UNKNOWN)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tree</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadFile</span><span class="params">(self, rfile, lfile)</span>:</span></span><br><span class="line">        <span class="string">'''</span><br><span class="line">        download a file with path %rfile on a FTP Server and save it to locate</span><br><span class="line">        path %lfile.</span><br><span class="line">        '''</span></span><br><span class="line">        ldir = os.path.dirname(lfile)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        f = open(lfile, <span class="string">'wb'</span>)</span><br><span class="line">        self.conn.retrbinary(<span class="string">'RETR %s'</span> % rfile, f.write)</span><br><span class="line">        f.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">treeStat</span><span class="params">(self, tree)</span>:</span></span><br><span class="line">        numDir = <span class="number">0</span></span><br><span class="line">        numFile = <span class="number">0</span></span><br><span class="line">        numUnknown = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> path, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                numDir += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                numFile += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                numUnknown += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadDir</span><span class="params">(self, rdir=<span class="string">'.'</span>, ldir=<span class="string">'.'</span>, tree=None,</span><br><span class="line">                    errHandleFunc=None, verbose=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span><br><span class="line">        download a direcotry with path %rdir on a FTP Server and save it to</span><br><span class="line">        locate path %ldir.</span><br><span class="line">        args:</span><br><span class="line">            tree - the tree structure return by function FtpDownloader.tree()</span><br><span class="line">            errHandleFunc - error handling function when error happens in</span><br><span class="line">                downloading one file, such as a function that writes a log.</span><br><span class="line">                By default, the error is print to the stdout.</span><br><span class="line">        '''</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree:</span><br><span class="line">            tree = self.tree(rdir=rdir, init=<span class="keyword">True</span>)</span><br><span class="line">        numDir, numFile, numUnknown = self.treeStat(tree)</span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s tree statistic:'</span> % self.conn.host</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d files, %d unknown type'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        ldir = os.path.abspath(ldir)</span><br><span class="line"></span><br><span class="line">        numDownOk = <span class="number">0</span></span><br><span class="line">        numDownErr = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> rpath, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            lpath = os.path.join(ldir, rpath.strip(<span class="string">'/'</span>).strip(<span class="string">'\\'</span>))</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(lpath):</span><br><span class="line">                    os.makedirs(lpath)</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    self.downloadFile(rpath, lpath)</span><br><span class="line">                    numDownOk += <span class="number">1</span></span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                    numDownErr += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> errHandleFunc:</span><br><span class="line">                        errHandleFunc(err, rpath, lpath)</span><br><span class="line">                    <span class="keyword">elif</span> verbose:</span><br><span class="line">                        <span class="keyword">print</span> <span class="string">'An Error occurred when downloading '</span>\</span><br><span class="line">                              <span class="string">'remote file %s'</span> % rpath</span><br><span class="line">                        traceback.print_exc()</span><br><span class="line">                        <span class="keyword">print</span></span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Host %s: %d/%d/%d(ok/err/total) files downloaded'</span> % (</span><br><span class="line">                        self.conn.host,</span><br><span class="line">                        numDownOk,</span><br><span class="line">                        numDownErr,</span><br><span class="line">                        numFile</span><br><span class="line">                    )</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Unknown type romote path got: %s'</span> % rpath</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s directory %s download finished:'</span> % (</span><br><span class="line">                self.conn.host, rdir</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d(%d failed) files, %d unknown type.'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numDownErr,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown, numDownErr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    <span class="keyword">import</span> traceback</span><br><span class="line">    <span class="keyword">from</span> pprint <span class="keyword">import</span> pprint <span class="keyword">as</span> pr</span><br><span class="line"></span><br><span class="line">    flog = open(<span class="string">'err.log'</span>, <span class="string">'wb'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(host)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            fd = FtpDownloader(</span><br><span class="line">                host=host,</span><br><span class="line">                user=<span class="string">'test'</span>,</span><br><span class="line">                passwd=<span class="string">'test'</span>,</span><br><span class="line">                port=<span class="number">21</span>,</span><br><span class="line">                timeout=<span class="number">10</span></span><br><span class="line">            )</span><br><span class="line">            numDir, numFile, numUnknown, numDownErr = fd.downloadDir(</span><br><span class="line">                rdir=<span class="string">'.'</span>,</span><br><span class="line">                ldir=<span class="string">'download'</span>,</span><br><span class="line">                tree=<span class="keyword">None</span>,</span><br><span class="line">                errHandleFunc=<span class="keyword">None</span>,</span><br><span class="line">                verbose=<span class="keyword">True</span></span><br><span class="line">            )</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nok\n'</span></span><br><span class="line">                <span class="string">'%d directories, %d(%d failed) files, %d unknown type\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    numDir,</span><br><span class="line">                    numFile,</span><br><span class="line">                    numDownErr,</span><br><span class="line">                    numUnknown</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            traceback.print_exc()</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nerror\n%s\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    traceback.format_exc()</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">    pr(run(sys.argv[<span class="number">1</span>]))</span><br><span class="line">    flog.close()</span><br></pre></td></tr></table></figure>
-<p>也可移步至<a href="https://github.com/dog-2/ftpdown" target="_blank" rel="external">github</a>获取代码，欢迎完善。</p>
+<h3 id="代码">代码</h3>
+<p>实现代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> ftplib</span><br><span class="line"><span class="keyword">import</span> traceback</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FtpDownloader</span><span class="params">(object)</span>:</span></span><br><span class="line">    PATH_TYPE_UNKNOWN = <span class="number">-1</span></span><br><span class="line">    PATH_TYPE_FILE = <span class="number">0</span></span><br><span class="line">    PATH_TYPE_DIR = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, user=None, passwd=None, port=<span class="number">21</span>, timeout=<span class="number">10</span>)</span>:</span></span><br><span class="line">        self.conn = ftplib.FTP(</span><br><span class="line">            host=host,</span><br><span class="line">            user=user,</span><br><span class="line">            passwd=passwd,</span><br><span class="line">            timeout=timeout</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dir</span><span class="params">(self, *args)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        by defualt, ftplib.FTP.dir() does not return any value.</span></span><br><span class="line"><span class="string">        Instead, it prints the dir info to the stdout.</span></span><br><span class="line"><span class="string">        So we re-implement it in FtpDownloader, which is able to return the dir info.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        info = []</span><br><span class="line">        cmd = <span class="string">'LIST'</span></span><br><span class="line">        <span class="keyword">for</span> arg <span class="keyword">in</span> args:</span><br><span class="line">            <span class="keyword">if</span> arg:</span><br><span class="line">                cmd = cmd + (<span class="string">' '</span> + arg)</span><br><span class="line">        self.conn.retrlines(cmd, <span class="keyword">lambda</span> x: info.append(x.strip().split()))</span><br><span class="line">        <span class="keyword">return</span> info</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tree</span><span class="params">(self, rdir=None, init=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        recursively get the tree structure of a directory on FTP Server.</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">            rdir - remote direcotry path of the FTP Server.</span></span><br><span class="line"><span class="string">            init - flag showing whether in a recursion.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> init <span class="keyword">and</span> rdir <span class="keyword">in</span> (<span class="string">'.'</span>, <span class="literal">None</span>):</span><br><span class="line">            rdir = self.conn.pwd()</span><br><span class="line">        tree = []</span><br><span class="line">        tree.append((rdir, self.PATH_TYPE_DIR))</span><br><span class="line"></span><br><span class="line">        dir_info = self.dir(rdir)</span><br><span class="line">        <span class="keyword">for</span> info <span class="keyword">in</span> dir_info:</span><br><span class="line">            attr = info[<span class="number">0</span>]  <span class="comment"># attribute</span></span><br><span class="line">            name = info[<span class="number">-1</span>]</span><br><span class="line">            path = os.path.join(rdir, name)</span><br><span class="line">            <span class="keyword">if</span> attr.startswith(<span class="string">'-'</span>):</span><br><span class="line">                tree.append((path, self.PATH_TYPE_FILE))</span><br><span class="line">            <span class="keyword">elif</span> attr.startswith(<span class="string">'d'</span>):</span><br><span class="line">                <span class="keyword">if</span> (name == <span class="string">'.'</span> <span class="keyword">or</span> name == <span class="string">'..'</span>):  <span class="comment"># skip . and ..</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                tree.extend(self.tree(rdir=path,init=<span class="literal">False</span>))  <span class="comment"># recurse</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tree.append(path, self.PATH_TYPE_UNKNOWN)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tree</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadFile</span><span class="params">(self, rfile, lfile)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        download a file with path %rfile on a FTP Server and save it to locate</span></span><br><span class="line"><span class="string">        path %lfile.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        ldir = os.path.dirname(lfile)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        f = open(lfile, <span class="string">'wb'</span>)</span><br><span class="line">        self.conn.retrbinary(<span class="string">'RETR %s'</span> % rfile, f.write)</span><br><span class="line">        f.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">treeStat</span><span class="params">(self, tree)</span>:</span></span><br><span class="line">        numDir = <span class="number">0</span></span><br><span class="line">        numFile = <span class="number">0</span></span><br><span class="line">        numUnknown = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> path, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                numDir += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                numFile += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                numUnknown += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadDir</span><span class="params">(self, rdir=<span class="string">'.'</span>, ldir=<span class="string">'.'</span>, tree=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    errHandleFunc=None, verbose=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        download a direcotry with path %rdir on a FTP Server and save it to</span></span><br><span class="line"><span class="string">        locate path %ldir.</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">            tree - the tree structure return by function FtpDownloader.tree()</span></span><br><span class="line"><span class="string">            errHandleFunc - error handling function when error happens in</span></span><br><span class="line"><span class="string">                downloading one file, such as a function that writes a log.</span></span><br><span class="line"><span class="string">                By default, the error is print to the stdout.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree:</span><br><span class="line">            tree = self.tree(rdir=rdir, init=<span class="literal">True</span>)</span><br><span class="line">        numDir, numFile, numUnknown = self.treeStat(tree)</span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s tree statistic:'</span> % self.conn.host</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d files, %d unknown type'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        ldir = os.path.abspath(ldir)</span><br><span class="line"></span><br><span class="line">        numDownOk = <span class="number">0</span></span><br><span class="line">        numDownErr = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> rpath, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            lpath = os.path.join(ldir, rpath.strip(<span class="string">'/'</span>).strip(<span class="string">'\\'</span>))</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(lpath):</span><br><span class="line">                    os.makedirs(lpath)</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    self.downloadFile(rpath, lpath)</span><br><span class="line">                    numDownOk += <span class="number">1</span></span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                    numDownErr += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> errHandleFunc:</span><br><span class="line">                        errHandleFunc(err, rpath, lpath)</span><br><span class="line">                    <span class="keyword">elif</span> verbose:</span><br><span class="line">                        <span class="keyword">print</span> <span class="string">'An Error occurred when downloading '</span>\</span><br><span class="line">                              <span class="string">'remote file %s'</span> % rpath</span><br><span class="line">                        traceback.print_exc()</span><br><span class="line">                        <span class="keyword">print</span></span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Host %s: %d/%d/%d(ok/err/total) files downloaded'</span> % (</span><br><span class="line">                        self.conn.host,</span><br><span class="line">                        numDownOk,</span><br><span class="line">                        numDownErr,</span><br><span class="line">                        numFile</span><br><span class="line">                    )</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Unknown type romote path got: %s'</span> % rpath</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s directory %s download finished:'</span> % (</span><br><span class="line">                self.conn.host, rdir</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d(%d failed) files, %d unknown type.'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numDownErr,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown, numDownErr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    <span class="keyword">import</span> traceback</span><br><span class="line">    <span class="keyword">from</span> pprint <span class="keyword">import</span> pprint <span class="keyword">as</span> pr</span><br><span class="line"></span><br><span class="line">    flog = open(<span class="string">'err.log'</span>, <span class="string">'wb'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(host)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            fd = FtpDownloader(</span><br><span class="line">                host=host,</span><br><span class="line">                user=<span class="string">'test'</span>,</span><br><span class="line">                passwd=<span class="string">'test'</span>,</span><br><span class="line">                port=<span class="number">21</span>,</span><br><span class="line">                timeout=<span class="number">10</span></span><br><span class="line">            )</span><br><span class="line">            numDir, numFile, numUnknown, numDownErr = fd.downloadDir(</span><br><span class="line">                rdir=<span class="string">'.'</span>,</span><br><span class="line">                ldir=<span class="string">'download'</span>,</span><br><span class="line">                tree=<span class="literal">None</span>,</span><br><span class="line">                errHandleFunc=<span class="literal">None</span>,</span><br><span class="line">                verbose=<span class="literal">True</span></span><br><span class="line">            )</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nok\n'</span></span><br><span class="line">                <span class="string">'%d directories, %d(%d failed) files, %d unknown type\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    numDir,</span><br><span class="line">                    numFile,</span><br><span class="line">                    numDownErr,</span><br><span class="line">                    numUnknown</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            traceback.print_exc()</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nerror\n%s\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    traceback.format_exc()</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">    pr(run(sys.argv[<span class="number">1</span>]))</span><br><span class="line">    flog.close()</span><br></pre></td></tr></table></figure>
+<p>也可移步至<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2Z0cGRvd24=">github<i class="fa fa-external-link-alt"></i></span>获取代码，欢迎完善。</p>
 <p>这里仅抛砖引玉，实现了下载单个FTP的整个目录的核心功能，可以基于该代码继续实现并发下载多个FTP服务器上的指定文件夹的功能。</p>
 <p>值得一提的是，这里针对单个FTP服务器上的多个文件下载还是串行的，如想要实现并发下载单个FTP服务器上的多个文件，则可以先通过tree函数得到FTP服务器的目录树，然后再并发下载相应的文件。但并发下载时若多个下载线程共用一个ftplib.FTP类的实例，并调用该实例的retrbinary函数进行下载，则不同线程之间可能会相互影响，具体可以参考ftplib的源码。</p>
 <p>当然，要解决这个问题，可以为每个下载线程创建一个独有的ftplib.FTP类的实例，但这样就加大了FTP服务器处理的并发连接数，最大连接数及下载性能还是会受限于FTP服务器，存在不确定性。</p>
 <p>我们将实现的程序与Filezilia进行了对比测试，发现它对多个文件的下载过程也是串行了，而最终下载文件的总数及速度二者相近。</p>
 
-      
     </div>
 
-    <div>
-      
-        
-      
-    </div>
+    
+    
+    
 
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/ftp/" rel="tag">#FTP</a>
-          
-            <a href="/tags/python/" rel="tag">#Python</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ftp/" rel="tag"># FTP</a>
+              <a href="/tags/python/" rel="tag"># Python</a>
           </div>
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/tech/shell-interaction-in-python-2-ssh/" rel="prev" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇">
-                Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
+        
 
-      
-      
-    </footer>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/tech/shell-interaction-in-python-2-ssh/" rel="next" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇">
+      Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
 
 
-    <div class="post-spread">
-      
-        <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-  <a class="jiathis_button_tsina"></a>
-  <a class="jiathis_button_tqq"></a>
-  <a class="jiathis_button_weixin"></a>
-  <a class="jiathis_button_cqq"></a>
-  <a class="jiathis_button_douban"></a>
-  <a class="jiathis_button_renren"></a>
-  <a class="jiathis_button_qzone"></a>
-  <a class="jiathis_button_kaixin001"></a>
-  <a class="jiathis_button_copy"></a>
-  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
-  <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" >
-  var jiathis_config={
-    hideMore:false
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
-
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前车之轮"><span class="nav-number">3.</span> <span class="nav-text">前车之轮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
 
-      <section class="site-overview sidebar-panel ">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/dog2.jpg"
-               alt="dog2" />
-          <p class="site-author-name" itemprop="name">dog2</p>
-          <p class="site-description motion-element" itemprop="description">Where is dog1 ?</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">7</span>
-              <span class="site-state-item-name">posts</span>
-            </a>
-          </div>
-
+    <img class="site-author-image" itemprop="image" alt="dog2"
+      src="/images/dog2.jpeg">
+  <p class="site-author-name" itemprop="name">dog2</p>
+  <div class="site-description" itemprop="description">Where is dog1 ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
           
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">3</span>
-                <span class="site-state-item-name">categories</span>
-              </a>
-            </div>
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
           
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dog-2"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+  </div>
 
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
 
-        </nav>
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      G.U.
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cDovL3d3dy5waHAxMDEuY24v" title="http:&#x2F;&#x2F;www.php101.cn&#x2F;">php101</span>
+        </li>
+    </ul>
+  </div>
 
-        
-          <div class="feed-link motion-element">
-            <a href="/rss2.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/dog-2" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              G.U.
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.php101.cn/" title="php101" target="_blank">php101</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x00-需求"><span class="nav-text">0x00 需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x01-分析"><span class="nav-text">0x01 分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x02-前车之轮"><span class="nav-text">0x02 前车之轮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x03-实现"><span class="nav-text">0x03 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0x04-代码"><span class="nav-text">0x04 代码</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+        
+
+<div class="copyright">
   
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2016</span>
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fab fa-lg fa-github-alt"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">dog2</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Word Count Total">40k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading Time Total">37 mins.</span>
 </div>
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
-  </a>
-</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  </div>
 
         
 
-        
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyCUVj6ysvo9S0gRMUUB_0Cm-9py_hlxEkQ',
+      projectId: 'blog-ea16e'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
       </div>
     </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
   </div>
 
   
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+
+
+
+  
+  <style>
+  
+  button.darkmode-toggle {
+  z-index: 9999;
   }
+  
+  img, .darkmode-ignore {
+    isolation: isolate;
+    display: block;
+  }
+  </style>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
+
+
+
+<script>
+var options = {
+  bottom: '64px', // default: '32px'
+  right: 'unset', // default: '32px'
+  left: '32px', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌓', // default: ''
+  autoMatchOsTheme: true // default: true
+}
+const darkmode = new Darkmode(options);
+darkmode.showWidget();
+// window.onload = function(){
+//   setTimeout(
+//     function() {
+//       document.getElementsByClassName('darkmode-toggle')[0].click();
+//     },
+//     550,
+//   );
+//   document.getElementsByClassName('darkmode-toggle')[0].click();
+// }
+</script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
 </script>
 
 
 
 
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
-
-
-
-  
-
-
-
-  
-
-    <script type="text/javascript">
-      var disqus_shortname = 'd0g2';
-      var disqus_identifier = 'tech/downloading-ftp-directory-recursively-with-python/';
-      var disqus_title = "Python实现下载FTP服务器的整个目录（文件夹）";
-      var disqus_url = 'http://dog.wtf/tech/downloading-ftp-directory-recursively-with-python/';
-
-      function run_disqus_script(disqus_script){
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      }
-
-      run_disqus_script('count.js');
-      
-        run_disqus_script('embed.js');
-      
-    </script>
   
 
 
 
 
   
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
   
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length == 0) {
-       search_path = "search.xml";
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/downloading-ftp-directory-recursively-with-python/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d0g2.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://dog.wtf/tech/downloading-ftp-directory-recursively-with-python/";
+    this.page.identifier = "tech/downloading-ftp-directory-recursively-with-python/";
+    this.page.title = "Python实现下载FTP服务器的整个目录（文件夹）";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://d0g2.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
     }
-    var path = "/" + search_path;
-    // monitor main search box;
+  });
+</script>
 
-    function proceedsearch() {
-      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
-      $('.popup').toggle();
-
-    }
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-    'use strict';
-    $.ajax({
-        url: path,
-        dataType: "xml",
-        async: true,
-        success: function( xmlResponse ) {
-            // get the contents from search data
-            isfetched = true;
-            $('.popup').detach().appendTo('.header-inner');
-            var datas = $( "entry", xmlResponse ).map(function() {
-                return {
-                    title: $( "title", this ).text(),
-                    content: $("content",this).text(),
-                    url: $( "url" , this).text()
-                };
-            }).get();
-            var $input = document.getElementById(search_id);
-            var $resultContent = document.getElementById(content_id);
-            $input.addEventListener('input', function(){
-                var matchcounts = 0;
-                var str='<ul class=\"search-result-list\">';                
-                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-                $resultContent.innerHTML = "";
-                if (this.value.trim().length > 1) {
-                // perform local searching
-                datas.forEach(function(data) {
-                    var isMatch = true;
-                    var content_index = [];
-                    var data_title = data.title.trim().toLowerCase();
-                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
-                    var data_url = data.url;
-                    var index_title = -1;
-                    var index_content = -1;
-                    var first_occur = -1;
-                    // only match artiles with not empty titles and contents
-                    if(data_title != '' && data_content != '') {
-                        keywords.forEach(function(keyword, i) {
-                            index_title = data_title.indexOf(keyword);
-                            index_content = data_content.indexOf(keyword);
-                            if( index_title < 0 && index_content < 0 ){
-                                isMatch = false;
-                            } else {
-                                if (index_content < 0) {
-                                    index_content = 0;
-                                }
-                                if (i == 0) {
-                                    first_occur = index_content;
-                                }
-                            }
-                        });
-                    }
-                    // show search results
-                    if (isMatch) {
-                        matchcounts += 1;
-                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
-                        var content = data.content.trim().replace(/<[^>]+>/g,"");
-                        if (first_occur >= 0) {
-                            // cut out 100 characters
-                            var start = first_occur - 20;
-                            var end = first_occur + 80;
-                            if(start < 0){
-                                start = 0;
-                            }
-                            if(start == 0){
-                                end = 50;
-                            }
-                            if(end > content.length){
-                                end = content.length;
-                            }
-                            var match_content = content.substring(start, end);
-                            // highlight all keywords
-                            keywords.forEach(function(keyword){
-                                var regS = new RegExp(keyword, "gi");
-                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
-                            });
-                            
-                            str += "<p class=\"search-result\">" + match_content +"...</p>"
-                        }
-                        str += "</li>";
-                    }
-                })};
-                str += "</ul>";
-                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
-                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
-                $resultContent.innerHTML = str;
-            });
-            proceedsearch();
-        }
-    });}
-
-    // handle and trigger popup window;
-    $('.popup-trigger').mousedown(function(e) {
-      e.stopPropagation();
-      if (isfetched == false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-
-    });
-
-    $('.popup-btn-close').click(function(e){
-      $('.popup').hide();
-      $(".popoverlay").remove();
-      $('body').css('overflow', '');
-    });
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-  </script>
-
-  
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-  </script>
-
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for (i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-    });
-  </script>
-  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-
-  
-
-  
-
+    </div>
 </body>
 </html>
