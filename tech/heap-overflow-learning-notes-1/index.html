@@ -338,6 +338,7 @@
 <p>第六章中也涉及到堆溢出利用，不过此处是利用Windows异常处理机制S.E.H（异常处理结构体）来实现攻击的，看完后打算调试一遍，发现几天前通过调试建立的对内存中堆分布和操作的理解都忘得差不多了，这时候终于体会到 <em><strong>学习过程中根据自己的体会做一些重要笔记并且据此定期复习的重要性</strong></em>，因此有了本篇。</p>
 <p>希望这是个好的开头，提醒自己谨记对于复杂的重难点，要以日志的形式形成学习笔记，以供日后温故知新。</p>
 <p>关于堆以及P.E.B、S.E.H等机制的介绍，0day书中已经非常系统详尽，本文不再赘述，这里仅给出我的实验调试过程，记录其中踩的坑以及一些体会，因此以过程截图为主，相关简述为辅。第六章中堆的例子作者并没有给出相关代码及过程细节，这里也会附上。由于初学，文中难免存在错误，欢迎指正。</p>
+<a id="more"></a>
 <h2 id="x00-准备工作">0x00 准备工作</h2>
 <blockquote><p>调试堆与调试栈不同，不能直接用调试器OllyDBG、WinDBG来加载程序，否则堆管理函数会检测到当前进程处于调试状态，而使用调试态堆管理策略。</p>
 <p>调试态对管理策略和常态堆管理策略有很大差异。</p>
@@ -351,7 +352,6 @@
 <li>设置OllyDBG 不捕获INT3中断：OllyDBG -&gt; Options菜单 -&gt; Debugging options</li>
 </ul>
 <img data-src="/tech/heap-overflow-learning-notes-1/0_2.png" class="" title="图0.2">
-<a id="more"></a>
 <h2 id="x01-初识堆">0x01 初识堆</h2>
 <hr />
 <blockquote><p>在Windows中，占用态的堆块被使用它的程序索引，而堆表只索引所有空闲态的堆块。其中最重要的堆表有两种：空闲双向链表Freelist（以下简称空表）和 快速单向链表Lookaside（以下简称快表）。</p>
@@ -519,8 +519,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/tech/shell-interaction-in-python-1-telnet/" rel="prev" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇">
-      <i class="fa fa-chevron-left"></i> Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇
+    <a href="/tech/shell-interaction-in-python-2-ssh/" rel="prev" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇">
+      <i class="fa fa-chevron-left"></i> Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇
     </a></div>
       <div class="post-nav-item">
     <a href="/tech/heap-overflow-learning-notes-2/" rel="next" title="堆溢出学习笔记(Win2K) (下)">
