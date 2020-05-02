@@ -27,7 +27,7 @@
 
   <meta name="description" content="Title(EN): Hexo Dark Mode Note Author: dog2    Dark Mode —— 中老年程序🐶的眼睛续命必备功能  Mac、Win 纷纷推出了 Dark Mode，安卓也原生支持了随着夜幕降临自动调整屏幕亮度（蓝光）的功能，看来保护眼睛、关爱程序猿是大势所趋。 这里，我们尝试了3种使Hexo Next主题切换为darkmode的方式。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo（Next主题）实现Dark Mode(暗色背景&#x2F;夜间模式)的切换">
+<meta property="og:title" content="Hexo（Next主题）实现可切换的Dark Mode(暗色背景&#x2F;夜间模式)">
 <meta property="og:url" content="http://dog.wtf/tech/hexo-dark-mode-note/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
 <meta property="og:description" content="Title(EN): Hexo Dark Mode Note Author: dog2    Dark Mode —— 中老年程序🐶的眼睛续命必备功能  Mac、Win 纷纷推出了 Dark Mode，安卓也原生支持了随着夜幕降临自动调整屏幕亮度（蓝光）的功能，看来保护眼睛、关爱程序猿是大势所趋。 这里，我们尝试了3种使Hexo Next主题切换为darkmode的方式。">
@@ -56,7 +56,7 @@
   };
 </script>
 
-  <title>Hexo（Next主题）实现Dark Mode(暗色背景/夜间模式)的切换 | 雪泥鴻爪</title>
+  <title>Hexo（Next主题）实现可切换的Dark Mode(暗色背景/夜间模式) | 雪泥鴻爪</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
     <script data-pjax>
@@ -233,7 +233,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hexo（Next主题）实现Dark Mode(暗色背景/夜间模式)的切换
+          Hexo（Next主题）实现可切换的Dark Mode(暗色背景/夜间模式)
         </h1>
 
         <div class="post-meta">
@@ -341,10 +341,10 @@
 </ul>
 <h1 id="方案3引入js库-darkmode.js">方案3：引入js库 <code>darkmode.js</code></h1>
 <h2 id="缘由非重点可略过">缘由（非重点可略过）</h2>
-<p>从<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">Next加入了对darkmode的原生支持的PR页面的讨论<i class="fa fa-external-link-alt"></i></span>可以看到，在某大佬X向Next官方贡献了原生darkmode支持的代码后，某网友向其呼吁加上加上切换按钮。</p>
+<p>从<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">Next加入了对darkmode的原生支持的PR页面的讨论<i class="fa fa-external-link-alt"></i></span>可以看到，在某大佬X向Next官方贡献了原生darkmode的代码后，某网友向其呼吁加一步加上切换按钮。</p>
 <p>但大佬X似乎不打算加，并表示该网友可以使用js库 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpz">darkmode.js<i class="fa fa-external-link-alt"></i></span> 去实现。</p>
-<p>网友其实是大佬Y，他果然在<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">自己的博客<i class="fa fa-external-link-alt"></i></span>成功集成了darkmode.js。</p>
-<p>另一位网友向大佬Y询问如何集成的具体细节，但是没有得到回应。</p>
+<p>没想到网友其实是大佬Y，果然在<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">自己的博客<i class="fa fa-external-link-alt"></i></span>成功集成了darkmode.js。</p>
+<p>于是另一位网友向大佬Y询问如何集成的具体细节，但是没有得到回应。</p>
 <p>既然可行，那就不妨尝试一下，我也按照<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpz">darkmode.js官方的说明<i class="fa fa-external-link-alt"></i></span>操作一番，其中也遇到了些小问题：</p>
 <ul>
 <li>切换按钮无法点击</li>
@@ -353,8 +353,8 @@
 <p>为解决这些问题，参考了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpzL2lzc3Vlcy80">官方相关issue<i class="fa fa-external-link-alt"></i></span>，并且抄了<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">大佬Y的作业<i class="fa fa-external-link-alt"></i></span>。</p>
 <h2 id="为next订制darkmode.js">为Next订制darkmode.js</h2>
 <p>可以参考这里我fork的next对比具体做了哪些配置和修改：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hleG8tdGhlbWUtbmV4dA==">dog-2/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p>
-<p>最终效果图见文章最后。</p>
-<h3 id="添加-submodule">1. 添加 submodule</h3>
+<p>最终效果图见文章最后，下面是具体步骤：</p>
+<h3 id="加darkmode.js添加为next的submodule">1. 加darkmode.js添加为Next的submodule</h3>
 <p>.gitignore 最后添加 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="built_in">source</span>/lib/darkmode-js</span><br></pre></td></tr></table></figure></p>
 <p>进入 <code>{blog_dir}/themes/next/</code>，执行如下命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add https://github.com/sandoche/Darkmode.js.git <span class="built_in">source</span>/lib/darkmode-js/</span><br></pre></td></tr></table></figure></p>
 <h3 id="根据偏好修改配置文件">2. 根据偏好修改配置文件</h3>
@@ -468,7 +468,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方案1官方最新版next"><span class="nav-number">1.</span> <span class="nav-text">方案1：官方最新版Next</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案2hexo-next-nightmode插件"><span class="nav-number">2.</span> <span class="nav-text">方案2：hexo-next-nightmode插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案3引入js库-darkmode.js"><span class="nav-number">3.</span> <span class="nav-text">方案3：引入js库 darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘由非重点可略过"><span class="nav-number">3.1.</span> <span class="nav-text">缘由（非重点可略过）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为next订制darkmode.js"><span class="nav-number">3.2.</span> <span class="nav-text">为Next订制darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加-submodule"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 添加 submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据偏好修改配置文件"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 根据偏好修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制vendors加入darkmode.js"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 定制vendors加入darkmode.js</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终效果"><span class="nav-number">4.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方案1官方最新版next"><span class="nav-number">1.</span> <span class="nav-text">方案1：官方最新版Next</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案2hexo-next-nightmode插件"><span class="nav-number">2.</span> <span class="nav-text">方案2：hexo-next-nightmode插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案3引入js库-darkmode.js"><span class="nav-number">3.</span> <span class="nav-text">方案3：引入js库 darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘由非重点可略过"><span class="nav-number">3.1.</span> <span class="nav-text">缘由（非重点可略过）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为next订制darkmode.js"><span class="nav-number">3.2.</span> <span class="nav-text">为Next订制darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加darkmode.js添加为next的submodule"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 加darkmode.js添加为Next的submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据偏好修改配置文件"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 根据偏好修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制vendors加入darkmode.js"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 定制vendors加入darkmode.js</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终效果"><span class="nav-number">4.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -856,7 +856,7 @@ if (document.querySelectorAll('pre.mermaid').length) {
   var disqus_config = function() {
     this.page.url = "http://dog.wtf/tech/hexo-dark-mode-note/";
     this.page.identifier = "tech/hexo-dark-mode-note/";
-    this.page.title = "Hexo（Next主题）实现Dark Mode(暗色背景/夜间模式)的切换";
+    this.page.title = "Hexo（Next主题）实现可切换的Dark Mode(暗色背景/夜间模式)";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
