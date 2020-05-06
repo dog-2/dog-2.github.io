@@ -22,7 +22,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Title(EN): Hexo Dark Mode Note Author: dog2    Dark Mode —— 中老年程序🐶的眼睛续命必备功能  Mac、Win 纷纷推出了 Dark Mode，安卓也原生支持了随着夜幕降临自动调整屏幕亮度（蓝光）的功能，看来保护眼睛、关爱程序猿是大势所趋。 这里，我们尝试了3种使Hexo Next主题切换为darkmode的方式。">
@@ -201,10 +201,6 @@
     </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
   <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
@@ -305,43 +301,40 @@
 <li>Title(EN): <em><strong>Hexo Dark Mode Note</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr />
+<hr>
 <blockquote>
 <p>Dark Mode —— 中老年程序🐶的眼睛续命必备功能</p>
 </blockquote>
 <p>Mac、Win 纷纷推出了 Dark Mode，安卓也原生支持了随着夜幕降临自动调整屏幕亮度（蓝光）的功能，看来保护眼睛、关爱程序猿是大势所趋。</p>
 <p>这里，我们尝试了3种使Hexo Next主题切换为darkmode的方式。</p>
 <a id="more"></a>
-<h1 id="方案1官方最新版next">方案1：官方最新版Next</h1>
-<p>Next在最近的几个版本的更新中<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">加入了对darkmode的原生支持<i class="fa fa-external-link-alt"></i></span>，配置非常简单。</p>
+
+<h1 id="方案1：官方最新版Next"><a href="#方案1：官方最新版Next" class="headerlink" title="方案1：官方最新版Next"></a>方案1：官方最新版Next</h1><p>Next在最近的几个版本的更新中<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">加入了对darkmode的原生支持<i class="fa fa-external-link-alt"></i></span>，配置非常简单。</p>
 <ul>
 <li>配置方法：参见 <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9pbmRleC5odG1sI0RhcmstTW9kZQ==">官方文档<i class="fa fa-external-link-alt"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU1JThEJTg3JUU3JUJBJUE3LU1hYyVFOCVCRiU4MSVFNyVBNyVCQi5odG1sI0Rhcmttb2Rl">大佬们的文章<i class="fa fa-external-link-alt"></i></span></li>
 <li>优点：配置非常简单</li>
-<li>缺点：
-<ul>
-<li>我在自己电脑上测试，Safari和Firefox 没有问题，但是Chrome无效</li>
-<li>不能进行切换，而且根据系统偏好（是否是夜间模式）来判断 是否启用</li>
-</ul></li>
+<li>缺点：<ul>
+<li>根据自己的测试，Safari和Firefox 没有问题，但是Chrome无效</li>
+<li>不能进行切换，而是根据系统偏好（是否是夜间模式）来判断 是否启用</li>
 </ul>
-<h1 id="方案2hexo-next-nightmode插件">方案2：hexo-next-nightmode插件</h1>
-<ul>
+</li>
+</ul>
+<h1 id="方案2：hexo-next-nightmode插件"><a href="#方案2：hexo-next-nightmode插件" class="headerlink" title="方案2：hexo-next-nightmode插件"></a>方案2：hexo-next-nightmode插件</h1><ul>
 <li>配置方法：请参见<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzF2OS9oZXhvLW5leHQtbmlnaHRtb2Rl">官方说明<i class="fa fa-external-link-alt"></i></span></li>
 <li>优点：可以切换，配置相对简单</li>
-<li>缺点：
-<ul>
+<li>缺点：<ul>
 <li>需要额外安装插件</li>
 <li>开启后会在侧边栏的个人信息一览(Overview)里添加切换黑白背景的按钮，但是 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzF2OS9oZXhvLW5leHQtbmlnaHRtb2RlL2lzc3Vlcy8xMA==">当前版本没有默认使用暗色背景的选项<i class="fa fa-external-link-alt"></i></span></li>
-<li>默认切换按钮在Overview里，可能会有如下弊端
-<ul>
+<li>默认切换按钮在Overview里，可能会有如下弊端<ul>
 <li>如果设置为默认隐藏侧边栏，则用户首次访问首页时，不知道有夜间模式</li>
 <li>在文章页面时，侧边栏是有两个标签组成，默认显示文章大纲。因此只有切换至Overview后才能后点击背景切换按钮</li>
-</ul></li>
-<li>bug：darkmode下，header位置被选中的category背景色变成了蓝色</li>
-</ul></li>
 </ul>
-<h1 id="方案3引入js库-darkmode.js">方案3：引入js库 <code>darkmode.js</code></h1>
-<h2 id="缘由非重点可略过">缘由（非重点可略过）</h2>
-<p>从<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">Next加入了对darkmode的原生支持的PR页面的讨论<i class="fa fa-external-link-alt"></i></span>可以看到，在某大佬X向Next官方贡献了原生darkmode的代码后，某网友向其呼吁加一步加上切换按钮。</p>
+</li>
+<li>bug：darkmode下，header位置被选中的category背景色变成了蓝色</li>
+</ul>
+</li>
+</ul>
+<h1 id="方案3：引入js库-darkmode-js"><a href="#方案3：引入js库-darkmode-js" class="headerlink" title="方案3：引入js库 darkmode.js"></a>方案3：引入js库 <code>darkmode.js</code></h1><h2 id="缘由（非重点可略过）"><a href="#缘由（非重点可略过）" class="headerlink" title="缘由（非重点可略过）"></a>缘由（非重点可略过）</h2><p>从<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">Next加入了对darkmode的原生支持的PR页面的讨论<i class="fa fa-external-link-alt"></i></span>可以看到，在某大佬X向Next官方贡献了原生darkmode的代码后，某网友向其呼吁加一步加上切换按钮。</p>
 <p>但大佬X似乎不打算加，并表示该网友可以使用js库 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpz">darkmode.js<i class="fa fa-external-link-alt"></i></span> 去实现。</p>
 <p>没想到网友其实是大佬Y，果然在<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">自己的博客<i class="fa fa-external-link-alt"></i></span>成功集成了darkmode.js。</p>
 <p>于是另一位网友向大佬Y询问如何集成的具体细节，但是没有得到回应。</p>
@@ -351,34 +344,33 @@
 <li>切换到夜间模式后，所有图片的颜色也被翻转，这不是我们所期望的</li>
 </ul>
 <p>为解决这些问题，参考了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpzL2lzc3Vlcy80">官方相关issue<i class="fa fa-external-link-alt"></i></span>，并且抄了<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">大佬Y的作业<i class="fa fa-external-link-alt"></i></span>。</p>
-<h2 id="为next订制darkmode.js">为Next订制darkmode.js</h2>
-<p>可以参考这里我fork的next对比具体做了哪些配置和修改：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hleG8tdGhlbWUtbmV4dA==">dog-2/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="为Next订制darkmode-js"><a href="#为Next订制darkmode-js" class="headerlink" title="为Next订制darkmode.js"></a>为Next订制darkmode.js</h2><p>可以参考这里我fork的next对比具体做了哪些配置和修改：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hleG8tdGhlbWUtbmV4dA==">dog-2/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p>
 <p>最终效果图见文章最后，下面是具体步骤：</p>
-<h3 id="加darkmode.js添加为next的submodule">1. 加darkmode.js添加为Next的submodule</h3>
-<p>.gitignore 最后添加 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="built_in">source</span>/lib/darkmode-js</span><br></pre></td></tr></table></figure></p>
-<p>进入 <code>{blog_dir}/themes/next/</code>，执行如下命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add https://github.com/sandoche/Darkmode.js.git <span class="built_in">source</span>/lib/darkmode-js/</span><br></pre></td></tr></table></figure></p>
-<h3 id="根据偏好修改配置文件">2. 根据偏好修改配置文件</h3>
-<p>根据偏好修改下列配置文件中的其它选项</p>
+<h3 id="1-加darkmode-js添加为Next的submodule"><a href="#1-加darkmode-js添加为Next的submodule" class="headerlink" title="1. 加darkmode.js添加为Next的submodule"></a>1. 加darkmode.js添加为Next的submodule</h3><p>.gitignore 最后添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="built_in">source</span>/lib/darkmode-js</span><br></pre></td></tr></table></figure>
+
+<p>进入 <code>{blog_dir}/themes/next/</code>，执行如下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add https://github.com/sandoche/Darkmode.js.git <span class="built_in">source</span>/lib/darkmode-js/</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-根据偏好修改配置文件"><a href="#2-根据偏好修改配置文件" class="headerlink" title="2. 根据偏好修改配置文件"></a>2. 根据偏好修改配置文件</h3><p>根据偏好修改下列配置文件中的其它选项</p>
 <ul>
 <li>{blog_dir}/themes/next/languages/en.yml</li>
 <li>next配置文件中的配置</li>
 </ul>
 <div class="note warning">
-            <p>这里需要注意的是next有两种配置文件的形式，请确认自己是哪一种。 新Next的配置文件，有2种设置方式，请参考官方文档：</p><ul><li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></li></ul>
+            <p>这里需要注意的是next有两种配置文件的形式，请确认自己是哪一种。<br>新Next的配置文件，有2种设置方式，请参考官方文档：</p><ul><li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></li></ul>
           </div>
-<h3 id="定制vendors加入darkmode.js">3. 定制vendors加入darkmode.js</h3>
-<ol type="1">
+
+<h3 id="3-定制vendors加入darkmode-js"><a href="#3-定制vendors加入darkmode-js" class="headerlink" title="3. 定制vendors加入darkmode.js"></a>3. 定制vendors加入darkmode.js</h3><ol>
 <li>修改 <code>{blog_dir}/themes/next/layout/_scripts/vendors.swig</code></li>
-<li>修改next配置文件中的针对darkmode以及darkmode-js的配置：
-<ul>
+<li>修改next配置文件中的针对darkmode以及darkmode-js的配置：<ul>
 <li>确保next原有<code>darkmode</code>选项设置为 <code>false</code></li>
 <li>添加darkmode-js开关</li>
 <li>添加darkmode-js自定义CDN选项（可选）</li>
-</ul></li>
+</ul>
+</li>
 </ol>
-<h1 id="最终效果">最终效果</h1>
-<img data-src="/tech/hexo-dark-mode-note/1.gif" class="" title="darkmode.js效果">
-
+<h1 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h1><img data-src="/tech/hexo-dark-mode-note/1.gif" class="" title="darkmode.js效果">
     </div>
 
     
@@ -468,7 +460,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方案1官方最新版next"><span class="nav-number">1.</span> <span class="nav-text">方案1：官方最新版Next</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案2hexo-next-nightmode插件"><span class="nav-number">2.</span> <span class="nav-text">方案2：hexo-next-nightmode插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案3引入js库-darkmode.js"><span class="nav-number">3.</span> <span class="nav-text">方案3：引入js库 darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘由非重点可略过"><span class="nav-number">3.1.</span> <span class="nav-text">缘由（非重点可略过）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为next订制darkmode.js"><span class="nav-number">3.2.</span> <span class="nav-text">为Next订制darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加darkmode.js添加为next的submodule"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 加darkmode.js添加为Next的submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据偏好修改配置文件"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 根据偏好修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制vendors加入darkmode.js"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 定制vendors加入darkmode.js</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终效果"><span class="nav-number">4.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方案1：官方最新版Next"><span class="nav-number">1.</span> <span class="nav-text">方案1：官方最新版Next</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案2：hexo-next-nightmode插件"><span class="nav-number">2.</span> <span class="nav-text">方案2：hexo-next-nightmode插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案3：引入js库-darkmode-js"><span class="nav-number">3.</span> <span class="nav-text">方案3：引入js库 darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘由（非重点可略过）"><span class="nav-number">3.1.</span> <span class="nav-text">缘由（非重点可略过）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为Next订制darkmode-js"><span class="nav-number">3.2.</span> <span class="nav-text">为Next订制darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-加darkmode-js添加为Next的submodule"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 加darkmode.js添加为Next的submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-根据偏好修改配置文件"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 根据偏好修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-定制vendors加入darkmode-js"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 定制vendors加入darkmode.js</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终效果"><span class="nav-number">4.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -521,6 +513,10 @@
   </div>
 
       </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
 
     </div>
   </aside>
@@ -674,8 +670,8 @@
 <script>
 var options = {
   bottom: '64px', // default: '32px'
-  right: 'unset', // default: '32px'
-  left: '32px', // default: 'unset'
+  right: '32px', // default: '32px'
+  left: 'unset', // default: 'unset'
   time: '0.5s', // default: '0.3s'
   mixColor: '#fff', // default: '#fff'
   backgroundColor: '#fff',  // default: '#fff'
