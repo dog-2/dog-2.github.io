@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
+  <link rel="mask-icon" href="/favicon/eye.ico" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module Author: dog2   基本信息 源码：rest_framework.serializers 官方文档 API Guild - Serializers API Guild - Seriali">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类">
+<meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/index.html">
+<meta property="og:site_name" content="雪泥鴻爪">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module Author: dog2   基本信息 源码：rest_framework.serializers 官方文档 API Guild - Serializers API Guild - Seriali">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-03T17:22:22.000Z">
+<meta property="article:modified_time" content="2020-05-03T17:22:22.000Z">
+<meta property="article:author" content="dog2">
+<meta property="article:tag" content="Tech">
+<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Django REST FrameWork">
+<meta property="article:tag" content="DRF">
+<meta property="article:tag" content="Learning Notes">
+<meta property="article:tag" content="Dev">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类 | 雪泥鴻爪</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-71835065-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">雪泥鴻爪</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">dog2's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-04 02:22:22" itemprop="dateCreated datePublished" datetime="2020-05-04T02:22:22+09:00">2020-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzlfZHJmX0xpc3RTZXJpYWxpemVy">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.ListSerializer</code>，将继续以图书管理系统实例说明。</p>
+<a id="more"></a>
+
+<h1 id="使用场景之群改群增群改"><a href="#使用场景之群改群增群改" class="headerlink" title="使用场景之群改群增群改"></a>使用场景之群改群增群改</h1><p>当一个序列化器在带有<code>many=True</code>选项被序列化时，将创建一个<code>ListSerializer</code>实例，该序列化器类将成为<code>ListSerializer</code>类的子类。<br>当你需要自定义多个对象的行为时（比如群增，群改）,你需要手动定制<code>ListSerializer</code>类的一些行为。<br>可以通过在自定义序列化器的<code>Meta</code>类下面的<code>list_serializer_class</code>来绑定你需要的的<code>ListSerializer</code>类</p>
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><p>群改需要设置<code>ListSerializer</code>，创建<code>BookListSerializer</code>继承<code>ListSerializer</code>，重写<code>update</code>方法</p>
+<h2 id="序列化层-serializer-py"><a href="#序列化层-serializer-py" class="headerlink" title="序列化层 serializer.py"></a>序列化层 <code>serializer.py</code></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重点：ListSerializer与ModelSerializer建立关联的是： 在ModelSerializer的Meta类中设置   list_serializer_class</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookListSerializer</span><span class="params">(ListSerializer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, instance, validated_data)</span>:</span>  <span class="comment"># print(instance)  # 要更新的对象们</span></span><br><span class="line">        <span class="comment"># print(validated_data)  # 更新的对象对应的数据们</span></span><br><span class="line">        <span class="comment"># print(self.child)  # 服务的模型序列化类 - V3BookModelSerializer</span></span><br><span class="line">        <span class="keyword">for</span> index, obj <span class="keyword">in</span> enumerate(instance):</span><br><span class="line">            self.child.update(obj, validated_data[index])</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V3BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">            <span class="comment"># 群改，list_serializer_class是固定的key写法，直接转入BookListSerializer类的 update 方法</span></span><br><span class="line">            list_serializer_class = BookListSerializer</span><br></pre></td></tr></table></figure>
+
+<p>之所以需要实现<code>update</code>方法，群改时会走 <code>rest_framework.serializers.ListSerializer</code>中的<code>update</code>函数，而该函数并未被实现。</p>
+<p>而群增不需要重写<code>create</code>方法，因为源码中<code>rest_framework.serializers.ListSerializer</code>走的就是<code>ModelSerializer</code>的<code>create</code>方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [</span><br><span class="line">        self.child.create(attrs) <span class="keyword">for</span> attrs <span class="keyword">in</span> validated_data</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+
+<h2 id="视图层-views-py"><a href="#视图层-views-py" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h2><p>在视图层将 单局部改和群局部改整合，思路如下：</p>
+<ol>
+<li>单局部改：对 <code>v3/books/pk/</code>   <code>pk</code>通过路由传参，修改数据选择传参，通过数据包json传递</li>
+<li>群局部修改：<code>v3/books/</code> 修改数据通过数据包传递，设置成列表格式  <code>[{pk:1,name:123},{pk:3,price:7},{pk:7,publish:2}]</code></li>
+<li>先将单改，群改的数据都格式化成 <code>pks=[要需要的对象主键标识]</code>， <code>request_data=[每个要修改的对象对应的修改数据]</code></li>
+<li><code>pks</code>与<code>request_data</code>数据筛选，将<code>pks</code>中的没有对应数据的<code>pk</code>与数据已删除的<code>pk</code>移除，<code>request_data</code>对应索引位上的数据也移除，将合理的<code>pks</code>转换为<code>objs</code></li>
+</ol>
+<details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h1 id="ListSerializer使用要点小结"><a href="#ListSerializer使用要点小结" class="headerlink" title="ListSerializer使用要点小结"></a><code>ListSerializer</code>使用要点小结</h1><p><code>views.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ser_obj = ModelSerializer(instance=model_obj,data=model_data,partial=<span class="literal">True</span>,many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>serializer.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 实现群改功能，反序列化情况下的create、update就不再调用ModelSerializer的</span></span><br><span class="line"><span class="comment"># 而是调用 ModelSerializer.Meta.list_serializer_class 指向的 ListSerializer 类的create、update</span></span><br><span class="line"><span class="comment"># ListSerializer默认只实现了群增的create，要实现群改，必须重写update</span></span><br><span class="line"></span><br><span class="line">　　<span class="comment">#自定义序列化类，重写update方法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyListSerializer</span><span class="params">(ListSerializer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, instance, validated_data)</span>:</span></span><br><span class="line">        <span class="comment"># print(instance)  # 要更新的对象们: [obj1, obj2, ...]</span></span><br><span class="line">        <span class="comment"># print(validated_data)  # 更新的对象对应的数据们: [&#123;&#125;, &#123;&#125;, ...]</span></span><br><span class="line">        <span class="comment"># print(self.child)  # 服务的模型序列化类 - V2BookModelSerializer</span></span><br><span class="line">        <span class="keyword">for</span> index, obj <span class="keyword">in</span> enumerate(instance):</span><br><span class="line">            self.child.update(obj, validated_data[index])</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">            list_serializer_class = MyListSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将两者类建立关联，在MyListSerializer中就可以用self.child拿到# MyModelSerializer，进而使用MyModelSerializer中封装好的方法</span></span><br><span class="line">    cls.Meta.list_serializer_class.child = cls</span><br></pre></td></tr></table></figure>
+
+<h1 id="源码补充分析"><a href="#源码补充分析" class="headerlink" title="源码补充分析"></a>源码补充分析</h1><p>分析一下修改为什么要用<code>instance</code>传参。</p>
+<p>修改之后数据使用<code>save()</code>保存，从视图的<code>save()</code>点击进去查看源码，下面是<code>BaseSerializer</code>类中的<code>save</code>，而该<code>save</code>未被实现。</p>
+<p>因此接着查看<code>save</code>方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line">    validated_data = [</span><br><span class="line">        dict(list(attrs.items()) + list(kwargs.items()))</span><br><span class="line">        <span class="keyword">for</span> attrs <span class="keyword">in</span> self.validated_data</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        self.instance = self.update(self.instance, validated_data)</span><br><span class="line">        <span class="keyword">assert</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>, (</span><br><span class="line">            <span class="string">'`update()` did not return an object instance.'</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.instance = self.create(validated_data)</span><br><span class="line">        <span class="keyword">assert</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>, (</span><br><span class="line">            <span class="string">'`create()` did not return an object instance.'</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> self.instance</span><br></pre></td></tr></table></figure>
+
+<p><code>instance</code>存在就走<code>update</code>方法，修改数据(<code>PUT</code>/<code>PATCH</code>)时都应传入<code>instance</code>，所以单改群改都需要传入<code>data</code>（反序列化用）和<code>instance</code>（序列化用）参数。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tech/" rel="tag"># Tech</a>
+              <a href="/tags/backend/" rel="tag"># Backend</a>
+              <a href="/tags/django/" rel="tag"># Django</a>
+              <a href="/tags/django-rest-framework/" rel="tag"># Django REST FrameWork</a>
+              <a href="/tags/drf/" rel="tag"># DRF</a>
+              <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
+              <a href="/tags/dev/" rel="tag"># Dev</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/" rel="prev" title="Django REST Framework 学习笔记（八）：序列化模块 serialziers 之 ModelSerializer类">
+      <i class="fa fa-chevron-left"></i> Django REST Framework 学习笔记（八）：序列化模块 serialziers 之 ModelSerializer类
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/" rel="next" title="Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由">
+      Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用场景之群改群增群改"><span class="nav-number">2.</span> <span class="nav-text">使用场景之群改群增群改</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例代码"><span class="nav-number">3.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化层-serializer-py"><span class="nav-number">3.1.</span> <span class="nav-text">序列化层 serializer.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视图层-views-py"><span class="nav-number">3.2.</span> <span class="nav-text">视图层 views.py</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ListSerializer使用要点小结"><span class="nav-number">4.</span> <span class="nav-text">ListSerializer使用要点小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码补充分析"><span class="nav-number">5.</span> <span class="nav-text">源码补充分析</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dog2"
+      src="/images/dog2.jpeg">
+  <p class="site-author-name" itemprop="name">dog2</p>
+  <div class="site-description" itemprop="description">Where is dog1 ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dog-2"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      G.U.
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cDovL3d3dy5waHAxMDEuY24v" title="http:&#x2F;&#x2F;www.php101.cn&#x2F;">php101</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fab fa-lg fa-github-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dog2</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Word Count Total">86k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading Time Total">1:19</span>
+</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  </div>
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyCUVj6ysvo9S0gRMUUB_0Cm-9py_hlxEkQ',
+      projectId: 'blog-ea16e'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+
+
+  
+  <style>
+  
+  button.darkmode-toggle {
+  z-index: 9999;
+  }
+  
+  img, .darkmode-ignore {
+    isolation: isolate;
+    display: block;
+  }
+  </style>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
+
+
+
+<script>
+var options = {
+  bottom: '64px', // default: '32px'
+  right: '32px', // default: '32px'
+  left: 'unset', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌓', // default: ''
+  autoMatchOsTheme: true // default: true
+}
+const darkmode = new Darkmode(options);
+darkmode.showWidget();
+// window.onload = function(){
+//   setTimeout(
+//     function() {
+//       document.getElementsByClassName('darkmode-toggle')[0].click();
+//     },
+//     550,
+//   );
+//   document.getElementsByClassName('darkmode-toggle')[0].click();
+// }
+</script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d0g2.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://dog.wtf/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/";
+    this.page.identifier = "tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/";
+    this.page.title = "Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://d0g2.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

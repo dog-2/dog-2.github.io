@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
+  <link rel="mask-icon" href="/favicon/eye.ico" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (10): Generic Views, MixIns, ViewSets and Routers Author: dog2   基本信息 源码 rest_framework.views rest_framework.generics rest_framework.viewsets rest_fram">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由">
+<meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/index.html">
+<meta property="og:site_name" content="雪泥鴻爪">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (10): Generic Views, MixIns, ViewSets and Routers Author: dog2   基本信息 源码 rest_framework.views rest_framework.generics rest_framework.viewsets rest_fram">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/1.png">
+<meta property="og:image" content="http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/2.jpg">
+<meta property="article:published_time" content="2020-05-05T02:11:11.000Z">
+<meta property="article:modified_time" content="2020-05-05T02:11:11.000Z">
+<meta property="article:author" content="dog2">
+<meta property="article:tag" content="Tech">
+<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Django REST FrameWork">
+<meta property="article:tag" content="DRF">
+<meta property="article:tag" content="Learning Notes">
+<meta property="article:tag" content="Dev">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/1.png">
+
+<link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由 | 雪泥鴻爪</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-71835065-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">雪泥鴻爪</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">dog2's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-05 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-05T11:11:11+09:00">2020-05-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>9.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>9 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (10): Generic Views, MixIns, ViewSets and Routers</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdmlld3MucHk=">rest_framework.views<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvZ2VuZXJpY3MucHk=">rest_framework.generics<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdmlld3NldHMucHk=">rest_framework.viewsets<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvcm91dGVycy5weQ==">rest_framework.routers<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li>官方文档<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZ2VuZXJpYy12aWV3cy8=">API Guild - Generic views<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvdmlld3NldHMv">API Guild - ViewSets<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcm91dGVycy8=">API Guild - Routers<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzEwX2RyZl92aWV3cw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<a id="more"></a>
+
+<h1 id="AIPView-API视图类"><a href="#AIPView-API视图类" class="headerlink" title="AIPView - API视图类"></a>AIPView - API视图类</h1><p><code>APIView</code>是Django REST Framework提供的所有视图的基类，继承自Django的<code>View</code>父类。</p>
+<h2 id="与Django-View的不同"><a href="#与Django-View的不同" class="headerlink" title="与Django View的不同"></a>与Django <code>View</code>的不同</h2><ol>
+<li>传入到视图方法中的是REST framework的<code>Request</code>对象，而不是Django的<code>HttpRequeset</code>对象</li>
+<li>视图方法可以返回REST framework的<code>Response</code>对象，视图会为响应数据设置（render）符合前端要求的格式</li>
+<li>任何<code>APIException</code>异常都会被捕获到，并且处理成合适的响应信息</li>
+<li>在进行<code>dispatch()</code>分发前，会对请求进行身份认证、权限检查、流量控制</li>
+</ol>
+<h2 id="重要类属性"><a href="#重要类属性" class="headerlink" title="重要类属性"></a>重要类属性</h2><p><code>AIPView</code>有如下可设置的重要类属性：</p>
+<ul>
+<li><code>authentication_classes</code>：列表或元祖，身份认证类</li>
+<li><code>permissoin_classes</code>：列表或元祖，权限检查类</li>
+<li><code>throttle_classes</code>：列表或元祖，流量控制类</li>
+</ul>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p>在<code>APIView</code>中仍有<code>get()</code>，<code>post()</code>等其他请求方式的方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"></span><br><span class="line"><span class="comment"># path('books/', views.BookListView.as_view()),</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookListView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        books = BookInfo.objects.all()</span><br><span class="line">        serializer = BookInfoSerializer(books, many=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> Response(serializer.data)</span><br></pre></td></tr></table></figure>
+
+<h1 id="GenericAPIView-通用API视图类"><a href="#GenericAPIView-通用API视图类" class="headerlink" title="GenericAPIView - 通用API视图类"></a>GenericAPIView - 通用API视图类</h1><p>通用API视图类<code>GenericAPIView</code>继承自<code>APIView</code>，完全兼容<code>APIView</code>，主要增加了操作序列化器和数据库查询的方法，作用是为下面<code>Mixin</code>扩展类的执行提供基础类支持。通常在使用时，可以配合一个或多个<code>Mixin</code>扩展类。</p>
+<h2 id="GenericAPIView比APIView多了什么"><a href="#GenericAPIView比APIView多了什么" class="headerlink" title="GenericAPIView比APIView多了什么"></a><code>GenericAPIView</code>比<code>APIView</code>多了什么</h2><ol>
+<li><code>get_queryset()</code>：从类属性<code>queryset中</code>获得<code>model</code>的<code>queryset</code>数据。群操作就走<code>get_queryset()</code>方法(包括群查，群增等)。</li>
+<li><code>get_object()</code>：从类属性<code>queryset</code>中获得<code>model</code>的<code>queryset</code>数据，再通过有名分组<code>pk</code>确定唯一操作对象。单操作就走<code>get_object()</code>方法（包括单查，单增等）。</li>
+<li><code>get_serializer()</code>：从类属性<code>serializer_class</code>中获得<code>serializer</code>的序列化类。</li>
+</ol>
+<h2 id="重要类属性-1"><a href="#重要类属性-1" class="headerlink" title="重要类属性"></a>重要类属性</h2><p><code>GenericAPIView</code>有如下可设置的重要类属性：</p>
+<ul>
+<li>列表视图与详情视图共用<ul>
+<li><code>queryset</code>：指明视图需要的数据（<code>model</code>查询数据）</li>
+<li><code>permissoin_classes</code>：指明视图使用的序列化器</li>
+</ul>
+</li>
+<li>列表视图使用<ul>
+<li><code>pagination_class</code>：指定分页控制类</li>
+<li><code>filter_backends</code>：指定过滤控制后端</li>
+</ul>
+</li>
+<li>详情页视图使用<ul>
+<li><code>lookup_field</code>：自定义主键，有名分组的查询，默认是<code>pk</code></li>
+<li><code>lookup_url_kwarg</code>：查询单一数据时url中的参数关键字名称，默认与<code>look_field</code>相同</li>
+</ul>
+</li>
+</ul>
+<h2 id="重要类方法"><a href="#重要类方法" class="headerlink" title="重要类方法"></a>重要类方法</h2><ul>
+<li><code>get_queryset()</code>：从类属性<code>queryset</code>中获得<code>model</code>的<code>queryset</code>数据　　</li>
+<li><code>get_object()</code>：从类属性<code>queryset</code>中获得<code>model</code>的<code>queryset</code>数据，再通过有名分组<code>pk</code>来确定唯一操作对象</li>
+<li><code>get_serializer()</code>：从类属性<code>serializer_class</code>中获得<code>serializer</code>的序列化类，主要用来提供给<code>Mixin</code>扩展类使用</li>
+</ul>
+<h2 id="get-serializer-源码"><a href="#get-serializer-源码" class="headerlink" title="get_serializer 源码"></a><code>get_serializer</code> 源码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_serializer</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Return the serializer instance that should be used for validating and</span></span><br><span class="line"><span class="string">    deserializing input, and for serializing output.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    serializer_class = self.get_serializer_class()</span><br><span class="line">    kwargs[<span class="string">'context'</span>] = self.get_serializer_context()</span><br><span class="line">    <span class="keyword">return</span> serializer_class(*args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<h2 id="示例代码-1"><a href="#示例代码-1" class="headerlink" title="示例代码"></a>示例代码</h2><h3 id="视图层-views-py"><a href="#视图层-views-py" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookGenericAPIView</span><span class="params">(GenericAPIView)</span>:</span></span><br><span class="line">    queryset = models.Book.objects.filter(is_delete=<span class="literal">False</span>)</span><br><span class="line">    serializer_class = serializers.BookModelSerializer</span><br><span class="line">    lookup_field = <span class="string">'pk'</span>  <span class="comment"># 先定义好，单查可以使用，默认是pk  自定义主键的有名分组，如果路由有名分组不是pk,这个属性就要自己设置了</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 群取</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        book_query = self.get_queryset()  <span class="comment"># 获取queryset数据（model查询数据）</span></span><br><span class="line">        book_ser = self.get_serializer(book_query, many=<span class="literal">True</span>)</span><br><span class="line">        book_data = book_ser.data</span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=book_data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># # 单取</span></span><br><span class="line">    <span class="comment"># def get(self, request, *args, **kwargs):</span></span><br><span class="line">    <span class="comment">#     book_query = self.get_object()</span></span><br><span class="line">    <span class="comment">#     book_ser = self.get_serializer(book_query)</span></span><br><span class="line">    <span class="comment">#     book_data = book_ser.data</span></span><br><span class="line">    <span class="comment">#     return APIResponse(results=book_data)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="路由层-urls-py"><a href="#路由层-urls-py" class="headerlink" title="路由层 urls.py"></a>路由层 <code>urls.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v2/books/'</span>, views.BookGenericAPIView.as_view()),</span><br><span class="line">    path(<span class="string">'v2/books/&lt;pk&gt;/'</span>, views.BookGenericAPIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h1 id="xxxModelMixin-视图类的模型工具集"><a href="#xxxModelMixin-视图类的模型工具集" class="headerlink" title="xxxModelMixin - 视图类的模型工具集"></a><code>xxxModelMixin</code> - 视图类的模型工具集</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul>
+<li>提供了几种后端视图（对数据资源的增删改查）处理流程的实现，如果需要编写的视图属于这五种，则视图可以通过继承相应的扩展类来复用代码，减少自己编写的代码量。</li>
+<li><code>mixins</code>有五个工具类文件，一共提供了五个工具类，六个工具方法：单查、群查、单增、单删、单整体改、单局部改</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul>
+<li>继承工具类可以简化请求函数的实现体，但是必须继承<code>GenericAPIView</code>，需要<code>GenericAPIView</code>类提供序列化器与数据库查询的方法(见上方<code>GenericAPIView</code>基类知识点)</li>
+<li>工具类的工具方法返回值都是<code>Response</code>类型对象，如果要格式化数据格式再返回给前台，可以通过<code>response.data</code>拿到工具方法返回的<code>Response</code>类型对象的响应数据</li>
+</ul>
+<h2 id="五大模型工具类"><a href="#五大模型工具类" class="headerlink" title="五大模型工具类"></a>五大模型工具类</h2><h3 id="ListModelMixin-群查"><a href="#ListModelMixin-群查" class="headerlink" title="ListModelMixin 群查"></a><code>ListModelMixin</code> 群查</h3><ul>
+<li>列表视图扩展类，提供<code>list</code>方法快速实现查询视图</li>
+<li>返回<code>200</code>状态码</li>
+<li>除了查询，该<code>list</code>方法会对数据进行过滤和分页</li>
+</ul>
+<h3 id="CreateModelMixin-单增"><a href="#CreateModelMixin-单增" class="headerlink" title="CreateModelMixin 单增"></a><code>CreateModelMixin</code> 单增</h3><ul>
+<li>创建视图扩展类，提供<code>create</code>方法快速创建资源的视图，成功返回<code>201</code>的状态码</li>
+<li><strong>没有群增的方法，需要自己手动写</strong></li>
+</ul>
+<h3 id="RetrieveModelMixin-单查"><a href="#RetrieveModelMixin-单查" class="headerlink" title="RetrieveModelMixin 单查"></a><code>RetrieveModelMixin</code> 单查</h3><ul>
+<li>详情视图扩展类，提供<code>retrieve</code>方法，可以快速实现返回一个存在的数据对象</li>
+</ul>
+<h3 id="UpdateModelMixin-更新-修改"><a href="#UpdateModelMixin-更新-修改" class="headerlink" title="UpdateModelMixin 更新/修改"></a><code>UpdateModelMixin</code> 更新/修改</h3><ul>
+<li>更新视图扩展类，提供<code>update</code>方法，可以快速实现更新一个存在的数据对象，同时也提供<code>partial_update</code>方法，可以实现局部更新</li>
+<li><strong>只有单整体改和单局部改，没有群整体改和群局部改</strong></li>
+</ul>
+<h3 id="DestoryModelMixin-删除"><a href="#DestoryModelMixin-删除" class="headerlink" title="DestoryModelMixin 删除"></a><code>DestoryModelMixin</code> 删除</h3><ul>
+<li>删除视图扩展类，提供<code>destory</code>方法，可以快速实现删除一个存在数据对象</li>
+<li>一般不怎么用到，因为实际开发中并不会真的删除数据，而是修改是否可用的标记</li>
+</ul>
+<h2 id="示例代码-2"><a href="#示例代码-2" class="headerlink" title="示例代码"></a>示例代码</h2><h3 id="视图层-views-py-1"><a href="#视图层-views-py-1" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.mixins <span class="keyword">import</span> ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookMixinGenericAPIView</span><span class="params">(ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericAPIView)</span>:</span></span><br><span class="line">    <span class="comment"># GenericAPIView提供的序列化器和查询的数据</span></span><br><span class="line">    queryset = models.Book.objects.filter(is_delete=<span class="literal">False</span>)</span><br><span class="line">    serializer_class = serializers.BookModelSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 单查和群查</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'pk'</span> <span class="keyword">in</span> kwargs:</span><br><span class="line">            <span class="comment"># 单查  RetrieveModelMixin方法</span></span><br><span class="line">            response = self.retrieve(request, *args, **kwargs)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># mixins提供的list方法的响应对象是Response，将该对象格式化为自定义的APIResponse</span></span><br><span class="line">            response = self.list(request, *args, **kwargs)  <span class="comment"># 群查 ListModelMixin</span></span><br><span class="line">        <span class="comment"># response的数据都存放在response.data中</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=response.data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 单增</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        response = self.create(request, *args, **kwargs)  <span class="comment"># CreateModelMixin方法</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=response.data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 单整体修改</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        response = self.update(request, *args, **kwargs)  <span class="comment"># UpdateModelMixin</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=response.data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 单局部修改</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">patch</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        response = self.partial_update(request, *args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=response.data)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="路由层-urls-py-1"><a href="#路由层-urls-py-1" class="headerlink" title="路由层 urls.py"></a>路由层 <code>urls.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v3/books/'</span>, views.BookMixinGenericAPIView.as_view()),</span><br><span class="line">    path(<span class="string">'v3/books/&lt;pk&gt;/'</span>, views.BookMixinGenericAPIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="xxxAPIView-功能性子视图类"><a href="#xxxAPIView-功能性子视图类" class="headerlink" title="xxxAPIView - 功能性子视图类"></a>xxxAPIView - 功能性子视图类</h1><p>功能性子视图类继承了<code>GenericAPIView</code>和各种<code>Mixins</code>工具类</p>
+<ol>
+<li>功能性视图类都是<code>GenericAPIView</code>的子类，且不同的子类继承了不同的工具类</li>
+<li>工功能性视图类的功能可以满足需求，只需要继承工具视图，并且提供<code>queryset</code>与<code>serializer_class</code>即可</li>
+</ol>
+<h2 id="各大功能子视图类"><a href="#各大功能子视图类" class="headerlink" title="各大功能子视图类"></a>各大功能子视图类</h2><p>一表胜千言：</p>
+<table>
+<thead>
+<tr>
+<th>视图</th>
+<th>作用</th>
+<th>请求类型</th>
+<th>父类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ListAPIView</td>
+<td>查询多条数据</td>
+<td>get</td>
+<td>GenericAPIView <br/> ListModelMixin</td>
+</tr>
+<tr>
+<td>CreateAPIView</td>
+<td>新增一条数据</td>
+<td>post</td>
+<td>GenericAPIView <br/> CreateModelMixin</td>
+</tr>
+<tr>
+<td>RetrieveAPIView</td>
+<td>查询一条数据</td>
+<td>get</td>
+<td>GenericAPIView <br/> RetrieveModelMixin</td>
+</tr>
+<tr>
+<td>UpdateAPIView</td>
+<td>修改一条数据</td>
+<td>put <br/> patch</td>
+<td>GenericAPIView  <br/>UpdateModelMixin</td>
+</tr>
+<tr>
+<td>DestroyAPIView</td>
+<td>删除一条数据</td>
+<td>delete</td>
+<td>GenericAPIView <br/> DestroyModelMixin</td>
+</tr>
+<tr>
+<td>RetrieveUpdateAPIView</td>
+<td>单查 <br/> 更新一条数据</td>
+<td>get<br/>put<br/>patch</td>
+<td>GenericAPIView<br/>RetrieveModelMixin<br/>UpdateModelMixin</td>
+</tr>
+<tr>
+<td>RetrieveUpdateDestroyAPIView</td>
+<td>单查<br/>更新<br/>删除一条数据</td>
+<td>get<br/>put<br/>patch<br/>delete</td>
+<td>GenericAPIView<br/> RetrieveModelMixin<br/>UpdateModelMixin<br/>DestroyModelMixin</td>
+</tr>
+<tr>
+<td>ListCreateAPIView</td>
+<td>群查<br/>更新一条</td>
+<td>get<br/>post</td>
+<td>GenericAPIView<br/>ListModelMixin<br/>mixins.CreateModelMixin</td>
+</tr>
+</tbody></table>
+<h2 id="示例代码-3"><a href="#示例代码-3" class="headerlink" title="示例代码"></a>示例代码</h2><h3 id="视图层-views-py-2"><a href="#视图层-views-py-2" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.generics <span class="keyword">import</span> ListCreateAPIView, UpdateAPIView</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookListCreatePIView</span><span class="params">(ListCreateAPIView, UpdateAPIView)</span>:</span></span><br><span class="line">    queryset = models.Book.objects.filter(is_delete=<span class="literal">False</span>)</span><br><span class="line">    serializer_class = serializers.BookModelSerializer</span><br></pre></td></tr></table></figure>
+
+<h3 id="路由层-urls-py-2"><a href="#路由层-urls-py-2" class="headerlink" title="路由层 urls.py"></a>路由层 <code>urls.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v4/books/'</span>, views.BookListCreatePIView.as_view()),</span><br><span class="line">    path(<span class="string">'v4/books/&lt;pk&gt;/'</span>, views.BookListCreatePIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h1 id="xxxViewset-视图集"><a href="#xxxViewset-视图集" class="headerlink" title="xxxViewset - 视图集"></a>xxxViewset - 视图集</h1><h2 id="常用视图集父类"><a href="#常用视图集父类" class="headerlink" title="常用视图集父类"></a>常用视图集父类</h2><h3 id="ViewSetMixin"><a href="#ViewSetMixin" class="headerlink" title="ViewSetMixin"></a>ViewSetMixin</h3><p><code>ViewSetMixin</code>主要是自定义了<code>as_view</code>方法，使可以通过其参数指定 <code>HTTP_METHOD</code>与函数的映射关系，如 <code>view = MyViewSet.as_view({&#39;get&#39;: &#39;list&#39;, &#39;post&#39;: &#39;create&#39;})</code></p>
+<h3 id="ViewSet"><a href="#ViewSet" class="headerlink" title="ViewSet"></a>ViewSet</h3><p>继承自<code>APIView</code>和<code>ViewSetMixin</code>，没有提供任何方法，需要自己写</p>
+<h3 id="GenericViewSet"><a href="#GenericViewSet" class="headerlink" title="GenericViewSet"></a>GenericViewSet</h3><p>继承<code>GenericAPIView</code>和<code>ViewSetMixin</code>，其中<code>GenericAPIView</code>提供了基础方法，可以直接搭配<code>Mixin</code>扩展类使用，因此比较常用</p>
+<h3 id="ModelViewSet"><a href="#ModelViewSet" class="headerlink" title="ModelViewSet　　"></a>ModelViewSet　　</h3><p>继承<code>GenericViewset</code>，但同时也包括<code>ListModelMixin</code>、<code>CreateModelMixin</code>等<code>mixin</code>扩展类</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><ol>
+<li>视图集都是默认优先继承<code>ViewSetMixin</code>类，再继承一个视图类（<code>GenericAPIView</code>或<code>APIView</code>）</li>
+<li><code>ViewSetMixin</code>提供了重写的<code>as_view()</code>方法，继承视图集的视图类，配置路由时调用<code>as_view()</code>必须传入 请求名-函数名 映射关系字典</li>
+</ol>
+<p>例如: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path(<span class="string">'v5/books/'</span>, views.BookGenericViewSet.as_view(&#123;<span class="string">'get'</span>: <span class="string">'my_get_list'</span>&#125;)),</span><br></pre></td></tr></table></figure>
+
+<p>表示<code>get</code>请求会交给<code>my_get_list</code>视图函数处理</p>
+<h2 id="GenericViewSet-示例代码"><a href="#GenericViewSet-示例代码" class="headerlink" title="GenericViewSet 示例代码"></a>GenericViewSet 示例代码</h2><h3 id="路由层-urls-py-3"><a href="#路由层-urls-py-3" class="headerlink" title="路由层 urls.py"></a>路由层 urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">       <span class="comment"># View的as_view()：将get请求映射到视图类的get方法</span></span><br><span class="line">    <span class="comment"># ViewSet的as_view(&#123;'get': 'my_get_list'&#125;)：将get请求映射到视图类的my_get_list方法</span></span><br><span class="line">    path(<span class="string">'v5/books/'</span>,</span><br><span class="line">         views.BookGenericViewSet.as_view(&#123;<span class="string">'get'</span>: <span class="string">'my_get_list'</span>&#125;)),</span><br><span class="line">    path(<span class="string">'v5/books/&lt;pk&gt;/'</span>,</span><br><span class="line">         views.BookGenericViewSet.as_view(&#123;<span class="string">'get'</span>: <span class="string">'my_get_obj'</span>&#125;)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="视图层-views-py-3"><a href="#视图层-views-py-3" class="headerlink" title="视图层 views.py"></a>视图层 views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.viewsets <span class="keyword">import</span> GenericViewSet</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> mixins  <span class="comment">#工具集 可以使用list,retrieve等方法</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookGenericViewSet</span><span class="params">(RetrieveModelMixin, ListModelMixin, GenericViewSet)</span>:</span></span><br><span class="line">    queryset = models.Book.objects.filter(is_delete=<span class="literal">False</span>)</span><br><span class="line">    serializer_class = serializers.BookModelSerializer</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_get_list</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.list(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_get_obj</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.retrieve(request, *args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<h2 id="GenericViewSet与ViewSet"><a href="#GenericViewSet与ViewSet" class="headerlink" title="GenericViewSet与ViewSet"></a><code>GenericViewSet</code>与<code>ViewSet</code></h2><h3 id="异同"><a href="#异同" class="headerlink" title="异同"></a>异同</h3><ol>
+<li><code>GenericViewSet</code>和<code>ViewSet</code>都继承了<code>ViewSetMixin</code>，<code>as_view</code>都可以配置 请求-函数 映射</li>
+<li><code>GenericViewSet</code>继承的是<code>GenericAPIView</code>视图类，用来完成标准的 <code>model</code> 类操作接口</li>
+<li><code>ViewSet</code>继承的是<code>APIView</code>视图类，用来完成不需要 <code>model</code> 类参与，或是非标准的 <code>model</code> 类操作接口，如<ul>
+<li><code>post</code>请求在标准的 <code>model</code> 类操作下就是新增接口，登陆的<code>post</code>不满足。登陆的post请求，并不是完成数据的新增，只是用post提交数据，得到的结果也不是登陆的用户信息，而是登陆的认证信息</li>
+<li><code>post</code>请求验证码的接口，不需要 <code>model</code> 类的参与</li>
+</ul>
+</li>
+</ol>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><ul>
+<li>GenericViewSet</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># viewsets.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericViewSet</span><span class="params">(ViewSetMixin, generics.GenericAPIView)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    The GenericViewSet class does not provide any actions by default,</span></span><br><span class="line"><span class="string">    but does include the base set of generic view behavior, such as</span></span><br><span class="line"><span class="string">    the `get_object` and `get_queryset` methods.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># generics.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericAPIView</span><span class="params">(views.APIView)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># vies.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIView</span><span class="params">(View)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ViewSet</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewSet</span><span class="params">(ViewSetMixin, views.APIView)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    The base ViewSet class does not provide any actions by default.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># vies.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIView</span><span class="params">(View)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ModelViewSet-示例代码"><a href="#ModelViewSet-示例代码" class="headerlink" title="ModelViewSet 示例代码"></a>ModelViewSet 示例代码</h2><h3 id="路由层-urls-py-4"><a href="#路由层-urls-py-4" class="headerlink" title="路由层 urls.py"></a>路由层 urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v6/books/'</span>,</span><br><span class="line">         views.BookModelViewSet.as_view(&#123;<span class="string">'get'</span>: <span class="string">'list'</span>, <span class="string">'post'</span>: <span class="string">'create'</span>&#125;)),</span><br><span class="line">    path(<span class="string">'v6/books/&lt;pk&gt;/'</span>, </span><br><span class="line">        views.BookModelViewSet.as_view(&#123;<span class="string">'get'</span>: <span class="string">'retrieve'</span>, <span class="string">'put'</span>: <span class="string">'update'</span>, <span class="string">'patch'</span>: <span class="string">'partial_update'</span>, <span class="string">'delete'</span>: <span class="string">'destroy'</span>&#125;)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="视图层-views-py-4"><a href="#视图层-views-py-4" class="headerlink" title="视图层 views.py"></a>视图层 views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookModelViewSet</span><span class="params">(ModelViewSet)</span>:</span></span><br><span class="line">    queryset = models.Book.objects.filter(is_delete=<span class="literal">False</span>)</span><br><span class="line">    serializer_class = serializers.BookModelSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 删不是数据库，而是该记录中的修改is_delete的值，因此重写默认的destroy函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">destroy</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        instance = self.get_object()  <span class="comment"># type: models.Book</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> instance:</span><br><span class="line">            <span class="keyword">return</span> APIResponse(<span class="number">1</span>, <span class="string">'删除失败'</span>)  <span class="comment"># 实际操作，在此之前就做了判断</span></span><br><span class="line">        instance.is_delete = <span class="literal">True</span></span><br><span class="line">        instance.save()</span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'删除成功'</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="路由组件"><a href="#路由组件" class="headerlink" title="路由组件"></a>路由组件</h1><p>因为具有局限性，所以在开发复杂接口时并不是首选。</p>
+<p>示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, include</span><br><span class="line"><span class="keyword">from</span> rest_framework.routers <span class="keyword">import</span> SimpleRouter</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">router = SimpleRouter()</span><br><span class="line"><span class="comment"># 所有路由与ViewSet视图类的都可以注册，会产生 'v7/books/' 和 'v7/books/&lt;pk&gt;/'</span></span><br><span class="line">router.register(<span class="string">'v7/books'</span>, views.BookModelViewSet)</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    <span class="comment"># router.urls添加方法一</span></span><br><span class="line">    <span class="comment"># path('', include(router.urls)),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># router.urls添加方法二</span></span><br><span class="line"><span class="comment"># urlpatterns += router.urls</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>一图胜千言，非原创，均来自网络：</p>
+<img data-src="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/1.png" class="" title="图1">
+
+<img data-src="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/2.jpg" class="" title="图2">
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tech/" rel="tag"># Tech</a>
+              <a href="/tags/backend/" rel="tag"># Backend</a>
+              <a href="/tags/django/" rel="tag"># Django</a>
+              <a href="/tags/django-rest-framework/" rel="tag"># Django REST FrameWork</a>
+              <a href="/tags/drf/" rel="tag"># DRF</a>
+              <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
+              <a href="/tags/dev/" rel="tag"># Dev</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/" rel="prev" title="Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类">
+      <i class="fa fa-chevron-left"></i> Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AIPView-API视图类"><span class="nav-number">2.</span> <span class="nav-text">AIPView - API视图类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#与Django-View的不同"><span class="nav-number">2.1.</span> <span class="nav-text">与Django View的不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重要类属性"><span class="nav-number">2.2.</span> <span class="nav-text">重要类属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">2.3.</span> <span class="nav-text">示例代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GenericAPIView-通用API视图类"><span class="nav-number">3.</span> <span class="nav-text">GenericAPIView - 通用API视图类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GenericAPIView比APIView多了什么"><span class="nav-number">3.1.</span> <span class="nav-text">GenericAPIView比APIView多了什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重要类属性-1"><span class="nav-number">3.2.</span> <span class="nav-text">重要类属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重要类方法"><span class="nav-number">3.3.</span> <span class="nav-text">重要类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#get-serializer-源码"><span class="nav-number">3.4.</span> <span class="nav-text">get_serializer 源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码-1"><span class="nav-number">3.5.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层-views-py"><span class="nav-number">3.5.1.</span> <span class="nav-text">视图层 views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由层-urls-py"><span class="nav-number">3.5.2.</span> <span class="nav-text">路由层 urls.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xxxModelMixin-视图类的模型工具集"><span class="nav-number">4.</span> <span class="nav-text">xxxModelMixin - 视图类的模型工具集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">4.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">4.2.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五大模型工具类"><span class="nav-number">4.3.</span> <span class="nav-text">五大模型工具类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ListModelMixin-群查"><span class="nav-number">4.3.1.</span> <span class="nav-text">ListModelMixin 群查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CreateModelMixin-单增"><span class="nav-number">4.3.2.</span> <span class="nav-text">CreateModelMixin 单增</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RetrieveModelMixin-单查"><span class="nav-number">4.3.3.</span> <span class="nav-text">RetrieveModelMixin 单查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UpdateModelMixin-更新-修改"><span class="nav-number">4.3.4.</span> <span class="nav-text">UpdateModelMixin 更新&#x2F;修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DestoryModelMixin-删除"><span class="nav-number">4.3.5.</span> <span class="nav-text">DestoryModelMixin 删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码-2"><span class="nav-number">4.4.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层-views-py-1"><span class="nav-number">4.4.1.</span> <span class="nav-text">视图层 views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由层-urls-py-1"><span class="nav-number">4.4.2.</span> <span class="nav-text">路由层 urls.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xxxAPIView-功能性子视图类"><span class="nav-number">5.</span> <span class="nav-text">xxxAPIView - 功能性子视图类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#各大功能子视图类"><span class="nav-number">5.1.</span> <span class="nav-text">各大功能子视图类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码-3"><span class="nav-number">5.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层-views-py-2"><span class="nav-number">5.2.1.</span> <span class="nav-text">视图层 views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由层-urls-py-2"><span class="nav-number">5.2.2.</span> <span class="nav-text">路由层 urls.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xxxViewset-视图集"><span class="nav-number">6.</span> <span class="nav-text">xxxViewset - 视图集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用视图集父类"><span class="nav-number">6.1.</span> <span class="nav-text">常用视图集父类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewSetMixin"><span class="nav-number">6.1.1.</span> <span class="nav-text">ViewSetMixin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewSet"><span class="nav-number">6.1.2.</span> <span class="nav-text">ViewSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GenericViewSet"><span class="nav-number">6.1.3.</span> <span class="nav-text">GenericViewSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ModelViewSet"><span class="nav-number">6.1.4.</span> <span class="nav-text">ModelViewSet　　</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">6.2.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GenericViewSet-示例代码"><span class="nav-number">6.3.</span> <span class="nav-text">GenericViewSet 示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由层-urls-py-3"><span class="nav-number">6.3.1.</span> <span class="nav-text">路由层 urls.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层-views-py-3"><span class="nav-number">6.3.2.</span> <span class="nav-text">视图层 views.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GenericViewSet与ViewSet"><span class="nav-number">6.4.</span> <span class="nav-text">GenericViewSet与ViewSet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#异同"><span class="nav-number">6.4.1.</span> <span class="nav-text">异同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码"><span class="nav-number">6.4.2.</span> <span class="nav-text">源码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModelViewSet-示例代码"><span class="nav-number">6.5.</span> <span class="nav-text">ModelViewSet 示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由层-urls-py-4"><span class="nav-number">6.5.1.</span> <span class="nav-text">路由层 urls.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层-views-py-4"><span class="nav-number">6.5.2.</span> <span class="nav-text">视图层 views.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#路由组件"><span class="nav-number">7.</span> <span class="nav-text">路由组件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dog2"
+      src="/images/dog2.jpeg">
+  <p class="site-author-name" itemprop="name">dog2</p>
+  <div class="site-description" itemprop="description">Where is dog1 ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dog-2"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      G.U.
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cDovL3d3dy5waHAxMDEuY24v" title="http:&#x2F;&#x2F;www.php101.cn&#x2F;">php101</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fab fa-lg fa-github-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dog2</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Word Count Total">86k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading Time Total">1:19</span>
+</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  </div>
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyCUVj6ysvo9S0gRMUUB_0Cm-9py_hlxEkQ',
+      projectId: 'blog-ea16e'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+
+
+  
+  <style>
+  
+  button.darkmode-toggle {
+  z-index: 9999;
+  }
+  
+  img, .darkmode-ignore {
+    isolation: isolate;
+    display: block;
+  }
+  </style>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
+
+
+
+<script>
+var options = {
+  bottom: '64px', // default: '32px'
+  right: '32px', // default: '32px'
+  left: 'unset', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌓', // default: ''
+  autoMatchOsTheme: true // default: true
+}
+const darkmode = new Darkmode(options);
+darkmode.showWidget();
+// window.onload = function(){
+//   setTimeout(
+//     function() {
+//       document.getElementsByClassName('darkmode-toggle')[0].click();
+//     },
+//     550,
+//   );
+//   document.getElementsByClassName('darkmode-toggle')[0].click();
+// }
+</script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d0g2.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/";
+    this.page.identifier = "tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/";
+    this.page.title = "Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://d0g2.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

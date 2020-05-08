@@ -207,6 +207,1284 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-05 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-05T11:11:11+09:00">2020-05-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>9.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>9 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (10): Generic Views, MixIns, ViewSets and Routers</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdmlld3MucHk=">rest_framework.views<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvZ2VuZXJpY3MucHk=">rest_framework.generics<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdmlld3NldHMucHk=">rest_framework.viewsets<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvcm91dGVycy5weQ==">rest_framework.routers<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li>官方文档<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZ2VuZXJpYy12aWV3cy8=">API Guild - Generic views<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvdmlld3NldHMv">API Guild - ViewSets<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcm91dGVycy8=">API Guild - Routers<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzEwX2RyZl92aWV3cw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-04 02:22:22" itemprop="dateCreated datePublished" datetime="2020-05-04T02:22:22+09:00">2020-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzlfZHJmX0xpc3RTZXJpYWxpemVy">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.ListSerializer</code>，将继续以图书管理系统实例说明。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（八）：序列化模块 serialziers 之 ModelSerializer类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-04 01:11:11" itemprop="dateCreated datePublished" datetime="2020-05-04T01:11:11+09:00">2020-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>13 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzhfZHJmX01vZGVsU2VyaWFsaXplcg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.ModelSerializer</code> ，将结合图书管理系统实例说明。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（七）：序列化模块 serialziers 之 Serialzier类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-04 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-04T00:00:00+09:00">2020-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>6.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>6 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (7): the Serialzier class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/serializers.py" target="_blank" rel="noopener"><code>rest_framework.response</code></a></li>
+<li>官方文档<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzdfZHJmX1NlcmlhbGl6ZXI=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.Serializer</code></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-6-the-response-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-6-the-response-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（六）：响应模块 response</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-03 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-03T22:22:22+09:00">2020-05-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-6-the-response-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-6-the-response-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>1.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (6): the response module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<a href="hhttps://github.com/encode/django-rest-framework/blob/master/rest_framework/response.py"><code>rest_framework.response</code></a></li>
+<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVzcG9uc2VzLw==">API Guild - Exceptions<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-6-the-response-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-5-the-exceptions-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-5-the-exceptions-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（五）：异常模块 exceptions</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-03 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-03T11:11:11+09:00">2020-05-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-5-the-exceptions-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-5-the-exceptions-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>3.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (5): the exceptions module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/exceptions.py" target="_blank" rel="noopener"><code>rest_framework.exceptions</code></a></li>
+<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZXhjZXB0aW9ucy8=">API Guild - Exceptions<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzVfZHJmX2V4Y2VwdGlvbg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><h2 id="DRF异常处理"><a href="#DRF异常处理" class="headerlink" title="DRF异常处理"></a>DRF异常处理</h2><ol>
+<li>所有经过drf的<code>APIView</code>视图类产生的异常，都可以提供异常处理方案</li>
+<li>drf默认提供了异常处理方案<code>rest_framework.views.exception_handler</code>，但是处理范围有限</li>
+<li>drf提供的处理方案两种，处理了返回异常现象，没处理返回None(后续就是服务器抛异常给前台)</li>
+</ol>
+<p>通常出于一些原因我们需要自定义异常处理，而非使用DRF的默认异常。</p>
+<h2 id="基于DRF自定义异常处理"><a href="#基于DRF自定义异常处理" class="headerlink" title="基于DRF自定义异常处理"></a>基于DRF自定义异常处理</h2><p>自定义异常处理的常见应用场景如下：</p>
+<ol>
+<li>解决drf没有处理的异常</li>
+<li>让前台得到合理的异常信息返回、隐藏异常细节而返回通用异常信息</li>
+<li>后台记录异常具体信息、如将异常细节写入日志以供审计等</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-5-the-exceptions-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-4-the-parsers-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（四）：解析模块 parsers</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-03T00:00:00+09:00">2020-05-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-4-the-parsers-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-4-the-parsers-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>1.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (4): the parsers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/parsers.py" target="_blank" rel="noopener"><code>rest_framework.parsers</code></a></li>
+<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGFyc2Vycy8=">API Guild - Parsers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzRfZHJmX3BhcnNlcg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-4-the-parsers-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-3-the-renders-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-3-the-renders-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（三）：渲染模块 renders</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-02 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-02T22:22:22+09:00">2020-05-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-3-the-renders-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-3-the-renders-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (3): the renders module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<p>用DRF做测试会发现，用浏览器请求API返回DRF定制的页面，对开发者相当友好，如下图：</p>
+<p><img data-src="https://www.django-rest-framework.org/img/quickstart.png" alt=""></p>
+<p>而若使用python第三方模块requests或者postman等工具，这则返回的是原生的json数据。</p>
+<p>实现这种差别响应的，正是本节的主角——(响应)渲染模块。</p>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/renders.py" target="_blank" rel="noopener"><code>rest_framework.renders</code></a><ul>
+<li><code>rest_framework.request.Request</code>：主要类</li>
+</ul>
+</li>
+<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVuZGVyZXJzLw==">API Guild - Renderers<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-3-the-renders-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-2-the-request-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-2-the-request-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（二）：请求模块 request</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-02 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-02T11:11:11+09:00">2020-05-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-2-the-request-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-2-the-request-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (2): the request module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="DRF请求生命周期流程"><a href="#DRF请求生命周期流程" class="headerlink" title="DRF请求生命周期流程"></a>DRF请求生命周期流程</h1><ol>
+<li>根据应用中<code>urls.py</code>，走<code>as_view</code>方法，但是视图类没有该方法，所以请求走的是<code>APIView</code>的<code>as_view</code>方法</li>
+<li>在<code>APIView</code>的<code>as_view</code>调用父类(django原生View)的<code>as_view</code>，同时还禁用了 csrf 认证</li>
+<li>在父类（django原生View）的<code>as_view</code>中<code>dispatch</code>方法请求走的又是<code>APIView</code>的<code>dispatch</code><ul>
+<li>因为<code>APIView</code>也可以走<code>dispatch</code>，视图类是先继承<code>APIView</code>，<code>APIView</code>中没有再去原生<code>View</code>中</li>
+</ul>
+</li>
+<li>完成任务方法交给视图类的请求函数处理，得到请求的响应结果，返回给前台</li>
+</ol>
+<p>因此直接从APIView的dispatch入口看源码。</p>
+<h1 id="请求模块"><a href="#请求模块" class="headerlink" title="请求模块"></a>请求模块</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/request.py" target="_blank" rel="noopener"><code>rest_framework.request</code></a><ul>
+<li><code>rest_framework.request.Request</code>：主要类</li>
+</ul>
+</li>
+<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">API Guild - Requests<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-2-the-request-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-1-hello-restful-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-1-hello-restful-api/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（一）：RESTful API 初探</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-02T00:00:00+09:00">2020-05-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-1-hello-restful-api/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-1-hello-restful-api/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (1): Hello RESTful API</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<blockquote>
+<p>前后端分离是大势所趋</p>
+</blockquote>
+<h1 id="按"><a href="#按" class="headerlink" title="按"></a>按</h1><p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。官方API文档虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
+<p>于是找到了<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMW5FNDExSjdoeA==">一套不错DRF讲解视频<i class="fa fa-external-link-alt"></i></span>来学习，并且在这里记下学习笔记。</p>
+<p>参考了这两位同学的笔记，大部分是视频讲师在视频里做过的课堂笔记。</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vd2FuZ2N1aWNhbi9jYXRlZ29yeS8xNjA3ODIyLmh0bWw=">随笔分类 - Django REST framework笔记<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20veWFuZ2ppYW9zaG91L2NhdGVnb3J5LzE2NzUwMjEuaHRtbA==">随笔分类 - Django–drf相关 <i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>根据我个人理解对笔记做了部分修改、整理和补充。这里有我的<a href="">测试代码</a>可供参考，包括django项目、db数据和postman的测试数据包。</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+<li><strong><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU4JUExJUE4JUU3JThFJUIwJUU1JUIxJTgyJUU3JThBJUI2JUU2JTgwJTgxJUU4JUJEJUFDJUU2JThEJUEy">RESTful<i class="fa fa-external-link-alt"></i></span></strong>: Representational State Transfer 表现层状态转换</li>
+<li><strong>ful</strong>: 形容词后缀，表示“（这一）类的、（这种）风格的”</li>
+<li><strong><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3poLWNuLyVFNSVCQSU5NCVFNyU5NCVBOCVFNyVBOCU4QiVFNSVCQSU4RiVFNiU4RSVBNSVFNSU4RiVBMw==">API<i class="fa fa-external-link-alt"></i></span></strong>: Application Programming Interface 应用程序接口</li>
+<li><strong>接口</strong>：联系两个物质的媒介，完成信息交互</li>
+<li><strong>Web程序接口</strong><ul>
+<li>功能：联系前台页面与后台数据库的媒介</li>
+<li>组成<ul>
+<li>url: 长得像返回数据的url链接</li>
+<li>请求参数: 前台按照指定的key提供数据给后台</li>
+<li>响应数据: 后台与数据库交互后将数据反馈给前台</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-1-hello-restful-api/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/hexo-dark-mode-note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -807,494 +2085,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/heap-overflow-learning-notes-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/dog2.jpeg">
-      <meta itemprop="name" content="dog2">
-      <meta itemprop="description" content="Where is dog1 ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪泥鴻爪">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/tech/heap-overflow-learning-notes-1/" class="post-title-link" itemprop="url">堆溢出学习笔记(Win2K) (上)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted</span>
-
-              <time title="Created: 2016-05-30 22:22:22" itemprop="dateCreated datePublished" datetime="2016-05-30T22:22:22+09:00">2016-05-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/tech/heap-overflow-learning-notes-1/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/heap-overflow-learning-notes-1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="Word Count">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>8.6k</span>
-            </span>
-            <span class="post-meta-item" title="Reading Time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
-              <span>8 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>Title(EN): <em><strong>Heap Overflow Learning Notes(Win2K) #1</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<p>最近在啃《0day安全：软件漏洞分析技术》（第二版）一书，打算入门二进制漏洞分析。书中第五章“堆溢出利用”较前几章难度有所增大，原因在于堆结构较之前学习的栈更复杂，第五章中的例子涵盖了堆的分布、堆块分配和释放、堆溢出利用，利用堆溢出进行攻击的例子是通过修改P.E.B（进程环境块）中指向RtlEnterCriticalSection()函数的指针，该函数在程序退出时被调用。在调试完所有例子以后，对堆的内部细节和堆溢出利用终于有了些许的理解。</p>
-<p>第六章中也涉及到堆溢出利用，不过此处是利用Windows异常处理机制S.E.H（异常处理结构体）来实现攻击的，看完后打算调试一遍，发现几天前通过调试建立的对内存中堆分布和操作的理解都忘得差不多了，这时候终于体会到 _<strong>学习过程中根据自己的体会做一些重要笔记并且据此定期复习的重要性</strong>_，因此有了本篇。</p>
-<p>希望这是个好的开头，提醒自己谨记对于复杂的重难点，要以日志的形式形成学习笔记，以供日后温故知新。</p>
-<p>关于堆以及P.E.B、S.E.H等机制的介绍，0day书中已经非常系统详尽，本文不再赘述，这里仅给出我的实验调试过程，记录其中踩的坑以及一些体会，因此以过程截图为主，相关简述为辅。第六章中堆的例子作者并没有给出相关代码及过程细节，这里也会附上。由于初学，文中难免存在错误，欢迎指正。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tech/heap-overflow-learning-notes-1/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/shell-interaction-in-python-2-ssh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/dog2.jpeg">
-      <meta itemprop="name" content="dog2">
-      <meta itemprop="description" content="Where is dog1 ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪泥鴻爪">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/tech/shell-interaction-in-python-2-ssh/" class="post-title-link" itemprop="url">Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted</span>
-
-              <time title="Created: 2015-12-30 22:22:22" itemprop="dateCreated datePublished" datetime="2015-12-30T22:22:22+09:00">2015-12-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/tech/shell-interaction-in-python-2-ssh/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/shell-interaction-in-python-2-ssh/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="Word Count">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>4.6k</span>
-            </span>
-            <span class="post-meta-item" title="Reading Time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>Title(EN): <em><strong>Shell Interaction in Python #2: SSH</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><h4 id="1-模块选择"><a href="#1-模块选择" class="headerlink" title="1. 模块选择"></a>1. 模块选择</h4><p>对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。</p>
-<h5 id="1-paramiko"><a href="#1-paramiko" class="headerlink" title="(1) paramiko"></a>(1) paramiko</h5><p>SSH交互最常用的是第三方模块是paramiko：</p>
-<ul>
-<li><span class="exturl" data-url="aHR0cDovL2RvY3MucGFyYW1pa28ub3JnLw==">文档<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhcmFtaWtvL3BhcmFtaWtvL3RyZWUvbWFzdGVyL3BhcmFtaWtv">源码<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tech/shell-interaction-in-python-2-ssh/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/shell-interaction-in-python-1-telnet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/dog2.jpeg">
-      <meta itemprop="name" content="dog2">
-      <meta itemprop="description" content="Where is dog1 ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪泥鴻爪">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/tech/shell-interaction-in-python-1-telnet/" class="post-title-link" itemprop="url">Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted</span>
-
-              <time title="Created: 2015-12-30 22:22:22" itemprop="dateCreated datePublished" datetime="2015-12-30T22:22:22+09:00">2015-12-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/tech/shell-interaction-in-python-1-telnet/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/shell-interaction-in-python-1-telnet/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="Word Count">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>2.3k</span>
-            </span>
-            <span class="post-meta-item" title="Reading Time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>Title(EN): <em><strong>Shell Interaction in Python #1: Telent</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>我们常常需要使用编程语言实现与某些终端交互，以实现交互过程的可控性。具体到这类涉及终端交互的漏洞，只有编写合适的PoC/Exp，并与目标有正确的交互逻辑，才能进行漏洞验证。</p>
-<p>这里，我们以Juniper后门漏洞CVE-2015-7755为例，介绍如何使用Python编写Telnet交互程序，且:</p>
-<ul>
-<li>要求该程序是可以用于高并发扫描的。</li>
-<li>实现Exp，获取相关敏感信息。</li>
-</ul>
-<p>Juniper后门漏洞相关信息可参见<span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS9uZXdzLzkwMzIzLmh0bWw=">Freebuf相关文章<i class="fa fa-external-link-alt"></i></span>。简而言之，即可使用任意用户名及密码 <strong>*&lt;&lt;&lt; %s(un=’%s’) = %u*</strong> 来登录一些Juniper ScreenOS设备的Telnet及SSh服务。</p>
-<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><h4 id="模块选择"><a href="#模块选择" class="headerlink" title="模块选择"></a>模块选择</h4><p>初版PoC程序我使用了相对底层的socket模块来简单实现，用于检测单个目标没有问题，但在高并发扫描的时候效率极低，猜测是I/O阻塞的原因。</p>
-<p>转而使用系统库内置模块telnetlib：</p>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L3RlbG5ldGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi90ZWxuZXRsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>使用telnet模块后并发扫描的效率就非常高了，CPU及带宽占用率都上去了。简单翻阅telnetlib的源码，发现它是有I/O控制的。</p>
-<h4 id="Exp"><a href="#Exp" class="headerlink" title="Exp"></a>Exp</h4><p>Juniper设备使用get命令来获取设备的各类信息，可以使用 <em><strong>get ?</strong></em> 来查看相关命令，其中最重要的是2个：</p>
-<ul>
-<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
-<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
-</ul>
-<p>但存在一个问题，如上2个命令返回的全部信息总量通常比较大，一般&gt;=40KB，而服务端不是一次性将信息全部输出给客户端的，而是分批输出到管道中的，客户端需要不断地键入回车，来顺序获取各个信息分段。</p>
-<p>这就要求程序能不断获取结果信息，并正确判断最后一个分段以适时终止。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tech/shell-interaction-in-python-1-telnet/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/downloading-ftp-directory-recursively-with-python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/dog2.jpeg">
-      <meta itemprop="name" content="dog2">
-      <meta itemprop="description" content="Where is dog1 ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪泥鴻爪">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/tech/downloading-ftp-directory-recursively-with-python/" class="post-title-link" itemprop="url">Python实现下载FTP服务器的整个目录（文件夹）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted</span>
-
-              <time title="Created: 2015-09-15 22:22:22" itemprop="dateCreated datePublished" datetime="2015-09-15T22:22:22+09:00">2015-09-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/tech/downloading-ftp-directory-recursively-with-python/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/downloading-ftp-directory-recursively-with-python/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="Word Count">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>5.9k</span>
-            </span>
-            <span class="post-meta-item" title="Reading Time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
-              <span>5 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>Title(EN): <em><strong>Downloading FTP Directory Recursively with Python</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><ul>
-<li>快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tech/downloading-ftp-directory-recursively-with-python/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -1361,7 +2156,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1374,7 +2169,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1429,12 +2224,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">40k</span>
+    <span title="Word Count Total">86k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">37 mins.</span>
+    <span title="Reading Time Total">1:19</span>
 </div>
   <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
   </div>

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
+  <link rel="mask-icon" href="/favicon/eye.ico" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module Author: dog2   基本信息 源码：rest_framework.serializers 官方文档 API Guild - Serializers API Guild - Seriali">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django REST Framework 学习笔记（八）：序列化模块 serialziers 之 ModelSerializer类">
+<meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/index.html">
+<meta property="og:site_name" content="雪泥鴻爪">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module Author: dog2   基本信息 源码：rest_framework.serializers 官方文档 API Guild - Serializers API Guild - Seriali">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-03T16:11:11.000Z">
+<meta property="article:modified_time" content="2020-05-03T16:11:11.000Z">
+<meta property="article:author" content="dog2">
+<meta property="article:tag" content="Tech">
+<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Django REST FrameWork">
+<meta property="article:tag" content="DRF">
+<meta property="article:tag" content="Learning Notes">
+<meta property="article:tag" content="Dev">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Django REST Framework 学习笔记（八）：序列化模块 serialziers 之 ModelSerializer类 | 雪泥鴻爪</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-71835065-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">雪泥鴻爪</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">dog2's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Django REST Framework 学习笔记（八）：序列化模块 serialziers 之 ModelSerializer类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-04 01:11:11" itemprop="dateCreated datePublished" datetime="2020-05-04T01:11:11+09:00">2020-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>13 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzhfZHJmX01vZGVsU2VyaWFsaXplcg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.ModelSerializer</code> ，将结合图书管理系统实例说明。</p>
+<a id="more"></a>
+
+<h1 id="序列化以外的其他配置"><a href="#序列化以外的其他配置" class="headerlink" title="序列化以外的其他配置"></a>序列化以外的其他配置</h1><h2 id="settings-py"><a href="#settings-py" class="headerlink" title="settings.py"></a><code>settings.py</code></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="string">'rest_framework'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">LANGUAGE_CODE = <span class="string">'zh-hans'</span></span><br><span class="line">TIME_ZONE = <span class="string">'Asia/Shanghai'</span></span><br><span class="line">USE_I18N = <span class="literal">True</span></span><br><span class="line">USE_L10N = <span class="literal">True</span></span><br><span class="line">USE_TZ = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">MEDIA_URL = <span class="string">'/media/'</span></span><br><span class="line">MEDIA_ROOT = os.path.join(BASE_DIR, <span class="string">'media'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="全局url-py"><a href="#全局url-py" class="headerlink" title="全局url.py"></a>全局<code>url.py</code></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path, include</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> django.conf.urls.static <span class="keyword">import</span> static</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'api/'</span>, include(<span class="string">'api.urls'</span>)),</span><br><span class="line">] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据库表"><a href="#数据库表" class="headerlink" title="数据库表"></a>数据库表</h2><h3 id="表一览"><a href="#表一览" class="headerlink" title="表一览"></a>表一览</h3><ul>
+<li><code>BaseModel</code>基表：<code>is_delete</code>、<code>create_time</code></li>
+</ul>
+<p>下面四表继承基表，可以继承两个字段</p>
+<ul>
+<li><code>Book</code>表：<code>name</code>、<code>price</code>、<code>img</code>、<code>authors</code>、<code>publish</code>、<code>is_delete</code>、<code>create_time</code></li>
+<li><code>Publish</code>表：<code>name</code>、<code>address</code>、<code>is_delete</code>、<code>create_time</code></li>
+<li><code>Author表</code>：<code>name</code>、<code>age</code>、<code>is_delete</code>、<code>create_time</code></li>
+<li><code>AuthorDetail</code>表：<code>mobile, author</code>、<code>is_delete</code>、<code>create_time</code></li>
+</ul>
+<h3 id="基表代码"><a href="#基表代码" class="headerlink" title="基表代码"></a>基表代码</h3><p><code>models.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseModel</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    is_delete = models.BooleanField(default=<span class="literal">False</span>)</span><br><span class="line">    create_time = models.DateTimeField(auto_now_add=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置 abstract = True 来声明基表，作为基表的Model不能在数据库中形成对应的表</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        abstract = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="断关联多表关系（重点）"><a href="#断关联多表关系（重点）" class="headerlink" title="断关联多表关系（重点）"></a>断关联多表关系（重点）</h3><ol>
+<li><p>外键位置：</p>
+<ul>
+<li>一对多：外键放多的一方</li>
+<li>一对一：从逻辑正反向考虑，如作者表与作者详情表，作者删除级联作者详情也删除，详情删除作者依旧存在，所以建议外键在详情表中（和之前的一对一关系外键放置不一样，之前都是把外键放在查询频率高的表）</li>
+<li>多对多：外键在关系表中</li>
+</ul>
+</li>
+<li><p>ORM正向方向连表查找：(注：依赖代码见下方)</p>
+<ul>
+<li>正向：通过外键字段 eg: <code>author_detial_obj.author</code>，外键设置在作者详情表，在作者详情表中查询作者直接<code>.author</code>就可以</li>
+<li>反向：通过设置反向查询<code>related_name</code>的值 eg：<code>author_obj.detail</code>，外键没有设置在作者表中，在作者表中通过设置反向查询<code>.detail</code>查询作者详情</li>
+</ul>
+</li>
+<li><p>连表操作关系：（注：拿作者与作者详情表举例，外键建在作者详情表中）</p>
+<ul>
+<li>作者删除，详情级联   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on_delete=models.CASCADE    <span class="comment">#跟着一起删除</span></span><br></pre></td></tr></table></figure></li>
+<li>作者删除，详情置空   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">null=<span class="literal">True</span>, on_delete=models.SET_NULL   <span class="comment">#外键字段清空</span></span><br></pre></td></tr></table></figure></li>
+<li>作者删除，详情重置   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">default=<span class="number">0</span>, on_delete=models.SET_DEFAULT</span><br></pre></td></tr></table></figure></li>
+<li>作者删除，详情不动   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on_delete=models.DO_NOTHING</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>外键关联字段的参数：如何实现断关联、目前表间操作关系、方向查询字段</p>
+<ol>
+<li>作者详情表中的（外键设置在作者详情表中）  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">author = models.OneToOneField(</span><br><span class="line">    to=<span class="string">'Author'</span>,       <span class="comment">#和作者表关联</span></span><br><span class="line">    related_name=<span class="string">'detail'</span>,   <span class="comment">#反查询，作者表直接查作者详情表的电话号码，可以直接author_obj.detail.mobile</span></span><br><span class="line">    db_constraint=<span class="literal">False</span>,     <span class="comment">#断关联</span></span><br><span class="line">    on_delete=models.CASCADE  <span class="comment">#级联删除</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li>图书表中的  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">publish = models.ForeignKey(</span><br><span class="line">    to=<span class="string">'Publish'</span>,</span><br><span class="line">    related_name=<span class="string">'books'</span>,</span><br><span class="line">    db_constraint=<span class="literal">False</span>,</span><br><span class="line">    on_delete=models.DO_NOTHING,</span><br><span class="line">)</span><br><span class="line">authors = models.ManyToManyField(</span><br><span class="line">    to=<span class="string">'Author'</span></span><br><span class="line">    related_name=<span class="string">'books'</span>,</span><br><span class="line">    db_constraint=<span class="literal">False</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ol>
+<div class="note warning">
+            <p>注意：</p><ul><li><code>ManyToManyField</code>不能设置<code>on_delete</code></li><li><code>OneToOneField</code>、<code>ForeignKey</code>必须设置<code>on_delete</code>（django1.x系统默认级联，但是django2.x必须手动明确）</li></ul>
+          </div>
+
+<h3 id="各表代码"><a href="#各表代码" class="headerlink" title="各表代码"></a>各表代码</h3><details>
+
+<summary> models.py </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseModel</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    is_delete = models.BooleanField(default=<span class="literal">False</span>)  <span class="comment"># 默认不是删除，数据库中是0/1</span></span><br><span class="line">    create_time = models.DateTimeField(auto_now_add=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置 abstract = True 来声明基表，作为基表的Model不能在数据库中形成对应的表</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        abstract = <span class="literal">True</span>  <span class="comment"># 声明该表只是一个抽象表不出现在数据库中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 书籍表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    price = models.DecimalField(max_digits=<span class="number">5</span>, decimal_places=<span class="number">2</span>)</span><br><span class="line">    img = models.ImageField(upload_to=<span class="string">'img'</span>, default=<span class="string">'default.jpg'</span>)</span><br><span class="line">    <span class="comment"># 关联出版社表</span></span><br><span class="line">    publish = models.ForeignKey(</span><br><span class="line">        to=<span class="string">'Publish'</span>,  <span class="comment"># 关联publish表</span></span><br><span class="line">        db_constraint=<span class="literal">False</span>,  <span class="comment"># 断关联（断开Book表和Publish表的关联,方便删数据,虽然断开了关联但是还能正常使用）</span></span><br><span class="line">        related_name=<span class="string">'books'</span>,  <span class="comment"># 反向查询字段：publish_obj.books就能查出当前出版社出版的的所有书籍</span></span><br><span class="line">        on_delete=models.DO_NOTHING,  <span class="comment"># 设置连表操作关系</span></span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 关联作者表</span></span><br><span class="line">    authors = models.ManyToManyField(</span><br><span class="line">        to=<span class="string">'Author'</span>,</span><br><span class="line">        db_constraint=<span class="literal">False</span>,  <span class="comment"># 断开关联</span></span><br><span class="line">        related_name=<span class="string">'books'</span>,  <span class="comment"># 反向查询字段</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 序列化插拔式属性 - 完成自定义字段名完成连表查询</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">publish_name</span><span class="params">(self)</span>:</span>  <span class="comment"># 自定义查询出版社名字</span></span><br><span class="line">        <span class="keyword">return</span> self.publish.name</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">author_list</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.authors.values(<span class="string">'name'</span>, <span class="string">'age'</span>, <span class="string">'detail__mobile'</span>).all()</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table = <span class="string">'book'</span></span><br><span class="line">        verbose_name = <span class="string">'书籍'</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">        unique_together = (<span class="string">'name'</span>, <span class="string">'publish'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 出版社表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Publish</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    <span class="string">"""name、address、is_delete、create_time"""</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    address = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table = <span class="string">'publish'</span></span><br><span class="line">        verbose_name = <span class="string">'出版社'</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 作者表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Author</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    <span class="string">"""name、age、is_delete、create_time"""</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    age = models.IntegerField()</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table = <span class="string">'author'</span></span><br><span class="line">        verbose_name = <span class="string">'作者'</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 作者详情</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthorDetail</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    <span class="string">"""mobile, author、is_delete、create_time"""</span></span><br><span class="line">    mobile = models.CharField(max_length=<span class="number">11</span>)</span><br><span class="line">    author = models.OneToOneField(</span><br><span class="line">        to=<span class="string">'Author'</span>,</span><br><span class="line">        db_constraint=<span class="literal">False</span>,</span><br><span class="line">        related_name=<span class="string">'detail'</span>,</span><br><span class="line">        on_delete=models.CASCADE</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table = <span class="string">'author_detail'</span></span><br><span class="line">        verbose_name = <span class="string">'作者详情'</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.author.name</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h1 id="serializers-ModelSerializer"><a href="#serializers-ModelSerializer" class="headerlink" title="serializers.ModelSerializer"></a>serializers.ModelSerializer</h1><h2 id="序列化-amp-反序列化"><a href="#序列化-amp-反序列化" class="headerlink" title="序列化 &amp; 反序列化"></a>序列化 &amp; 反序列化</h2><h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><p><code>ModelSerializer</code>模型类序列化器与常规的<code>Serializer</code>相同，但提供了：</p>
+<ol>
+<li>基于模型类自动生成一系列字段</li>
+<li>包含默认的<code>create()</code>和<code>update()</code>的实现</li>
+<li>基于模型类自动为<code>Serializer</code>生成<code>validators</code>，比如<code>unique_together</code></li>
+</ol>
+<h4 id="序列化层-api-serializers-py"><a href="#序列化层-api-serializers-py" class="headerlink" title="序列化层 api/serializers.py"></a>序列化层 <code>api/serializers.py</code></h4><details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.serializers <span class="keyword">import</span> ModelSerializer, SerializerMethodField</span><br><span class="line"><span class="keyword">from</span> rest_framework.exceptions <span class="keyword">import</span> ValidationError</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以单独作为Publish接口的序列化类，也可以作为Book序列化外键publish辅助的序列化组件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PublishModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = models.Publish</span><br><span class="line">        fields = (<span class="string">'name'</span>, <span class="string">'address'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Book接口序列化</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="comment"># 了解: 1.还可以自定义设置序列化字段，但是必须在fields中声明，在fields中写publish_address</span></span><br><span class="line">    <span class="comment"># publish_address = SerializerMethodField()</span></span><br><span class="line">    <span class="comment"># def get_publish_address(self, obj):</span></span><br><span class="line">    <span class="comment">#     return obj.publish.address</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 自定义连表深度-子序列化方式-该方式不能参与反序列化，使用在序列化和反序列化共存时，不能书写</span></span><br><span class="line">    publish = PublishModelSerializer()</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        <span class="comment"># 序列化类关联的model类</span></span><br><span class="line">        model = models.Book</span><br><span class="line">        <span class="comment"># 参与序列化的字段</span></span><br><span class="line">        fields = (<span class="string">'name'</span>, <span class="string">'price'</span>, <span class="string">'img'</span>, <span class="string">'author_list'</span>, <span class="string">'publish'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 了解知识点</span></span><br><span class="line">        <span class="comment"># 所有字段</span></span><br><span class="line">        <span class="comment"># fields = '__all__'</span></span><br><span class="line">        <span class="comment"># 与fields不共存，exclude排除哪些字段</span></span><br><span class="line">        <span class="comment"># exclude = ('id', 'is_delete', 'create_time')</span></span><br><span class="line">        <span class="comment"># 自动连表深度</span></span><br><span class="line">        <span class="comment"># depth = 1</span></span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h4 id="视图层-views-py"><a href="#视图层-views-py" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h4><details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models,serializers</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="comment"># 单查</span></span><br><span class="line">        <span class="keyword">if</span> pk:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                book_obj = models.Book.objects.get(pk=pk, is_delete=<span class="literal">False</span>)</span><br><span class="line">                book_data = serializers.BookModelSerializer(</span><br><span class="line">                    book_obj).data  <span class="comment"># 单条数据序列化</span></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'数据不存在'</span></span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="comment"># 群查</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            book_query = models.Book.objects.filter(</span><br><span class="line">                is_delete=<span class="literal">False</span>).all()  <span class="comment"># 先筛选查询,再查所有</span></span><br><span class="line">            book_data = serializers.BookModelSerializer(</span><br><span class="line">                book_query, many=<span class="literal">True</span>).data  <span class="comment"># 不管是一条还是多条，只要数据是被[]嵌套，都要写many=True</span></span><br><span class="line">        <span class="comment"># 返回前端数据</span></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: book_data</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h4 id="子路由层-api-urls-py"><a href="#子路由层-api-urls-py" class="headerlink" title="子路由层 api/urls.py"></a>子路由层 <code>api/urls.py</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v1/books/'</span>, views.Book.as_view()),</span><br><span class="line">    path(<span class="string">'v1/books/&lt;pk&gt;/'</span>, views.Book.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h3><h4 id="序列化层-api-serializers-py-1"><a href="#序列化层-api-serializers-py-1" class="headerlink" title="序列化层 api/serializers.py"></a>序列化层 <code>api/serializers.py</code></h4><details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookModelDeserializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="comment"># 一些只参与反序列化的字段，但是不是与数据库关联的，自定义不入库的反序列化的字段</span></span><br><span class="line">    <span class="comment"># 自定义字段的 read_only属性必须定义在CharField，不能写在下方的extra_kwargs中，否则会被传入models.Book进行反序列化而报错</span></span><br><span class="line">    re_name = CharField(read_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = models.Book</span><br><span class="line">        exclude = [<span class="string">'is_delete'</span>, <span class="string">'create_time'</span>, <span class="string">'img'</span>]</span><br><span class="line">        <span class="comment"># fields = ('name', 'price', 'publish', 'authors','re_name')  #没有默认值的字段必须序列化，为其传值</span></span><br><span class="line">        <span class="comment"># extra_kwargs 用来完成反序列化字段的 系统校验规则</span></span><br><span class="line">        extra_kwargs = &#123;</span><br><span class="line">            <span class="string">'name'</span>: &#123;</span><br><span class="line">                <span class="string">'required'</span>: <span class="literal">True</span>,  <span class="comment"># 设置name字段必填</span></span><br><span class="line">                <span class="string">'min_length'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'error_messages'</span>: &#123;</span><br><span class="line">                    <span class="string">'required'</span>: <span class="string">'必填项'</span>,</span><br><span class="line">                    <span class="string">'min_length'</span>: <span class="string">'太短'</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 局部钩子校验单个字段  validate_字段名</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span>  <span class="comment"># value是字段name的值</span></span><br><span class="line">        <span class="comment"># 书名不能包含 g 字符</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">'该g书不能出版'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    <span class="comment"># 全局钩子</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span></span><br><span class="line">        publish = attrs.get(<span class="string">'publish'</span>)  <span class="comment"># publish如果是外键字段，这个就是publish对象</span></span><br><span class="line">        name = attrs.get(<span class="string">'name'</span>)</span><br><span class="line">        <span class="keyword">if</span> models.Book.objects.filter(name=name, publish=publish):</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(&#123;<span class="string">'book'</span>: <span class="string">'该书已存在'</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span> attrs</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 注意：ModelSerializer类已经帮我们实现了 create 与 update 方法,不需要写create就能创建</span></span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h4 id="视图层-views-py-1"><a href="#视图层-views-py-1" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        book_ser = serializers.BookModelDeserializer(data=request_data)</span><br><span class="line">        <span class="comment"># raise_exception=True：当校验失败，马上终止当前视图方法，抛异常返回给前台</span></span><br><span class="line">        book_ser.is_valid(raise_exception=<span class="literal">True</span>)</span><br><span class="line">        book_obj = book_ser.save()</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: serializers.BookModelSerializer(book_obj).data</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="子路由层-api-urls-py-1"><a href="#子路由层-api-urls-py-1" class="headerlink" title="子路由层 api/urls.py"></a>子路由层 <code>api/urls.py</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v1/books/'</span>, views.Book.as_view()),</span><br><span class="line">    path(<span class="string">'v1/books/&lt;pk&gt;/'</span>, views.Book.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<div class="note warning">
+            <h4 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h4><ol><li><p>反序列化层：</p><ul><li>在设置<code>fields</code>，没有默认值的字段都必须设置反序列化保存到数据库中</li><li>使用<code>extra_kwargs</code> 来设置系统校验规则</li><li>设置局部钩子和全局钩子</li><li><code>ModelSerializer</code>类已经帮我们实现了 <code>create</code> 与 <code>update</code> 方法，不需要再写</li></ul></li><li><p>视图层：</p><ul><li>POST请求通过<code>request.data</code>拿到数据包</li><li>传给反序列化 ,通过<code>data=request_data</code>传入需要反序列化的数据</li><li><code>is_valid</code>判断校验是否合格 ，<code>raise_exception=True</code>必须要写的</li><li>通过<code>.save()</code>保存到数据库中</li></ul></li></ol>
+          </div>
+
+<h3 id="序列化与反序列化整合"><a href="#序列化与反序列化整合" class="headerlink" title="序列化与反序列化整合"></a>序列化与反序列化整合</h3><h4 id="序列化层-api-serializers-py-2"><a href="#序列化层-api-serializers-py-2" class="headerlink" title="序列化层 api/serializers.py"></a>序列化层 <code>api/serializers.py</code></h4><details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V2BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="comment"># 一些只参与反序列化的字段，但是不是与数据库关联的，自定义不入库的反序列化的字段</span></span><br><span class="line">    re_name = CharField(read_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = models.Book</span><br><span class="line">        fields = (<span class="string">'name'</span>, <span class="string">'price'</span>, <span class="string">'img'</span>, <span class="string">'author_list'</span>,</span><br><span class="line">                  <span class="string">'publish_name'</span>, <span class="string">'publish'</span>, <span class="string">'authors'</span>, <span class="string">'re_name'</span>)</span><br><span class="line">        extra_kwargs = &#123;</span><br><span class="line">            <span class="string">'name'</span>: &#123;</span><br><span class="line">                <span class="string">'required'</span>: <span class="literal">True</span>,</span><br><span class="line">                <span class="string">'min_length'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'error_messages'</span>: &#123;</span><br><span class="line">                    <span class="string">'required'</span>: <span class="string">'必填项'</span>,</span><br><span class="line">                    <span class="string">'min_length'</span>: <span class="string">'太短'</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'publish'</span>: &#123;</span><br><span class="line">                <span class="string">'write_only'</span>: <span class="literal">True</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'authors'</span>: &#123;</span><br><span class="line">                <span class="string">'write_only'</span>: <span class="literal">True</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'img'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'author_list'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'publish_name'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="comment"># 书名不能包含 g 字符</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">'该g书不能出版'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span></span><br><span class="line">        publish = attrs.get(<span class="string">'publish'</span>)</span><br><span class="line">        name = attrs.get(<span class="string">'name'</span>)</span><br><span class="line">        <span class="comment"># 视频里使用这种验证方式，实际是不合理的，因为会导致针对价格修改的PUT请求失败(name&amp;publish已存在)</span></span><br><span class="line">        <span class="comment"># 因此在这里将其注释掉 ，正确的方式是在models.Book中对这两个字段的共同唯一性作约束</span></span><br><span class="line">        <span class="comment"># 而本函数通常作为对不同attr的对比验证，如两次输入密码是否一致等</span></span><br><span class="line">        <span class="comment"># if models.Book.objects.filter(name=name, publish=publish):</span></span><br><span class="line">        <span class="comment">#     raise ValidationError(&#123;'book': '该书已存在'&#125;)</span></span><br><span class="line">        <span class="keyword">return</span> attrs</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<div class="note warning">
+            <h5 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h5><ol><li><code>fields</code>中设置所有序列化与反序列化字段</li><li><code>extra_kwargs</code>划分只序列化或只反序列化字段（一般我们把需要存入到数据库中的使用<code>write_only</code>（反序列化）,只需要展示的就read_only(序列化)，看需求设计）<ul><li><code>write_only</code>：只反序列化</li><li><code>read_only</code>：只序列化</li><li>自定义字段默认只序列化(<code>read_only</code>)</li><li>如果字段没设置<code>write_only</code>或者<code>read_only</code>，那么该字段可以序列化和反序列化</li></ul></li><li>设置反序列化所需的 系统、局部钩子、全局钩子 等校验规则</li></ol>
+          </div>
+
+<h4 id="视图层-views-py-2"><a href="#视图层-views-py-2" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h4><details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V2Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="comment"># 单查</span></span><br><span class="line">        <span class="keyword">if</span> pk:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                book_obj = models.Book.objects.get(pk=pk, is_delete=<span class="literal">False</span>)</span><br><span class="line">                book_data = serializers.V2BookModelSerializer(</span><br><span class="line">                    book_obj).data  <span class="comment"># 序列化</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'参数有误'</span></span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="comment"># 群查</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            book_query = models.Book.objects.filter(is_delete=<span class="literal">False</span>).all()</span><br><span class="line">            book_data = serializers.V2BookModelSerializer(</span><br><span class="line">                book_query, many=<span class="literal">True</span>).data  <span class="comment"># 序列化</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: book_data</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 单增:传的数据是与model对应的一个字典</span></span><br><span class="line">        <span class="comment"># 群增：设计传递的是多个model对应的字典列表,在postman中通过列表嵌套字典传值</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        <span class="keyword">if</span> isinstance(request_data, dict):  <span class="comment"># 判断获取的数据是否是dict</span></span><br><span class="line">            many = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">elif</span> isinstance(request_data, list):  <span class="comment"># 判断获取的数据是否是list</span></span><br><span class="line">            many = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'数据错误'</span></span><br><span class="line">            &#125;)</span><br><span class="line">        book_ser = serializers.V2BookModelSerializer(</span><br><span class="line">            data=request_data, many=many)  <span class="comment"># 反序列化</span></span><br><span class="line">        book_ser.is_valid(raise_exception=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># book_result是对象&lt;class 'app01.models.Book'&gt;，群增就是列表套一个个对象</span></span><br><span class="line">        book_result = book_ser.save()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: serializers.V2BookModelSerializer(book_result, many=many).data</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 单删: 有pk   #在postman中通过路径传参</span></span><br><span class="line">    <span class="comment"># 群删：有pks   &#123;"pks": [1, 2, 3]&#125;   #通过json传参</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="keyword">if</span> pk:</span><br><span class="line">            pks = [pk]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pks = request.data.get(<span class="string">'pks'</span>)</span><br><span class="line">        <span class="keyword">if</span> models.Book.objects.filter(pk__in=pks, is_delete=<span class="literal">False</span>).update(is_delete=<span class="literal">True</span>):</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'删除成功'</span></span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'删除失败'</span></span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<div class="note warning">
+            <h5 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h5><ol><li>序列化数据最后必须要<code>.data</code> （因为要传给前端）</li><li>反序列化通过<code>data</code>传参，序列化通过<code>instance</code>传参（当你只传一个参数时，默认是<code>instance</code>的参数）</li><li>反序列化与序列化都能使用<code>many=True</code>，序列化和反序列化数据只要被[]嵌套都要写<code>many=True</code></li></ol>
+          </div>
+
+<h4 id="子路由层-api-urls-py-2"><a href="#子路由层-api-urls-py-2" class="headerlink" title="子路由层 api/urls.py"></a>子路由层 <code>api/urls.py</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v2/books/'</span>, views.V2Book.as_view()),</span><br><span class="line">    path(<span class="string">'v2/books/&lt;pk&gt;/'</span>, views.V2Book.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="使用场景总结"><a href="#使用场景总结" class="headerlink" title="使用场景总结"></a>使用场景总结</h1><p>序列化类初始化时，<code>instance</code>/<code>data</code>/<code>many</code>/<code>partial</code> 是影响序列化对象行为的四个关键参数。</p>
+<h2 id="序列化角度"><a href="#序列化角度" class="headerlink" title="序列化角度"></a>序列化角度</h2><h3 id="序列化-1"><a href="#序列化-1" class="headerlink" title="序列化"></a>序列化</h3><p>如果没有<code>data</code>参数，只有<code>instance</code>，那么就不存在反序列化校验一说，只有序列化对象<code>instance</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 序列化get （给前端传递参数）  #查询</span></span><br><span class="line">ser_obj = ModelSerializer(model_obj)   <span class="comment">#只传递一个参数，默认是instance的参数，查询数据</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="反序列化-1"><a href="#反序列化-1" class="headerlink" title="反序列化"></a>反序列化</h3><p>如果有<code>data</code>，没有<code>instance</code>，则需要调用<code>is_valid</code>方法校验<code>data</code>，然后将<code>data</code>进行反序列化，得到<code>validated_data</code>，此时再通过序列化对象获取<code>data</code>，这个<code>data</code>和初始化提供的<code>data</code>不同，是序列化<code>validated_data</code>后的<code>data</code>，比起初始化<code>data</code>，可能减少了无效的字段（序列化没有定义的字段）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 反序列化post  save() =&gt; create()（数据保存到数据库中）  #添加</span></span><br><span class="line">ser_obj = ModelSerializer(data=model_data)  <span class="comment">#传递data参数，保存数据</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据操作角度（增删改查）"><a href="#数据操作角度（增删改查）" class="headerlink" title="数据操作角度（增删改查）"></a>数据操作角度（增删改查）</h3><h2 id="修改场景"><a href="#修改场景" class="headerlink" title="修改场景"></a>修改场景</h2><ul>
+<li>如果同时提供了<code>instance</code>及<code>data</code>, 那么只要有<code>data</code>或者部分<code>data</code>，<code>data</code>都要进行验证才能进行下面的<code>save</code>等操作，如果不经过<code>is_valid</code>过程，那么后面的获取序列化数据或者反序列化数据都会无效。</li>
+<li>要用<code>instance</code>指明要修改的对象<code>partial</code>用于部分更新，之所以要伴随<code>instance</code>，是因为要指明给<code>save</code>用，在<code>save</code>操作时给那个<code>instance</code>部分更新。逻辑这回走到下面源码中的<code>get_initial()</code>获取要进行更新<code>instance</code>的字段数据。</li>
+</ul>
+<h3 id="单改"><a href="#单改" class="headerlink" title="单改"></a>单改</h3><ol>
+<li>单整体改，说明前台要提供修改的数据，修改之后保存的数据需要校验，校验的数据应该在实例化“序列化类对象”时，赋值给<code>data</code></li>
+<li>修改，就必须明确被修改的模型类对象，并在实例化“序列化类对象”时，赋值给<code>instance</code>，必须赋值给<code>instance</code></li>
+<li>整体修改，所有校验规则有<code>required=True</code>的字段，都必须提供，因为在实例化“序列化类对象”时，参数<code>partial</code>默认为<code>False</code></li>
+</ol>
+<h4 id="整体改-PUT"><a href="#整体改-PUT" class="headerlink" title="整体改(PUT)"></a>整体改(<code>PUT</code>)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">V2BookModelSerializer(</span><br><span class="line">    instance=model_obj, <span class="comment"># 要被更新的对象</span></span><br><span class="line">    data=model_data, <span class="comment"># 用来更新的数据</span></span><br><span class="line">    partial=<span class="literal">False</span>, <span class="comment"># 默认False，必须的字段全部参与校验</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="局部改-PATCH"><a href="#局部改-PATCH" class="headerlink" title="局部改(PATCH)"></a>局部改(<code>PATCH</code>)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">V2BookModelSerializer(</span><br><span class="line">    instance=model_obj, <span class="comment"># 要被更新的对象, </span></span><br><span class="line">    data=model_data, <span class="comment"># 用来更新的数据,</span></span><br><span class="line">    partial=<span class="literal">True</span>, <span class="comment"># 设置True，必须的字段都变为选填字段</span></span><br><span class="line">)</span><br><span class="line">    <span class="comment"># 注：partial设置True的本质就是使字段 required=True 校验规则失效</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="群改-ListSerializer"><a href="#群改-ListSerializer" class="headerlink" title="群改 ListSerializer"></a>群改 <code>ListSerializer</code></h2><p><code>many</code>参数将直接影响序列化类的类型，如果是<code>many=False</code>，那么直接使用当前序列化类。如果<code>many=True</code>，将实例化一个<code>ListSerializer</code>类来序列化或者反序列化类。</p>
+<p>在前面的代码中，我们在<code>V2BookModelSerializer</code>类中并没有做对多对象序列化的特殊处理，但V2版本的api仍然支持群增和群删操作。究其原因，是由于<code>BaseSerializer.__new__</code>方法）或者<code>class Meta:</code>中定义了<code>list_serializer_class</code>指定的多对象序列化类。</p>
+<p>关于 <code>ListSerializer</code>的详细介绍请看下一篇。</p>
+<h1 id="给序列化类传入自定义数据"><a href="#给序列化类传入自定义数据" class="headerlink" title="给序列化类传入自定义数据"></a>给序列化类传入自定义数据</h1><p>视图类<code>views.py</code>使用<code>context</code>传递参数给序列化类<code>serializers.py</code></p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li>在视图类中实例化序列化对象时，可以设置<code>context</code>内容</li>
+<li>在序列化类中的<code>局部钩子</code>、<code>全局钩子</code>、<code>create</code>、<code>update</code>方法中，都可以用<code>self.context</code>访问视图类传递过来的内容。</li>
+</ol>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>例如有类似如下需求时：</p>
+<ul>
+<li>在视图类<code>views</code>中，可以通过<code>request</code>得到登陆用户<code>request.user</code></li>
+<li>在序列化类中，要完成数据库数据的校验与入库操作，可能会需要知道当前的登陆用户，但序列化类默认无法访问<code>request</code></li>
+</ul>
+<p>因此在视图类中实例化序列化对象时，将<code>request</code>对象传递进去</p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><h3 id="视图层-views-py-3"><a href="#视图层-views-py-3" class="headerlink" title="视图层 views.py"></a>视图层 <code>views.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        book_ser = serializers.BookModelSerializer(data=request_data,context=&#123;<span class="string">'request'</span>:request&#125;)   <span class="comment">#视图层context传递参数</span></span><br><span class="line">        book_ser.is_valid(raise_exception=<span class="literal">True</span>)</span><br><span class="line">        book_result = book_ser.save()</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: serializers.BookModelSerializer(book_result).data</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="序列化层-serializers-py"><a href="#序列化层-serializers-py" class="headerlink" title="序列化层 serializers.py"></a>序列化层 <code>serializers.py</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = models.Book</span><br><span class="line">        fields = (<span class="string">'name'</span>, <span class="string">'price'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        print(self.context.get(<span class="string">'request'</span>).method)  <span class="comment">#序列化层接收参数</span></span><br><span class="line">        <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
+
+<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><p><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81YTY4OTM0NTUxODgyNTczNDQzY2RkZjg=">django rest framework serializers小结<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tech/" rel="tag"># Tech</a>
+              <a href="/tags/backend/" rel="tag"># Backend</a>
+              <a href="/tags/django/" rel="tag"># Django</a>
+              <a href="/tags/django-rest-framework/" rel="tag"># Django REST FrameWork</a>
+              <a href="/tags/drf/" rel="tag"># DRF</a>
+              <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
+              <a href="/tags/dev/" rel="tag"># Dev</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/" rel="prev" title="Django REST Framework 学习笔记（七）：序列化模块 serialziers 之 Serialzier类">
+      <i class="fa fa-chevron-left"></i> Django REST Framework 学习笔记（七）：序列化模块 serialziers 之 Serialzier类
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/" rel="next" title="Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类">
+      Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#序列化以外的其他配置"><span class="nav-number">2.</span> <span class="nav-text">序列化以外的其他配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#settings-py"><span class="nav-number">2.1.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局url-py"><span class="nav-number">2.2.</span> <span class="nav-text">全局url.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库表"><span class="nav-number">2.3.</span> <span class="nav-text">数据库表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表一览"><span class="nav-number">2.3.1.</span> <span class="nav-text">表一览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基表代码"><span class="nav-number">2.3.2.</span> <span class="nav-text">基表代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#断关联多表关系（重点）"><span class="nav-number">2.3.3.</span> <span class="nav-text">断关联多表关系（重点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各表代码"><span class="nav-number">2.3.4.</span> <span class="nav-text">各表代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#serializers-ModelSerializer"><span class="nav-number">3.</span> <span class="nav-text">serializers.ModelSerializer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化-amp-反序列化"><span class="nav-number">3.1.</span> <span class="nav-text">序列化 &amp; 反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化"><span class="nav-number">3.1.1.</span> <span class="nav-text">序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#序列化层-api-serializers-py"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">序列化层 api&#x2F;serializers.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图层-views-py"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">视图层 views.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子路由层-api-urls-py"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">子路由层 api&#x2F;urls.py</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反序列化"><span class="nav-number">3.1.2.</span> <span class="nav-text">反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#序列化层-api-serializers-py-1"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">序列化层 api&#x2F;serializers.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图层-views-py-1"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">视图层 views.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子路由层-api-urls-py-1"><span class="nav-number">3.1.2.3.</span> <span class="nav-text">子路由层 api&#x2F;urls.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意点"><span class="nav-number">3.1.2.4.</span> <span class="nav-text">注意点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化与反序列化整合"><span class="nav-number">3.1.3.</span> <span class="nav-text">序列化与反序列化整合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#序列化层-api-serializers-py-2"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">序列化层 api&#x2F;serializers.py</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#注意点"><span class="nav-number">3.1.3.1.1.</span> <span class="nav-text">注意点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图层-views-py-2"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">视图层 views.py</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#注意点"><span class="nav-number">3.1.3.2.1.</span> <span class="nav-text">注意点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子路由层-api-urls-py-2"><span class="nav-number">3.1.3.3.</span> <span class="nav-text">子路由层 api&#x2F;urls.py</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用场景总结"><span class="nav-number">4.</span> <span class="nav-text">使用场景总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化角度"><span class="nav-number">4.1.</span> <span class="nav-text">序列化角度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化-1"><span class="nav-number">4.1.1.</span> <span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反序列化-1"><span class="nav-number">4.1.2.</span> <span class="nav-text">反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据操作角度（增删改查）"><span class="nav-number">4.1.3.</span> <span class="nav-text">数据操作角度（增删改查）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改场景"><span class="nav-number">4.2.</span> <span class="nav-text">修改场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单改"><span class="nav-number">4.2.1.</span> <span class="nav-text">单改</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整体改-PUT"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">整体改(PUT)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#局部改-PATCH"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">局部改(PATCH)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#群改-ListSerializer"><span class="nav-number">4.3.</span> <span class="nav-text">群改 ListSerializer</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#给序列化类传入自定义数据"><span class="nav-number">5.</span> <span class="nav-text">给序列化类传入自定义数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">5.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">5.2.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">5.3.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图层-views-py-3"><span class="nav-number">5.3.1.</span> <span class="nav-text">视图层 views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化层-serializers-py"><span class="nav-number">5.3.2.</span> <span class="nav-text">序列化层 serializers.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展阅读"><span class="nav-number">6.</span> <span class="nav-text">扩展阅读</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dog2"
+      src="/images/dog2.jpeg">
+  <p class="site-author-name" itemprop="name">dog2</p>
+  <div class="site-description" itemprop="description">Where is dog1 ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dog-2"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      G.U.
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cDovL3d3dy5waHAxMDEuY24v" title="http:&#x2F;&#x2F;www.php101.cn&#x2F;">php101</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fab fa-lg fa-github-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dog2</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Word Count Total">86k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading Time Total">1:19</span>
+</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  </div>
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyCUVj6ysvo9S0gRMUUB_0Cm-9py_hlxEkQ',
+      projectId: 'blog-ea16e'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script data-pjax>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+
+
+  
+  <style>
+  
+  button.darkmode-toggle {
+  z-index: 9999;
+  }
+  
+  img, .darkmode-ignore {
+    isolation: isolate;
+    display: block;
+  }
+  </style>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
+
+
+
+<script>
+var options = {
+  bottom: '64px', // default: '32px'
+  right: '32px', // default: '32px'
+  left: 'unset', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌓', // default: ''
+  autoMatchOsTheme: true // default: true
+}
+const darkmode = new Darkmode(options);
+darkmode.showWidget();
+// window.onload = function(){
+//   setTimeout(
+//     function() {
+//       document.getElementsByClassName('darkmode-toggle')[0].click();
+//     },
+//     550,
+//   );
+//   document.getElementsByClassName('darkmode-toggle')[0].click();
+// }
+</script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d0g2.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://dog.wtf/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/";
+    this.page.identifier = "tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/";
+    this.page.title = "Django REST Framework 学习笔记（八）：序列化模块 serialziers 之 ModelSerializer类";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://d0g2.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>
