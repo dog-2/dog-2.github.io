@@ -22,15 +22,15 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2    前后端分离是大势所趋  按最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。官方API文档虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说">
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2                             前后端分离是大势所趋                           按最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django REST Framework 学习笔记（一）：RESTful API 初探">
 <meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-1-hello-restful-api/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2    前后端分离是大势所趋  按最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。官方API文档虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2                             前后端分离是大势所趋                           按最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-01T15:00:00.000Z">
 <meta property="article:modified_time" content="2020-05-01T15:00:00.000Z">
@@ -303,11 +303,15 @@
 <li>Author: dog2</li>
 </ul>
 <hr>
-<blockquote>
-<p>前后端分离是大势所趋</p>
-</blockquote>
-<h1 id="按"><a href="#按" class="headerlink" title="按"></a>按</h1><p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。官方API文档虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
-<p>于是找到了<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMW5FNDExSjdoeA==">一套不错DRF讲解视频<i class="fa fa-external-link-alt"></i></span>来学习，并且在这里记下学习笔记。</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>前后端分离是大势所趋</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<h1 id="按"><a href="#按" class="headerlink" title="按"></a>按</h1><p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">官方API文档<i class="fa fa-external-link-alt"></i></span>虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
+<p>于是找到了<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMW5FNDExSjdoeA==">一套不错的DRF源码分析视频<i class="fa fa-external-link-alt"></i></span>来学习，并且在这里记下学习笔记。</p>
 <p>参考了这两位同学的笔记，大部分是视频讲师在视频里做过的课堂笔记。</p>
 <ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vd2FuZ2N1aWNhbi9jYXRlZ29yeS8xNjA3ODIyLmh0bWw=">随笔分类 - Django REST framework笔记<i class="fa fa-external-link-alt"></i></span></li>
@@ -735,8 +739,8 @@
 <script>
 var options = {
   bottom: '64px', // default: '32px'
-  right: '32px', // default: '32px'
-  left: 'unset', // default: 'unset'
+  right: 'unset', // default: '32px'
+  left: '32px', // default: 'unset'
   time: '0.5s', // default: '0.3s'
   mixColor: '#fff', // default: '#fff'
   backgroundColor: '#fff',  // default: '#fff'
