@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
+  <link rel="mask-icon" href="/favicon/eye.ico" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (13): Throttle Author: dog2   基本信息 源码 rest_framework.throttling 官方文档 API Guild - Throttling 本文demo代码Github">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django REST Framework 学习笔记（十三）：频率组件">
+<meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-13-throttle/index.html">
+<meta property="og:site_name" content="雪泥鴻爪">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (13): Throttle Author: dog2   基本信息 源码 rest_framework.throttling 官方文档 API Guild - Throttling 本文demo代码Github">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-09T02:11:11.000Z">
+<meta property="article:modified_time" content="2020-05-09T02:11:11.000Z">
+<meta property="article:author" content="dog2">
+<meta property="article:tag" content="Tech">
+<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Django REST Framework">
+<meta property="article:tag" content="DRF">
+<meta property="article:tag" content="Learning Notes">
+<meta property="article:tag" content="Dev">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-13-throttle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Django REST Framework 学习笔记（十三）：频率组件 | 雪泥鴻爪</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-71835065-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">雪泥鴻爪</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">dog2's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-13-throttle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Django REST Framework 学习笔记（十三）：频率组件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-09 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-09T11:11:11+09:00">2020-05-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-13-throttle/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-13-throttle/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>6.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>6 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (13): Throttle</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdGhyb3R0bGluZy5weQ==">rest_framework.throttling<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvdGhyb3R0bGluZy8=">API Guild - Throttling<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzEzX2RyZl90aHJvdHRsZS8=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<a id="more"></a>
+
+<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><h2 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h2><p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手<br>，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证</p>
+<ul>
+<li>认证组件 <code>self.perform_authentication(request)</code><ul>
+<li>校验用户：游客、合法用户、非法用户</li>
+<li>游客：代表校验通过，直接进入下一步校验（权限校验）</li>
+<li>合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验）</li>
+<li>非法用户：代表校验失败，抛出异常，返回403权限异常结果</li>
+</ul>
+</li>
+<li>权限组件 <code>self.check_permissions(request)</code><ul>
+<li>校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色</li>
+<li>认证通过：可以进入下一步校验（频率认证）</li>
+<li>认证失败：抛出异常，返回403权限异常结果</li>
+</ul>
+</li>
+<li>频率组件 <code>self.check_throttles(request)</code><ul>
+<li>限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s）</li>
+<li>没有达到限次：正常访问接口</li>
+<li>达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</li>
+</ul>
+</li>
+</ul>
+<p>本文介权限组件。</p>
+<h2 id="views-APIView-initial"><a href="#views-APIView-initial" class="headerlink" title="views.APIView.initial()"></a>views.APIView.initial()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Runs anything that needs to occur prior to calling the method handler.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    self.format_kwarg = self.get_format_suffix(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Perform content negotiation and store the accepted info on the request</span></span><br><span class="line">    neg = self.perform_content_negotiation(request)</span><br><span class="line">    request.accepted_renderer, request.accepted_media_type = neg</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Determine the API version, if versioning is in use.</span></span><br><span class="line">    version, scheme = self.determine_version(request, *args, **kwargs)</span><br><span class="line">    request.version, request.versioning_scheme = version, scheme</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Ensure that the incoming request is permitted</span></span><br><span class="line">    self.perform_authentication(request)</span><br><span class="line">    self.check_permissions(request)</span><br><span class="line">    self.check_throttles(request)  <span class="comment">#频率认证</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="views-APIView-check-throttles"><a href="#views-APIView-check-throttles" class="headerlink" title="views.APIView.check_throttles()"></a>views.APIView.check_throttles()</h2><p>频率组件最重要的两个方法：<code>allow_request()</code>和<code>wait()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_throttles</span><span class="params">(self, request)</span>:</span>  <span class="comment">#频率组件核心代码</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Check if request should be throttled.</span></span><br><span class="line"><span class="string">    Raises an appropriate exception if the request is throttled.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    throttle_durations = []</span><br><span class="line">    <span class="keyword">for</span> throttle <span class="keyword">in</span> self.get_throttles():</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> throttle.allow_request(request, self):</span><br><span class="line">            throttle_durations.append(throttle.wait())</span><br></pre></td></tr></table></figure>
+
+<h3 id="views-APIView-get-throttles"><a href="#views-APIView-get-throttles" class="headerlink" title="views.APIView.get_throttles()"></a>views.APIView.get_throttles()</h3><p>出现频率配置settings信息，经过查询源码的settings文件对频率配置为空</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_throttles</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Instantiates and returns the list of throttles that this view uses.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> [throttle() <span class="keyword">for</span> throttle <span class="keyword">in</span> self.throttle_classes]  <span class="comment">#频率组件配置信息</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="throttling-SimpleRateThrottle"><a href="#throttling-SimpleRateThrottle" class="headerlink" title="throttling.SimpleRateThrottle"></a>throttling.SimpleRateThrottle</h3><details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleRateThrottle</span><span class="params">(BaseThrottle)</span>:</span></span><br><span class="line">   </span><br><span class="line">    cache = default_cache</span><br><span class="line">    timer = time.time</span><br><span class="line">    cache_format = <span class="string">'throttle_%(scope)s_%(ident)s'</span></span><br><span class="line">    scope = <span class="literal">None</span></span><br><span class="line">    THROTTLE_RATES = api_settings.DEFAULT_THROTTLE_RATES</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> getattr(self, <span class="string">'rate'</span>, <span class="literal">None</span>):</span><br><span class="line">            self.rate = self.get_rate()  <span class="comment">#3.rate值就是方法get_rate的返回值（频率次数）</span></span><br><span class="line">        self.num_requests, self.duration = self.parse_rate(self.rate)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_cache_key</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">'.get_cache_key() must be overridden'</span>)</span><br><span class="line"></span><br><span class="line">　　<span class="comment">#get_rate最后返回的结果是设置的频率次数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_rate</span><span class="params">(self)</span>:</span><span class="comment">#1.在自定义类中要给scope属性赋值</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> getattr(self, <span class="string">'scope'</span>, <span class="literal">None</span>):</span><br><span class="line">            msg = (<span class="string">"You must set either `.scope` or `.rate` for '%s' throttle"</span> %</span><br><span class="line">                   self.__class__.__name__)</span><br><span class="line">            <span class="keyword">raise</span> ImproperlyConfigured(msg)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> self.THROTTLE_RATES[self.scope]  <span class="comment">#2.在settings文件中配置scope属性值对应的value</span></span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            msg = <span class="string">"No default throttle rate set for '%s' scope"</span> % self.scope</span><br><span class="line">            <span class="keyword">raise</span> ImproperlyConfigured(msg)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_rate</span><span class="params">(self, rate)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> rate <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> (<span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">        num, period = rate.split(<span class="string">'/'</span>)  <span class="comment">#4.rate有值，根据源码，自定义的rate值是一个字符串，而且是这种格式：'数字/以s,m,h,d之类开头的字母'</span></span><br><span class="line">        num_requests = int(num)    <span class="comment">#5.获得的数字就是设置的频率次数</span></span><br><span class="line">        duration = &#123;<span class="string">'s'</span>: <span class="number">1</span>, <span class="string">'m'</span>: <span class="number">60</span>, <span class="string">'h'</span>: <span class="number">3600</span>, <span class="string">'d'</span>: <span class="number">86400</span>&#125;[period[<span class="number">0</span>]]  <span class="comment">#6.获得是间隔的时间（以秒为单位）</span></span><br><span class="line">        <span class="keyword">return</span> (num_requests, duration)  <span class="comment">#7.数据返回给__init__，解压赋值</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">allow_request</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.rate <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">　　　　　　　　　　　<span class="comment">#get_cache_key就是要重写的方法，若不重写，会直接抛出异常</span></span><br><span class="line">        self.key = self.get_cache_key(request, view)  <span class="comment">#8.自定义的时候需要重写的方法，有返回值，放入缓存中</span></span><br><span class="line">        <span class="keyword">if</span> self.key <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        self.history = self.cache.get(self.key, [])  <span class="comment">#9.获取缓存，通过key取值</span></span><br><span class="line">        self.now = self.timer()  <span class="comment">#10.当前时间</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Drop any requests from the history which have now passed the</span></span><br><span class="line">        <span class="comment"># throttle duration</span></span><br><span class="line">        <span class="keyword">while</span> self.history <span class="keyword">and</span> self.history[<span class="number">-1</span>] &lt;= self.now - self.duration:</span><br><span class="line">            self.history.pop()</span><br><span class="line">        <span class="keyword">if</span> len(self.history) &gt;= self.num_requests:</span><br><span class="line">            <span class="keyword">return</span> self.throttle_failure()</span><br><span class="line">        <span class="keyword">return</span> self.throttle_success()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">throttle_success</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.history.insert(<span class="number">0</span>, self.now)</span><br><span class="line">        self.cache.set(self.key, self.history, self.duration)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">throttle_failure</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">　　<span class="comment">#返回距下一次能请求的时间，限制的访问次数在parse_rate可以求出</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wait</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Returns the recommended next request time in seconds.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.history:</span><br><span class="line">            remaining_duration = self.duration - (self.now - self.history[<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            remaining_duration = self.duration</span><br><span class="line"></span><br><span class="line">        available_requests = self.num_requests - len(self.history) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> available_requests &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> remaining_duration / float(available_requests)</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h2 id="再看-views-APIView-check-throttles"><a href="#再看-views-APIView-check-throttles" class="headerlink" title="再看 views.APIView.check_throttles()"></a>再看 views.APIView.check_throttles()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_throttles</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    throttle_durations = []</span><br><span class="line">    <span class="comment"># 1）遍历配置的频率认证类，初始化得到一个个频率认证类对象（会调用频率认证类的 __init__() 方法）</span></span><br><span class="line">    <span class="comment"># 2）频率认证类对象调用 allow_request 方法，判断是否限次（没有限次可访问，限次不可访问）</span></span><br><span class="line">    <span class="comment"># 3）频率认证类对象在限次后，调用 wait 方法，获取还需等待多长时间可以进行下一次访问</span></span><br><span class="line">    <span class="comment"># 注：频率认证类都是继承 SimpleRateThrottle 类</span></span><br><span class="line">    <span class="keyword">for</span> throttle <span class="keyword">in</span> self.get_throttles():</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> throttle.allow_request(request, self):</span><br><span class="line">            <span class="comment"># 只要频率限制了，allow_request 返回False了，才会调用wait</span></span><br><span class="line">            throttle_durations.append(throttle.wait())</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> throttle_durations:</span><br><span class="line">                <span class="comment"># Filter out `None` values which may happen in case of config / rate</span></span><br><span class="line">                <span class="comment"># changes, see #1438</span></span><br><span class="line">                durations = [</span><br><span class="line">                    duration <span class="keyword">for</span> duration <span class="keyword">in</span> throttle_durations</span><br><span class="line">                    <span class="keyword">if</span> duration <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line">                ]</span><br><span class="line"></span><br><span class="line">                duration = max(durations, default=<span class="literal">None</span>)</span><br><span class="line">                self.throttled(request, duration)</span><br></pre></td></tr></table></figure>
+
+<h1 id="自定义频率类"><a href="#自定义频率类" class="headerlink" title="自定义频率类"></a>自定义频率类</h1><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>1) 自定义一个继承 <code>SimpleRateThrottle</code> 类 的频率类<br>2) 设置一个 <code>scope</code> 类属性，属性值为任意见名知意的字符串<br>3) 在settings配置文件中，配置drf的<code>DEFAULT_THROTTLE_RATES</code>，格式为 <code>{scope字符串值: &#39;次数/时间&#39;}</code><br>4) 在自定义频率类中重写 get_cache_key 方法</p>
+<ul>
+<li>限制的对象返回 与限制信息有关的字符串</li>
+<li>不限制的对象返回 <code>None</code> (只能放回<code>None</code>，不能是<code>False</code>或是<code>&#39;&#39;</code>等)</li>
+</ul>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p>写一个短信接口，设置<code>1/min</code>频率限制</p>
+<h3 id="utils-throttles-py"><a href="#utils-throttles-py" class="headerlink" title="utils.throttles.py"></a>utils.throttles.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.throttling <span class="keyword">import</span> SimpleRateThrottle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SMSRateThrottle</span><span class="params">(SimpleRateThrottle)</span>:</span></span><br><span class="line">    scope = <span class="string">'sms'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#只对提交手机号的get方法进行限制</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_cache_key</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        mobile = request.query_params.get(<span class="string">'mobile'</span>)</span><br><span class="line">        <span class="comment">#没有手机号就不做频率限制</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> mobile:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="comment">#返回的信息可以用手机号动态变化，且不易重复的字符串，作为缓存的key</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'throttle_%(scope)s_%(ident)s'</span> % &#123;<span class="string">'scope'</span>: self.scope, <span class="string">'ident'</span>: mobile&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="settings-py"><a href="#settings-py" class="headerlink" title="settings.py"></a>settings.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># drf配置</span></span><br><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 频率限制条件配置</span></span><br><span class="line">    <span class="string">'DEFAULT_THROTTLE_RATES'</span>: &#123;</span><br><span class="line">        <span class="string">'sms'</span>: <span class="string">'1/min'</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="views-py"><a href="#views-py" class="headerlink" title="views.py"></a>views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .throttles <span class="keyword">import</span> SMSRateThrottle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSMSAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="comment"># 局部配置频率认证</span></span><br><span class="line">    throttle_classes = [SMSRateThrottle]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'get 获取验证码 OK'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'post 获取验证码  OK'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="urls-py"><a href="#urls-py" class="headerlink" title="urls.py"></a>urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'sms/'</span>, views.TestSMSAPIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Postman测试"><a href="#Postman测试" class="headerlink" title="Postman测试"></a>Postman测试</h2><ol>
+<li>只会对 <code>/api/sms/?mobile=具体手机号</code> 接口才会有频率限制，设置了限制频率，到达访问次数就会禁止</li>
+<li>对 <code>/api/sms/</code> 或其他接口发送无限制</li>
+<li>对数据包提交<code>mobile的/api/sms/</code>接口无限制</li>
+<li>对不是<code>mobile</code>（如<code>phone</code>）字段提交的电话接口无限制</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tech/" rel="tag"># Tech</a>
+              <a href="/tags/backend/" rel="tag"># Backend</a>
+              <a href="/tags/django/" rel="tag"># Django</a>
+              <a href="/tags/django-rest-framework/" rel="tag"># Django REST Framework</a>
+              <a href="/tags/drf/" rel="tag"># DRF</a>
+              <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
+              <a href="/tags/dev/" rel="tag"># Dev</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-12-permissions/" rel="prev" title="Django REST Framework 学习笔记（十二）：权限组件">
+      <i class="fa fa-chevron-left"></i> Django REST Framework 学习笔记（十二）：权限组件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-14-filters/" rel="next" title="Django REST Framework 学习笔记（十四）：过滤器组件">
+      Django REST Framework 学习笔记（十四）：过滤器组件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#入口"><span class="nav-number">2.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#views-APIView-initial"><span class="nav-number">2.2.</span> <span class="nav-text">views.APIView.initial()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#views-APIView-check-throttles"><span class="nav-number">2.3.</span> <span class="nav-text">views.APIView.check_throttles()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#views-APIView-get-throttles"><span class="nav-number">2.3.1.</span> <span class="nav-text">views.APIView.get_throttles()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#throttling-SimpleRateThrottle"><span class="nav-number">2.3.2.</span> <span class="nav-text">throttling.SimpleRateThrottle</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再看-views-APIView-check-throttles"><span class="nav-number">2.4.</span> <span class="nav-text">再看 views.APIView.check_throttles()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义频率类"><span class="nav-number">3.</span> <span class="nav-text">自定义频率类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">3.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">3.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#utils-throttles-py"><span class="nav-number">3.2.1.</span> <span class="nav-text">utils.throttles.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py"><span class="nav-number">3.2.2.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py"><span class="nav-number">3.2.3.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py"><span class="nav-number">3.2.4.</span> <span class="nav-text">urls.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Postman测试"><span class="nav-number">3.3.</span> <span class="nav-text">Postman测试</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dog2"
+      src="/images/dog2.jpeg">
+  <p class="site-author-name" itemprop="name">dog2</p>
+  <div class="site-description" itemprop="description">Where is dog1 ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dog-2"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      G.U.
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cDovL3d3dy5waHAxMDEuY24v" title="http:&#x2F;&#x2F;www.php101.cn&#x2F;">php101</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fab fa-lg fa-github-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dog2</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Word Count Total">110k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading Time Total">1:40</span>
+</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+
+
+  
+  <style>
+  
+  button.darkmode-toggle {
+  z-index: 9999;
+  }
+  
+  img, .darkmode-ignore {
+    isolation: isolate;
+    display: block;
+  }
+  </style>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
+
+
+
+<script>
+var options = {
+  bottom: '64px', // default: '32px'
+  right: 'unset', // default: '32px'
+  left: '32px', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌓', // default: ''
+  autoMatchOsTheme: true // default: true
+}
+const darkmode = new Darkmode(options);
+darkmode.showWidget();
+// window.onload = function(){
+//   setTimeout(
+//     function() {
+//       document.getElementsByClassName('darkmode-toggle')[0].click();
+//     },
+//     550,
+//   );
+//   document.getElementsByClassName('darkmode-toggle')[0].click();
+// }
+</script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-13-throttle/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d0g2.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://dog.wtf/tech/drf-learning-notes-13-throttle/";
+    this.page.identifier = "tech/drf-learning-notes-13-throttle/";
+    this.page.title = "Django REST Framework 学习笔记（十三）：频率组件";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://d0g2.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

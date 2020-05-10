@@ -1284,7 +1284,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #85dab8;
+  background: #0fa890;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1430,6 +1430,7 @@ pre .javascript .function {
   line-height: 1.8;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .post-toc .nav .nav-child {
   display: block;
@@ -2505,4 +2506,8 @@ embed {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/* 修改你的模板css文件，添加全局样式 */
+.mermaid {
+  background: #d3d3d3;
 }

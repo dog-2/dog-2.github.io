@@ -25,15 +25,15 @@
     var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (4): the parsers module Author: dog2   基本信息 源码：rest_framework.parsers 官方文档：API Guild - Parsers 本文demo代码Github">
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (15): Pagination Author: dog2   基本信息 源码 rest_framework.pagination 官方文档 API Guild - Pagination 本文demo代码Github">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Django REST Framework 学习笔记（四）：解析模块 parsers">
-<meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/index.html">
+<meta property="og:title" content="Django REST Framework 学习笔记（十五）：分页组件">
+<meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-15-pagination/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (4): the parsers module Author: dog2   基本信息 源码：rest_framework.parsers 官方文档：API Guild - Parsers 本文demo代码Github">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (15): Pagination Author: dog2   基本信息 源码 rest_framework.pagination 官方文档 API Guild - Pagination 本文demo代码Github">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-05-02T15:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-02T15:00:00.000Z">
+<meta property="article:published_time" content="2020-05-10T13:22:22.000Z">
+<meta property="article:modified_time" content="2020-05-10T13:22:22.000Z">
 <meta property="article:author" content="dog2">
 <meta property="article:tag" content="Tech">
 <meta property="article:tag" content="Backend">
@@ -44,7 +44,7 @@
 <meta property="article:tag" content="Dev">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/">
+<link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-15-pagination/">
 
 
 <script id="page-configurations">
@@ -57,7 +57,7 @@
   };
 </script>
 
-  <title>Django REST Framework 学习笔记（四）：解析模块 parsers | 雪泥鴻爪</title>
+  <title>Django REST Framework 学习笔记（十五）：分页组件 | 雪泥鴻爪</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
     <script data-pjax>
@@ -217,7 +217,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-15-pagination/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/dog2.jpeg">
@@ -230,7 +230,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Django REST Framework 学习笔记（四）：解析模块 parsers
+          Django REST Framework 学习笔记（十五）：分页组件
         </h1>
 
         <div class="post-meta">
@@ -240,7 +240,7 @@
               </span>
               <span class="post-meta-item-text">Posted</span>
 
-              <time title="Created: 2020-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-03T00:00:00+09:00">2020-05-03</time>
+              <time title="Created: 2020-05-10 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-10T22:22:22+09:00">2020-05-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,8 +268,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/tech/drf-learning-notes-4-the-parsers-module/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-4-the-parsers-module/" itemprop="commentCount"></span>
+    <a title="disqus" href="/tech/drf-learning-notes-15-pagination/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-15-pagination/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -279,7 +279,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Word Count: </span>
-              <span>1.4k</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="Reading Time">
               <span class="post-meta-item-icon">
@@ -299,46 +299,29 @@
 
       
         <ul>
-<li>Title(EN): <em><strong>Django REST Framework Learning Notes (4): the parsers module</strong></em></li>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (15): Pagination</strong></em></li>
 <li>Author: dog2</li>
 </ul>
 <hr>
 <h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
-<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/parsers.py" target="_blank" rel="noopener"><code>rest_framework.parsers</code></a></li>
-<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGFyc2Vycy8=">API Guild - Parsers<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzRfZHJmX3BhcnNlcg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+<li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvcGFnaW5hdGlvbi5weQ==">rest_framework.pagination<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGFnaW5hdGlvbi8=">API Guild - Pagination<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzE1X2RyZl9wYWdpbmF0aW9uLw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <a id="more"></a>
 
-<h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><ol>
-<li>drf给我们提供了多种解析数据包方式的解析类<ul>
-<li>form-data</li>
-<li>x-www-form-urlencoded</li>
-<li>json</li>
-</ul>
-</li>
-<li>我们可以通过配置来控制前台提交的哪些格式的数据后台在解析，哪些数据不解析</li>
-<li>全局配置就是针对每一个视图类，局部配置就是针对指定的视图来，让它们可以按照配置规则选择性解析数据</li>
-</ol>
-<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># APIView类的dispatch方法中</span></span><br><span class="line">request = self.initialize_request(request, *args, **kwargs)  <span class="comment"># 点进去</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#准备要解析的数据</span></span><br><span class="line">parser_context=self.get_parser_context(request)   <span class="comment"># 不是重点</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析模块，获取解析类</span></span><br><span class="line">parsers=self.get_parsers()  <span class="comment"># 点进去</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 去类属性(局部配置) 或 配置文件(全局配置) 拿 parser_classes</span></span><br><span class="line"><span class="keyword">return</span> [parser() <span class="keyword">for</span> parser <span class="keyword">in</span> self.parser_classes]</span><br><span class="line"></span><br><span class="line"><span class="comment"># self.parser_classes为APIView类属性</span></span><br><span class="line">parser_classes = api_settings.DEFAULT_PARSER_CLASSES</span><br><span class="line"></span><br><span class="line"><span class="comment"># api_settings中的解析类</span></span><br><span class="line"><span class="string">'DEFAULT_PARSER_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'rest_framework.parsers.JSONParser'</span>,       <span class="comment"># json数据包</span></span><br><span class="line">        <span class="string">'rest_framework.parsers.FormParser'</span>,       <span class="comment"># x-www-form-urlencoded数据包  </span></span><br><span class="line">        <span class="string">'rest_framework.parsers.MultiPartParser'</span>,  <span class="comment"># form-data数据包</span></span><br><span class="line">],</span><br></pre></td></tr></table></figure>
 
-<h1 id="用法示例"><a href="#用法示例" class="headerlink" title="用法示例"></a>用法示例</h1><h2 id="自定义全局配置"><a href="#自定义全局配置" class="headerlink" title="自定义全局配置"></a>自定义全局配置</h2><p>所有视图类统一处理，在项目的<code>settings.py</code>中</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 全局解析类配置</span></span><br><span class="line">    <span class="string">'DEFAULT_PARSER_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'rest_framework.parsers.JSONParser'</span>,       <span class="comment"># json数据包</span></span><br><span class="line">        <span class="string">'rest_framework.parsers.FormParser'</span>,       <span class="comment"># x-www-form-urlencoded数据包</span></span><br><span class="line">        <span class="string">'rest_framework.parsers.MultiPartParser'</span>,  <span class="comment"># form-data数据包</span></span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="DRF分页类"><a href="#DRF分页类" class="headerlink" title="DRF分页类"></a>DRF分页类</h1><h2 id="基础分页类-PageNumberPagination"><a href="#基础分页类-PageNumberPagination" class="headerlink" title="基础分页类 PageNumberPagination"></a>基础分页类 PageNumberPagination</h2><h3 id="urls-py"><a href="#urls-py" class="headerlink" title="urls.py"></a>urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'cars/'</span>, views.CarListAPIView.as_view()),     <span class="comment"># 基础分页</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
-<h2 id="自定义局部配置"><a href="#自定义局部配置" class="headerlink" title="自定义局部配置"></a>自定义局部配置</h2><p>某一个或一些视图类单独处理，在<code>views.py</code>视图类中提供对应的类属性</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.parsers <span class="keyword">import</span> JSONParser</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="comment"># 局部解析类配置，只要json类型的数据包才能被解析</span></span><br><span class="line">    parser_classes = [JSONParser]</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h3 id="views-py"><a href="#views-py" class="headerlink" title="views.py"></a>views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.generics <span class="keyword">import</span> ListAPIView</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models, serializers, paginations</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基础分页 PageNumberPagination</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarListAPIView</span><span class="params">(ListAPIView)</span>:</span></span><br><span class="line">    <span class="comment"># 如果queryset没有过滤条件，就必须 .all()，不然分页会出问题</span></span><br><span class="line">    queryset = models.Car.objects.all()</span><br><span class="line">    serializer_class = serializers.CarModelSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 分页组件 - 给视图类配置分页类即可 - 分页类需要自定义，继承drf提供的分页类即可</span></span><br><span class="line">    pagination_class = paginations.MyPageNumberPagination</span><br><span class="line"></span><br><span class="line">    <span class="comment">#eg:/cars/  显示第一页三条</span></span><br><span class="line">    <span class="comment">#/cars/?page=2&amp;page_size=4   每页显示4条，显示第二页的4条</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="测试demo"><a href="#测试demo" class="headerlink" title="测试demo"></a>测试demo</h2><p>测试代码在这里：<a href="">no4_drf_parser</a></p>
-<p>其中包含：</p>
-<ul>
-<li>django项目</li>
-<li>postman测试数据包：Body标签页定义了3种格式的数据。在局部设置只能某一种或两种，则在postman其他格式传递的数据都不显示。<ul>
-<li>json</li>
-<li>x-www-form-urlencoded</li>
-<li>form-data</li>
-</ul>
-</li>
-</ul>
+<h2 id="偏移分页类-LimitOffsetPagination"><a href="#偏移分页类-LimitOffsetPagination" class="headerlink" title="偏移分页类 LimitOffsetPagination"></a>偏移分页类 LimitOffsetPagination</h2><h3 id="urls-py-1"><a href="#urls-py-1" class="headerlink" title="urls.py"></a>urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">     path(<span class="string">'cars1/'</span>, views.CarListAPIView1.as_view()),     <span class="comment"># 偏移分页</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="views-py-1"><a href="#views-py-1" class="headerlink" title="views.py"></a>views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 偏移分页 LimitOffsetPagination</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarListAPIView1</span><span class="params">(ListAPIView)</span>:</span></span><br><span class="line">    <span class="comment"># 如果queryset没有过滤条件，就必须 .all()，不然分页会出问题</span></span><br><span class="line">    queryset = models.Car.objects.all()</span><br><span class="line">    serializer_class = serializers.CarModelSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 分页组件 - 给视图类配置分页类即可 - 分页类需要自定义，继承drf提供的分页类即可</span></span><br><span class="line">    pagination_class = paginations.MyLimitOffsetPagination</span><br></pre></td></tr></table></figure>
+
+<h2 id="游标分页类-CursorPagination"><a href="#游标分页类-CursorPagination" class="headerlink" title="游标分页类 CursorPagination"></a>游标分页类 CursorPagination</h2><h3 id="urls-py-2"><a href="#urls-py-2" class="headerlink" title="urls.py"></a>urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">     path(<span class="string">'cars2/'</span>, views.CarListAPIView2.as_view()),   <span class="comment"># 游标分页</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="views-py-2"><a href="#views-py-2" class="headerlink" title="views.py"></a>views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 游标分页 CursorPagination</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarListAPIView2</span><span class="params">(ListAPIView)</span>:</span></span><br><span class="line">    <span class="comment"># 如果queryset没有过滤条件，就必须 .all()，不然分页会出问题</span></span><br><span class="line">    queryset = models.Car.objects.all()</span><br><span class="line">    serializer_class = serializers.CarModelSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 分页组件 - 给视图类配置分页类即可 - 分页类需要自定义，继承drf提供的分页类即可</span></span><br><span class="line">    pagination_class = paginations.MyCursorPagination</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -363,13 +346,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/tech/drf-learning-notes-3-the-renders-module/" rel="prev" title="Django REST Framework 学习笔记（三）：渲染模块 renders">
-      <i class="fa fa-chevron-left"></i> Django REST Framework 学习笔记（三）：渲染模块 renders
+    <a href="/tech/drf-learning-notes-14-filters/" rel="prev" title="Django REST Framework 学习笔记（十四）：过滤器组件">
+      <i class="fa fa-chevron-left"></i> Django REST Framework 学习笔记（十四）：过滤器组件
     </a></div>
-      <div class="post-nav-item">
-    <a href="/tech/drf-learning-notes-5-the-exceptions-module/" rel="next" title="Django REST Framework 学习笔记（五）：异常模块 exceptions">
-      Django REST Framework 学习笔记（五）：异常模块 exceptions <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -435,7 +415,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#功能"><span class="nav-number">2.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用法示例"><span class="nav-number">4.</span> <span class="nav-text">用法示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义全局配置"><span class="nav-number">4.1.</span> <span class="nav-text">自定义全局配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义局部配置"><span class="nav-number">4.2.</span> <span class="nav-text">自定义局部配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试demo"><span class="nav-number">4.3.</span> <span class="nav-text">测试demo</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DRF分页类"><span class="nav-number">2.</span> <span class="nav-text">DRF分页类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础分页类-PageNumberPagination"><span class="nav-number">2.1.</span> <span class="nav-text">基础分页类 PageNumberPagination</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py"><span class="nav-number">2.1.1.</span> <span class="nav-text">urls.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py"><span class="nav-number">2.1.2.</span> <span class="nav-text">views.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏移分页类-LimitOffsetPagination"><span class="nav-number">2.2.</span> <span class="nav-text">偏移分页类 LimitOffsetPagination</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">urls.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">views.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游标分页类-CursorPagination"><span class="nav-number">2.3.</span> <span class="nav-text">游标分页类 CursorPagination</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">urls.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">views.py</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -757,7 +737,7 @@ if (document.querySelectorAll('pre.mermaid').length) {
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-15-pagination/',]
       });
       });
   </script>
@@ -774,9 +754,9 @@ if (document.querySelectorAll('pre.mermaid').length) {
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/";
-    this.page.identifier = "tech/drf-learning-notes-4-the-parsers-module/";
-    this.page.title = "Django REST Framework 学习笔记（四）：解析模块 parsers";
+    this.page.url = "http://dog.wtf/tech/drf-learning-notes-15-pagination/";
+    this.page.identifier = "tech/drf-learning-notes-15-pagination/";
+    this.page.title = "Django REST Framework 学习笔记（十五）：分页组件";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {

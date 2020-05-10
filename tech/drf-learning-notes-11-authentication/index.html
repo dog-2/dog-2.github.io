@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
+  <link rel="mask-icon" href="/favicon/eye.ico" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (11): Authentication Author: dog2   基本信息 源码 rest_framework.authentication 官方文档 API Guild - Authentication 本文demo代码Github 自定义认证类 jwt &amp; simple-jwt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django REST Framework 学习笔记（十一）：认证组件">
+<meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-11-authentication/index.html">
+<meta property="og:site_name" content="雪泥鴻爪">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (11): Authentication Author: dog2   基本信息 源码 rest_framework.authentication 官方文档 API Guild - Authentication 本文demo代码Github 自定义认证类 jwt &amp; simple-jwt">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-06T02:11:11.000Z">
+<meta property="article:modified_time" content="2020-05-06T02:11:11.000Z">
+<meta property="article:author" content="dog2">
+<meta property="article:tag" content="Tech">
+<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Django REST Framework">
+<meta property="article:tag" content="DRF">
+<meta property="article:tag" content="Learning Notes">
+<meta property="article:tag" content="Dev">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-11-authentication/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Django REST Framework 学习笔记（十一）：认证组件 | 雪泥鴻爪</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-71835065-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">雪泥鴻爪</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">dog2's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-11-authentication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Django REST Framework 学习笔记（十一）：认证组件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted</span>
+
+              <time title="Created: 2020-05-06 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-06T11:11:11+09:00">2020-05-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-11-authentication/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-11-authentication/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Word Count">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Word Count: </span>
+              <span>8.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading Time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading Time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (11): Authentication</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvYXV0aGVudGljYXRpb24ucHk=">rest_framework.authentication<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvYXV0aGVudGljYXRpb24v">API Guild - Authentication<i class="fa fa-external-link-alt"></i></span></li>
+<li>本文demo代码Github<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzExX2RyZl9hdXRoZW50aWNhdGlvbi8=">自定义认证类<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzExX2RyZl9qd3Qv">jwt &amp; simple-jwt<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><h2 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h2><p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手<br>，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证</p>
+<ul>
+<li>认证组件 <code>self.perform_authentication(request)</code><ul>
+<li>校验用户：游客、合法用户、非法用户</li>
+<li>游客：代表校验通过，直接进入下一步校验（权限校验）</li>
+<li>合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验）</li>
+<li>非法用户：代表校验失败，抛出异常，返回403权限异常结果</li>
+</ul>
+</li>
+<li>权限组件 <code>self.check_permissions(request)</code><ul>
+<li>校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色</li>
+<li>认证通过：可以进入下一步校验（频率认证）</li>
+<li>认证失败：抛出异常，返回403权限异常结果</li>
+</ul>
+</li>
+<li>频率组件 <code>self.check_throttles(request)</code><ul>
+<li>限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s）</li>
+<li>没有达到限次：正常访问接口</li>
+<li>达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</li>
+</ul>
+</li>
+</ul>
+<p>本文介绍认证组件。</p>
+<h2 id="rest-framework-views-APIView-initial"><a href="#rest-framework-views-APIView-initial" class="headerlink" title="rest_framework.views.APIView.initial()"></a>rest_framework.views.APIView.initial()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Runs anything that needs to occur prior to calling the method handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.format_kwarg = self.get_format_suffix(**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Perform content negotiation and store the accepted info on the request</span></span><br><span class="line">        neg = self.perform_content_negotiation(request)</span><br><span class="line">        request.accepted_renderer, request.accepted_media_type = neg</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Determine the API version, if versioning is in use.</span></span><br><span class="line">        version, scheme = self.determine_version(request, *args, **kwargs)</span><br><span class="line">        request.version, request.versioning_scheme = version, scheme</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Ensure that the incoming request is permitted</span></span><br><span class="line">        self.perform_authentication(request)  <span class="comment">#认证</span></span><br><span class="line">        self.check_permissions(request)  <span class="comment">#权限</span></span><br><span class="line">        self.check_throttles(request)  <span class="comment">#频率</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="rest-framework-views-APIView-perform-authentication"><a href="#rest-framework-views-APIView-perform-authentication" class="headerlink" title="rest_framework.views.APIView.perform_authentication()"></a>rest_framework.views.APIView.perform_authentication()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">perform_authentication</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Perform authentication on the incoming request.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Note that if you override this and simply 'pass', then authentication</span></span><br><span class="line"><span class="string">        will instead be performed lazily, the first time either</span></span><br><span class="line"><span class="string">        `request.user` or `request.auth` is accessed.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        request.user</span><br></pre></td></tr></table></figure>
+
+<h2 id="rest-framework-request-Request-user"><a href="#rest-framework-request-Request-user" class="headerlink" title="rest_framework.request.Request.user"></a>rest_framework.request.Request.user</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">user</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Returns the user associated with the current request, as authenticated</span></span><br><span class="line"><span class="string">    by the authentication classes provided to the request.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasattr(self, <span class="string">'_user'</span>):</span><br><span class="line">        <span class="keyword">with</span> wrap_attributeerrors():</span><br><span class="line">            self._authenticate()</span><br><span class="line">    <span class="keyword">return</span> self._user</span><br></pre></td></tr></table></figure>
+
+<h2 id="rest-framework-request-Request-authenticate"><a href="#rest-framework-request-Request-authenticate" class="headerlink" title="rest_framework.request.Request._authenticate()"></a>rest_framework.request.Request._authenticate()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 做认证</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_authenticate</span><span class="params">(self)</span>:</span>  <span class="comment">#这里的self就是request</span></span><br><span class="line">    <span class="comment"># 遍历拿到一个个认证器，进行认证</span></span><br><span class="line">    <span class="comment"># self.authenticators配置的一堆认证类产生的认证类对象组成的 list</span></span><br><span class="line">　　　　 <span class="comment"># 即：[auth() for auth in self.authentication_classes]</span></span><br><span class="line">    <span class="keyword">for</span> authenticator <span class="keyword">in</span> self.authenticators:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 认证器(对象)调用认证方法authenticate(认证类对象self, request请求对象)</span></span><br><span class="line">            <span class="comment"># 返回值：登陆的用户与认证的信息组成的 tuple</span></span><br><span class="line">            <span class="comment"># 该方法被try包裹，代表该方法会抛异常，抛异常就代表认证失败</span></span><br><span class="line">            user_auth_tuple = authenticator.authenticate(self)</span><br><span class="line">        <span class="keyword">except</span> exceptions.APIException:</span><br><span class="line">            self._not_authenticated()</span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 返回值的处理</span></span><br><span class="line">        <span class="keyword">if</span> user_auth_tuple <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self._authenticator = authenticator</span><br><span class="line">            <span class="comment"># 如何有返回值，就将 登陆用户 与 登陆认证 分别保存到 request.user、request.auth</span></span><br><span class="line">            self.user, self.auth = user_auth_tuple</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="comment"># 如果返回值user_auth_tuple为空，代表认证通过，但是没有 登陆用户 与 登陆认证信息，代表游客</span></span><br><span class="line">    self._not_authenticated()</span><br></pre></td></tr></table></figure>
+
+<h1 id="自定义认证类"><a href="#自定义认证类" class="headerlink" title="自定义认证类"></a>自定义认证类</h1><div class="note warning">
+            <p>认证组件一般都是自定义的，不会使用原始的</p>
+          </div>
+
+
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>从源码的<code>settings</code>文件可以看出，认证类需要继承<code>BasicAuthentication</code>(在authentication.py文件)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DEFAULT_AUTHENTICATION_CLASSES<span class="string">': [</span></span><br><span class="line"><span class="string">    '</span>rest_framework.authentication.SessionAuthentication<span class="string">',  #会重新开启CSRF认证</span></span><br><span class="line"><span class="string">    '</span>rest_framework.authentication.BasicAuthentication<span class="string">'</span></span><br><span class="line"><span class="string">]</span></span><br></pre></td></tr></table></figure>
+
+<p>具体流程如下：</p>
+<ol>
+<li>创建继承<code>BaseAuthentication</code>的认证类</li>
+<li>重写<code>authenticate</code>方法</li>
+<li>实现体根据认证规则 确定游客、非法用户、合法用户 （根据自己的认证规则）<ul>
+<li>没有认证信息返回<code>None</code>(游客)</li>
+<li>有认证信息认证失败抛异常(非法用户)</li>
+<li>有认证信息认证成功返回用户与认证信息元组(合法用户)</li>
+</ul>
+</li>
+<li>进行全局或局部配置</li>
+</ol>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><h3 id="models-py"><a href="#models-py" class="headerlink" title="models.py"></a>models.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> AbstractUser</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(AbstractUser)</span>:</span></span><br><span class="line">    mobile = models.CharField(max_length=<span class="number">11</span>,unique=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table = <span class="string">'user'</span></span><br><span class="line">        verbose_name = <span class="string">'用户表'</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.username</span><br></pre></td></tr></table></figure>
+
+<h3 id="utils-authentications-py"><a href="#utils-authentications-py" class="headerlink" title="utils.authentications.py"></a>utils.authentications.py</h3><details>
+
+<summary> <b><i>Source Code</i></b> </summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1）继承BaseAuthentication类</span></span><br><span class="line"><span class="comment"># 2）重写authenticate(self, request)方法，自定义认证规则</span></span><br><span class="line"><span class="comment"># 3）自定义认证规则基于的条件：</span></span><br><span class="line"><span class="comment">#       没有认证信息返回None(游客)</span></span><br><span class="line"><span class="comment">#       有认证信息认证失败抛异常(非法用户)</span></span><br><span class="line"><span class="comment">#       有认证信息认证成功返回用户与认证信息元组(合法用户)</span></span><br><span class="line"><span class="comment"># 4）完全视图类的全局(settings文件中)或局部(确切的视图类)配置</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> rest_framework.authentication <span class="keyword">import</span> BaseAuthentication</span><br><span class="line"><span class="keyword">from</span> rest_framework.exceptions <span class="keyword">import</span> AuthenticationFailed   <span class="comment">#异常接收</span></span><br><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="comment">#继承BaseAuthentication</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyAuthentication</span><span class="params">(BaseAuthentication)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        同前台请求头拿认证信息auth（获取认证的字段要与前台约定）</span></span><br><span class="line"><span class="string">        没有auth是游客，返回None</span></span><br><span class="line"><span class="string">        有auth进行校验</span></span><br><span class="line"><span class="string">            失败是非法用户，抛出异常</span></span><br><span class="line"><span class="string">            成功是合法用户，返回 (用户, 认证信息)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">authenticate</span><span class="params">(self, request)</span>:</span>   <span class="comment">#重写authenticate方法</span></span><br><span class="line">　　　　<span class="comment">#前台在请求头携带认证信息，</span></span><br><span class="line">　　　　<span class="comment">#且默认规范用 Authorization 字段携带认证信息，</span></span><br><span class="line">　　　　<span class="comment">#后台固定在请求对象的META字段中 HTTP_AUTHORIZATION 获取</span></span><br><span class="line">        <span class="comment">#认证信息auth</span></span><br><span class="line">        auth = request.META.get(<span class="string">'HTTP_AUTHORIZATION'</span>,<span class="literal">None</span>)<span class="comment">#处理游客</span></span><br><span class="line">        <span class="keyword">if</span> auth <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="comment">#设置认证字段小规则(两段式):"auth 认证字符串" 在BasicAuthentication类中有规则范式</span></span><br><span class="line">        auth_list = auth.split()     <span class="comment">#校验是否还是非法用户,不是两段，第一段不是auth就是非法用户</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> (len(auth_list) == <span class="number">2</span> <span class="keyword">and</span> auth_list[<span class="number">0</span>].lower() == <span class="string">'auth'</span>):</span><br><span class="line">            <span class="keyword">raise</span> AuthenticationFailed(<span class="string">'认证信息有误，非法用户'</span>)  <span class="comment">#抛异常</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#校验认证信息第二段从auth_list[1]中解析出来</span></span><br><span class="line">        <span class="comment"># 注：假设一种情况，信息为abc.123.xyz，就可以解析出admin用户；实际开发，该逻辑一定是校验用户的正常逻辑</span></span><br><span class="line">        <span class="keyword">if</span> auth_list[<span class="number">1</span>] != <span class="string">'abc.123.xyz'</span>: <span class="comment">#校验失败</span></span><br><span class="line">            <span class="keyword">raise</span> AuthenticationFailed(<span class="string">'信息错误，非法用户'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#最后再去数据库校验是否有此用户</span></span><br><span class="line">        user = models.User.objects.filter(username=<span class="string">'admin'</span>).first()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> user:</span><br><span class="line">            <span class="keyword">raise</span> AuthenticationFailed(<span class="string">'用户数据有误，非法用户'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (user,<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h3 id="settings-py"><a href="#settings-py" class="headerlink" title="settings.py"></a>settings.py</h3><p>在<code>settings</code>文件中配置自定义认证组件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 认证类配置</span></span><br><span class="line">    <span class="string">'DEFAULT_AUTHENTICATION_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'utils.authentications.MyAuthentication'</span>,</span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="views-py"><a href="#views-py" class="headerlink" title="views.py"></a>views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> utils.response <span class="keyword">import</span> APIResponse</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 如果通过了认证组件，request.user就一定有值</span></span><br><span class="line">        <span class="comment"># 游客：AnonymousUser</span></span><br><span class="line">        <span class="comment"># 用户：User表中的具体用户对象</span></span><br><span class="line">        print(request.user)</span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'test get ok'</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="urls-py"><a href="#urls-py" class="headerlink" title="urls.py"></a>urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'test/'</span>, views.TestAPIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Postman测试"><a href="#Postman测试" class="headerlink" title="Postman测试"></a>Postman测试</h2><p>使用Postman的get请求，在自定义认证组件获取用户，在views视图通过<code>request.user</code>能打印出来</p>
+<h1 id="Token认证"><a href="#Token认证" class="headerlink" title="Token认证"></a>Token认证</h1><p>RESTful API里使用最普遍的就是基于json的token认证了，即Json Web Token（JWT）。JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含的用于通信双方之间以 JSON 对象的形式安全传递信息的方法。JWT 可以使用 HMAC 算法或者是 RSA 的公钥密钥对进行签名。</p>
+<p>它具备两个特点：</p>
+<ul>
+<li>简洁(Compact)：可以通过URL, POST 参数或者在 HTTP header 发送，因为数据量小，传输速度快</li>
+<li>自包含(Self-contained)：负载中包含了所有用户所需要的信息，避免了多次查询数据库</li>
+</ul>
+<h2 id="DRF自带的JWT认证"><a href="#DRF自带的JWT认证" class="headerlink" title="DRF自带的JWT认证"></a>DRF自带的JWT认证</h2><p>DRF的源码里是实现了token认证模块了的，不过存在<span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81ZDIzZjQzZGYyNjVkYTFiY2MxOTY3NDkjaGVhZGluZy03">一些不足<i class="fa fa-external-link-alt"></i></span>，因此一般不推荐使用。</p>
+<p>一般使用的是DRF的两个jwt插件：</p>
+<ul>
+<li><code>jango-rest-framework-jwt</code>: 曾经很常用，但后来作者已不再维护，因此也不推荐使用</li>
+<li><code>django-rest-framework-simplejwt</code>: <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvYXV0aGVudGljYXRpb24vI2pzb24td2ViLXRva2VuLWF1dGhlbnRpY2F0aW9u">DRF官方文档<i class="fa fa-external-link-alt"></i></span>推荐使用的插件</li>
+</ul>
+<h2 id="DRF插件-django-rest-framework-jwt"><a href="#DRF插件-django-rest-framework-jwt" class="headerlink" title="DRF插件 django-rest-framework-jwt"></a>DRF插件 django-rest-framework-jwt</h2><p>示例代码如下</p>
+<h3 id="settings-py-1"><a href="#settings-py-1" class="headerlink" title="settings.py"></a>settings.py</h3><div class="note warning">
+            <p>此处设置的是全局配置</p>
+          </div>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 认证类配置</span></span><br><span class="line">    <span class="string">'DEFAULT_AUTHENTICATION_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'utils.authentications.MyAuthentication'</span>,</span><br><span class="line">        <span class="string">'rest_framework_jwt.authentication.JSONWebTokenAuthentication'</span>, <span class="comment"># jwt全局配置</span></span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="models-py-1"><a href="#models-py-1" class="headerlink" title="models.py"></a>models.py</h3><p>代码同上</p>
+<h3 id="views-py-1"><a href="#views-py-1" class="headerlink" title="views.py"></a>views.py</h3><div class="note warning">
+            <p>此处设置的是局部配置</p>
+          </div>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> utils.response <span class="keyword">import</span> APIResponse</span><br><span class="line"><span class="comment"># 必须登录后才能访问 - 通过了认证权限组件</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> IsAuthenticated</span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.authentication <span class="keyword">import</span> JSONWebTokenAuthentication</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDetail</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    authentication_classes = [JSONWebTokenAuthentication]  <span class="comment"># 局部配置jwt-token校验request.user</span></span><br><span class="line">    permission_classes = [IsAuthenticated]  <span class="comment"># 结合权限组件筛选掉游客</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=&#123;<span class="string">'username'</span>: request.user.username&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="url-py"><a href="#url-py" class="headerlink" title="url.py"></a>url.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ObtainJSONWebToken视图类就是通过username和password得到user对象然后签发token（生成token）</span></span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.views <span class="keyword">import</span> ObtainJSONWebToken, obtain_jwt_token</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'jwt/'</span>, obtain_jwt_token),</span><br><span class="line">    path(<span class="string">'user/detail/'</span>, views.UserDetail.as_view()),</span><br></pre></td></tr></table></figure>
+
+<h2 id="DRF插件-django-rest-framework-simplejwt"><a href="#DRF插件-django-rest-framework-simplejwt" class="headerlink" title="DRF插件 django-rest-framework-simplejwt"></a>DRF插件 django-rest-framework-simplejwt</h2><p>示例代码如下</p>
+<h3 id="settings-py-2"><a href="#settings-py-2" class="headerlink" title="settings.py"></a>settings.py</h3><div class="note warning">
+            <p>此处设置的是全局配置</p>
+          </div>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 认证类配置</span></span><br><span class="line">    <span class="string">'DEFAULT_AUTHENTICATION_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'utils.authentications.MyAuthentication'</span>,</span><br><span class="line">        <span class="string">'rest_framework_simplejwt.authentication.JWTAuthentication'</span>, <span class="comment"># 全局配置</span></span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此外，还有simplejwt的一些细节配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Reference :</span></span><br><span class="line"><span class="comment"># 1. https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html</span></span><br><span class="line"><span class="comment"># 2. https://juejin.im/post/5d23f43df265da1bcc196749#heading-15</span></span><br><span class="line">SIMPLE_JWT = &#123;</span><br><span class="line">    <span class="string">'ACCESS_TOKEN_LIFETIME'</span>: timedelta(minutes=<span class="number">5</span>),</span><br><span class="line">    <span class="string">'REFRESH_TOKEN_LIFETIME'</span>: timedelta(days=<span class="number">1</span>),</span><br><span class="line">    <span class="string">'ROTATE_REFRESH_TOKENS'</span>: <span class="literal">False</span>,</span><br><span class="line">    <span class="string">'BLACKLIST_AFTER_ROTATION'</span>: <span class="literal">True</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'ALGORITHM'</span>: <span class="string">'HS256'</span>,</span><br><span class="line">    <span class="string">'SIGNING_KEY'</span>: SECRET_KEY,</span><br><span class="line">    <span class="string">'VERIFYING_KEY'</span>: <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'AUTH_HEADER_TYPES'</span>: (<span class="string">'Bearer'</span>,),</span><br><span class="line">    <span class="string">'USER_ID_FIELD'</span>: <span class="string">'id'</span>,</span><br><span class="line">    <span class="string">'USER_ID_CLAIM'</span>: <span class="string">'user_id'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'AUTH_TOKEN_CLASSES'</span>: (<span class="string">'rest_framework_simplejwt.tokens.AccessToken'</span>,),</span><br><span class="line">    <span class="string">'TOKEN_TYPE_CLAIM'</span>: <span class="string">'token_type'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JTI_CLAIM'</span>: <span class="string">'jti'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'SLIDING_TOKEN_REFRESH_EXP_CLAIM'</span>: <span class="string">'refresh_exp'</span>,</span><br><span class="line">    <span class="string">'SLIDING_TOKEN_LIFETIME'</span>: timedelta(minutes=<span class="number">5</span>),</span><br><span class="line">    <span class="string">'SLIDING_TOKEN_REFRESH_LIFETIME'</span>: timedelta(days=<span class="number">1</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="models-py-2"><a href="#models-py-2" class="headerlink" title="models.py"></a>models.py</h3><p>代码同上</p>
+<h3 id="views-py-2"><a href="#views-py-2" class="headerlink" title="views.py"></a>views.py</h3><div class="note warning">
+            <p>此处设置的是局部配置</p>
+          </div>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> utils.response <span class="keyword">import</span> APIResponse</span><br><span class="line"><span class="comment"># 必须登录后才能访问 - 通过了认证权限组件</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> IsAuthenticated</span><br><span class="line"><span class="keyword">from</span> rest_framework_simplejwt.authentication <span class="keyword">import</span> JWTAuthentication</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDetail2</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    authentication_classes = [JWTAuthentication]  <span class="comment"># 局部配置simplejwt-token校验request.user</span></span><br><span class="line">    permission_classes = [IsAuthenticated]  <span class="comment"># 结合权限组件筛选掉游客</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=&#123;<span class="string">'username'</span>: request.user.username&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="url-py-1"><a href="#url-py-1" class="headerlink" title="url.py"></a>url.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ObtainJSONWebToken视图类就是通过username和password得到user对象然后签发token（生成token）</span></span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.views <span class="keyword">import</span> ObtainJSONWebToken, obtain_jwt_token</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'simple_jwt/'</span>, TokenObtainPairView.as_view(), name=<span class="string">'token_obtain_pair'</span>),</span><br><span class="line">    path(<span class="string">'simple_jwt/refresh/'</span>, TokenRefreshView.as_view(), name=<span class="string">'token_refresh'</span>),</span><br><span class="line">    path(<span class="string">'user/detail2/'</span>, views.UserDetail2.as_view()),</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81ZDIzZjQzZGYyNjVkYTFiY2MxOTY3NDk=">【DRF】用户注册登录及JWT<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tech/" rel="tag"># Tech</a>
+              <a href="/tags/backend/" rel="tag"># Backend</a>
+              <a href="/tags/django/" rel="tag"># Django</a>
+              <a href="/tags/django-rest-framework/" rel="tag"># Django REST Framework</a>
+              <a href="/tags/drf/" rel="tag"># DRF</a>
+              <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
+              <a href="/tags/dev/" rel="tag"># Dev</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-10-generic-views-mixins-viewsets-and-routers/" rel="prev" title="Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由">
+      <i class="fa fa-chevron-left"></i> Django REST Framework 学习笔记（十）：通用视图、视图工具类、视图集以及路由
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/tech/drf-learning-notes-12-permissions/" rel="next" title="Django REST Framework 学习笔记（十二）：权限组件">
+      Django REST Framework 学习笔记（十二）：权限组件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#入口"><span class="nav-number">2.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-initial"><span class="nav-number">2.2.</span> <span class="nav-text">rest_framework.views.APIView.initial()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-perform-authentication"><span class="nav-number">2.3.</span> <span class="nav-text">rest_framework.views.APIView.perform_authentication()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-request-Request-user"><span class="nav-number">2.4.</span> <span class="nav-text">rest_framework.request.Request.user</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-request-Request-authenticate"><span class="nav-number">2.5.</span> <span class="nav-text">rest_framework.request.Request._authenticate()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义认证类"><span class="nav-number">3.</span> <span class="nav-text">自定义认证类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">3.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">3.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py"><span class="nav-number">3.2.1.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#utils-authentications-py"><span class="nav-number">3.2.2.</span> <span class="nav-text">utils.authentications.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py"><span class="nav-number">3.2.3.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py"><span class="nav-number">3.2.4.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py"><span class="nav-number">3.2.5.</span> <span class="nav-text">urls.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Postman测试"><span class="nav-number">3.3.</span> <span class="nav-text">Postman测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Token认证"><span class="nav-number">4.</span> <span class="nav-text">Token认证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF自带的JWT认证"><span class="nav-number">4.1.</span> <span class="nav-text">DRF自带的JWT认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF插件-django-rest-framework-jwt"><span class="nav-number">4.2.</span> <span class="nav-text">DRF插件 django-rest-framework-jwt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-1"><span class="nav-number">4.2.3.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url-py"><span class="nav-number">4.2.4.</span> <span class="nav-text">url.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF插件-django-rest-framework-simplejwt"><span class="nav-number">4.3.</span> <span class="nav-text">DRF插件 django-rest-framework-simplejwt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py-2"><span class="nav-number">4.3.1.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py-2"><span class="nav-number">4.3.2.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-2"><span class="nav-number">4.3.3.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url-py-1"><span class="nav-number">4.3.4.</span> <span class="nav-text">url.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dog2"
+      src="/images/dog2.jpeg">
+  <p class="site-author-name" itemprop="name">dog2</p>
+  <div class="site-description" itemprop="description">Where is dog1 ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dog-2"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      G.U.
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cDovL3d3dy5waHAxMDEuY24v" title="http:&#x2F;&#x2F;www.php101.cn&#x2F;">php101</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fab fa-lg fa-github-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dog2</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Word Count Total">110k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading Time Total">1:40</span>
+</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+
+
+  
+  <style>
+  
+  button.darkmode-toggle {
+  z-index: 9999;
+  }
+  
+  img, .darkmode-ignore {
+    isolation: isolate;
+    display: block;
+  }
+  </style>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
+
+
+
+<script>
+var options = {
+  bottom: '64px', // default: '32px'
+  right: 'unset', // default: '32px'
+  left: '32px', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌓', // default: ''
+  autoMatchOsTheme: true // default: true
+}
+const darkmode = new Darkmode(options);
+darkmode.showWidget();
+// window.onload = function(){
+//   setTimeout(
+//     function() {
+//       document.getElementsByClassName('darkmode-toggle')[0].click();
+//     },
+//     550,
+//   );
+//   document.getElementsByClassName('darkmode-toggle')[0].click();
+// }
+</script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-11-authentication/',]
+      });
+      });
+  </script>
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d0g2.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://dog.wtf/tech/drf-learning-notes-11-authentication/";
+    this.page.identifier = "tech/drf-learning-notes-11-authentication/";
+    this.page.title = "Django REST Framework 学习笔记（十一）：认证组件";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://d0g2.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>
