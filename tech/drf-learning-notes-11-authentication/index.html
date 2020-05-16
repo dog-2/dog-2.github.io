@@ -35,12 +35,12 @@
 <meta property="article:published_time" content="2020-05-06T02:11:11.000Z">
 <meta property="article:modified_time" content="2020-05-06T02:11:11.000Z">
 <meta property="article:author" content="dog2">
-<meta property="article:tag" content="Tech">
 <meta property="article:tag" content="Backend">
 <meta property="article:tag" content="Django">
 <meta property="article:tag" content="Django REST Framework">
 <meta property="article:tag" content="DRF">
 <meta property="article:tag" content="Learning Notes">
+<meta property="article:tag" content="Tech">
 <meta property="article:tag" content="Dev">
 <meta name="twitter:card" content="summary">
 
@@ -279,7 +279,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Word Count: </span>
-              <span>8.7k</span>
+              <span>9k</span>
             </span>
             <span class="post-meta-item" title="Reading Time">
               <span class="post-meta-item-icon">
@@ -384,11 +384,28 @@
 <h3 id="urls-py"><a href="#urls-py" class="headerlink" title="urls.py"></a>urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'test/'</span>, views.TestAPIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
 <h2 id="Postman测试"><a href="#Postman测试" class="headerlink" title="Postman测试"></a>Postman测试</h2><p>使用Postman的get请求，在自定义认证组件获取用户，在views视图通过<code>request.user</code>能打印出来</p>
-<h1 id="Token认证"><a href="#Token认证" class="headerlink" title="Token认证"></a>Token认证</h1><p>RESTful API里使用最普遍的就是基于json的token认证了，即Json Web Token（JWT）。JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含的用于通信双方之间以 JSON 对象的形式安全传递信息的方法。JWT 可以使用 HMAC 算法或者是 RSA 的公钥密钥对进行签名。</p>
-<p>它具备两个特点：</p>
-<ul>
-<li>简洁(Compact)：可以通过URL, POST 参数或者在 HTTP header 发送，因为数据量小，传输速度快</li>
-<li>自包含(Self-contained)：负载中包含了所有用户所需要的信息，避免了多次查询数据库</li>
+<h1 id="Token认证"><a href="#Token认证" class="headerlink" title="Token认证"></a>Token认证</h1><h2 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h2><p>RESTful API里使用最普遍的就是基于json的token认证了，即Json Web Token（JWT）。JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含的用于通信双方之间以 JSON 对象的形式安全传递信息的方法。JWT 可以使用 HMAC 算法或者是 RSA 的公钥密钥对进行签名。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>服务器不要存储token，token交给每一个客户端自己存储，服务器压力小</li>
+<li>服务器存储的是 签发和校验token 两段算法，签发认证的效率高</li>
+<li>算法完成各集群服务器同步成本低，路由项目完成集群部署（适应高并发）</li>
+</ol>
+<h3 id="JWT格式"><a href="#JWT格式" class="headerlink" title="JWT格式"></a>JWT格式</h3><ol>
+<li>jwt token采用三段式：头部.载荷.签名</li>
+<li>每一部分都是一个json字典加密形参的字符串</li>
+<li>头部和载荷采用的是base64可逆加密（前台后台都可以解密）</li>
+<li>签名采用hash256不可逆加密（后台校验采用碰撞校验）</li>
+<li>各部分字典的内容：<ul>
+<li>头部：基础信息 - 公司信息、项目组信息、可逆加密采用的算法</li>
+<li>载荷：有用但非私密的信息 - 用户可公开信息、过期时间</li>
+<li>签名：头部+载荷+秘钥 不可逆加密后的结果</li>
+<li>注：服务器jwt签名加密秘钥一定不能泄露</li>
+</ul>
+</li>
+</ol>
+<h3 id="签发与校验"><a href="#签发与校验" class="headerlink" title="签发与校验"></a>签发与校验</h3><ul>
+<li>签发token：固定的头部信息加密。当前的登陆用户与过期时间加密。头部+载荷+秘钥生成不可逆加密</li>
+<li>校验token：头部可校验也可以不校验，载荷校验出用户与过期时间，头部+载荷+秘钥完成碰撞检测校验token是否被篡改</li>
 </ul>
 <h2 id="DRF自带的JWT认证"><a href="#DRF自带的JWT认证" class="headerlink" title="DRF自带的JWT认证"></a>DRF自带的JWT认证</h2><p>DRF的源码里是实现了token认证模块了的，不过存在<span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81ZDIzZjQzZGYyNjVkYTFiY2MxOTY3NDkjaGVhZGluZy03">一些不足<i class="fa fa-external-link-alt"></i></span>，因此一般不推荐使用。</p>
 <p>一般使用的是DRF的两个jwt插件：</p>
@@ -431,7 +448,7 @@
 
 <h3 id="url-py-1"><a href="#url-py-1" class="headerlink" title="url.py"></a>url.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ObtainJSONWebToken视图类就是通过username和password得到user对象然后签发token（生成token）</span></span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.views <span class="keyword">import</span> ObtainJSONWebToken, obtain_jwt_token</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'simple_jwt/'</span>, TokenObtainPairView.as_view(), name=<span class="string">'token_obtain_pair'</span>),</span><br><span class="line">    path(<span class="string">'simple_jwt/refresh/'</span>, TokenRefreshView.as_view(), name=<span class="string">'token_refresh'</span>),</span><br><span class="line">    path(<span class="string">'user/detail2/'</span>, views.UserDetail2.as_view()),</span><br></pre></td></tr></table></figure>
 
-<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81ZDIzZjQzZGYyNjVkYTFiY2MxOTY3NDk=">【DRF】用户注册登录及JWT<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="参考链接-amp-扩展阅读"><a href="#参考链接-amp-扩展阅读" class="headerlink" title="参考链接 &amp; 扩展阅读"></a>参考链接 &amp; 扩展阅读</h1><p><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81ZDIzZjQzZGYyNjVkYTFiY2MxOTY3NDk=">【DRF】用户注册登录及JWT<i class="fa fa-external-link-alt"></i></span><br><span class="exturl" data-url="aHR0cHM6Ly93d3cucnVhbnlpZmVuZy5jb20vYmxvZy8yMDE4LzA3L2pzb25fd2ViX3Rva2VuLXR1dG9yaWFsLmh0bWw=">JSON Web Token 入门教程<i class="fa fa-external-link-alt"></i></span></p>
 
     </div>
 
@@ -441,12 +458,12 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/tech/" rel="tag"># Tech</a>
               <a href="/tags/backend/" rel="tag"># Backend</a>
               <a href="/tags/django/" rel="tag"># Django</a>
               <a href="/tags/django-rest-framework/" rel="tag"># Django REST Framework</a>
               <a href="/tags/drf/" rel="tag"># DRF</a>
               <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
+              <a href="/tags/tech/" rel="tag"># Tech</a>
               <a href="/tags/dev/" rel="tag"># Dev</a>
           </div>
 
@@ -528,7 +545,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#入口"><span class="nav-number">2.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-initial"><span class="nav-number">2.2.</span> <span class="nav-text">rest_framework.views.APIView.initial()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-perform-authentication"><span class="nav-number">2.3.</span> <span class="nav-text">rest_framework.views.APIView.perform_authentication()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-request-Request-user"><span class="nav-number">2.4.</span> <span class="nav-text">rest_framework.request.Request.user</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-request-Request-authenticate"><span class="nav-number">2.5.</span> <span class="nav-text">rest_framework.request.Request._authenticate()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义认证类"><span class="nav-number">3.</span> <span class="nav-text">自定义认证类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">3.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">3.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py"><span class="nav-number">3.2.1.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#utils-authentications-py"><span class="nav-number">3.2.2.</span> <span class="nav-text">utils.authentications.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py"><span class="nav-number">3.2.3.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py"><span class="nav-number">3.2.4.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py"><span class="nav-number">3.2.5.</span> <span class="nav-text">urls.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Postman测试"><span class="nav-number">3.3.</span> <span class="nav-text">Postman测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Token认证"><span class="nav-number">4.</span> <span class="nav-text">Token认证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF自带的JWT认证"><span class="nav-number">4.1.</span> <span class="nav-text">DRF自带的JWT认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF插件-django-rest-framework-jwt"><span class="nav-number">4.2.</span> <span class="nav-text">DRF插件 django-rest-framework-jwt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-1"><span class="nav-number">4.2.3.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url-py"><span class="nav-number">4.2.4.</span> <span class="nav-text">url.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF插件-django-rest-framework-simplejwt"><span class="nav-number">4.3.</span> <span class="nav-text">DRF插件 django-rest-framework-simplejwt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py-2"><span class="nav-number">4.3.1.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py-2"><span class="nav-number">4.3.2.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-2"><span class="nav-number">4.3.3.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url-py-1"><span class="nav-number">4.3.4.</span> <span class="nav-text">url.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#入口"><span class="nav-number">2.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-initial"><span class="nav-number">2.2.</span> <span class="nav-text">rest_framework.views.APIView.initial()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-perform-authentication"><span class="nav-number">2.3.</span> <span class="nav-text">rest_framework.views.APIView.perform_authentication()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-request-Request-user"><span class="nav-number">2.4.</span> <span class="nav-text">rest_framework.request.Request.user</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-request-Request-authenticate"><span class="nav-number">2.5.</span> <span class="nav-text">rest_framework.request.Request._authenticate()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义认证类"><span class="nav-number">3.</span> <span class="nav-text">自定义认证类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">3.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">3.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py"><span class="nav-number">3.2.1.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#utils-authentications-py"><span class="nav-number">3.2.2.</span> <span class="nav-text">utils.authentications.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py"><span class="nav-number">3.2.3.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py"><span class="nav-number">3.2.4.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py"><span class="nav-number">3.2.5.</span> <span class="nav-text">urls.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Postman测试"><span class="nav-number">3.3.</span> <span class="nav-text">Postman测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Token认证"><span class="nav-number">4.</span> <span class="nav-text">Token认证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JWT"><span class="nav-number">4.1.</span> <span class="nav-text">JWT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">4.1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT格式"><span class="nav-number">4.1.2.</span> <span class="nav-text">JWT格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#签发与校验"><span class="nav-number">4.1.3.</span> <span class="nav-text">签发与校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF自带的JWT认证"><span class="nav-number">4.2.</span> <span class="nav-text">DRF自带的JWT认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF插件-django-rest-framework-jwt"><span class="nav-number">4.3.</span> <span class="nav-text">DRF插件 django-rest-framework-jwt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py-1"><span class="nav-number">4.3.1.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py-1"><span class="nav-number">4.3.2.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-1"><span class="nav-number">4.3.3.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url-py"><span class="nav-number">4.3.4.</span> <span class="nav-text">url.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF插件-django-rest-framework-simplejwt"><span class="nav-number">4.4.</span> <span class="nav-text">DRF插件 django-rest-framework-simplejwt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-py-2"><span class="nav-number">4.4.1.</span> <span class="nav-text">settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#models-py-2"><span class="nav-number">4.4.2.</span> <span class="nav-text">models.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py-2"><span class="nav-number">4.4.3.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#url-py-1"><span class="nav-number">4.4.4.</span> <span class="nav-text">url.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接-amp-扩展阅读"><span class="nav-number">5.</span> <span class="nav-text">参考链接 &amp; 扩展阅读</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -544,7 +561,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -557,7 +574,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -612,12 +629,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">110k</span>
+    <span title="Word Count Total">117k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:40</span>
+    <span title="Reading Time Total">1:46</span>
 </div>
   <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
   </div>
