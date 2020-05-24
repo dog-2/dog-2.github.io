@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
+  <link rel="mask-icon" href="/favicon/eye.ico" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Title(EN): Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported Author: dog2   按  环境  OS：Max OS 10.15 node: 13.7.0 hexo：4.2.1 hexo-cli: 3.1.0 hexo-theme-next: v8.0.0-rc.2  需求：让hexo的next主题支持渲染L">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让Hexo Next (v8.0.0) 支持LaTeX数学公式">
+<meta property="og:url" content="http://dog.wtf/uncategorized/making-hexo-next-theme-latex-math-equation-supported/index.html">
+<meta property="og:site_name" content="雪泥鴻爪">
+<meta property="og:description" content="Title(EN): Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported Author: dog2   按  环境  OS：Max OS 10.15 node: 13.7.0 hexo：4.2.1 hexo-cli: 3.1.0 hexo-theme-next: v8.0.0-rc.2  需求：让hexo的next主题支持渲染L">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-24T06:46:34.000Z">
+<meta property="article:modified_time" content="2020-05-24T08:51:21.821Z">
+<meta property="article:author" content="dog2">
+<meta property="article:tag" content="Tech">
+<meta property="article:tag" content="LaTeX">
+<meta property="article:tag" content="Math">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Hexo Next">
+<meta property="article:tag" content="Blog">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://dog.wtf/uncategorized/making-hexo-next-theme-latex-math-equation-supported/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>让Hexo Next (v8.0.0) 支持LaTeX数学公式 | 雪泥鴻爪</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-71835065-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-71835065-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">雪泥鴻爪</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">dog2's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/uncategorized/making-hexo-next-theme-latex-math-equation-supported/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          让Hexo Next (v8.0.0) 支持LaTeX数学公式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-24 15:46:34 / Modified: 17:51:21" itemprop="dateCreated datePublished" datetime="2020-05-24T15:46:34+09:00">2020-05-24</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/uncategorized/making-hexo-next-theme-latex-math-equation-supported/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uncategorized/making-hexo-next-theme-latex-math-equation-supported/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li>Title(EN): <em><strong>Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="按">按</h1>
+<ul>
+<li>环境
+<ul>
+<li>OS：Max OS 10.15</li>
+<li>node: 13.7.0</li>
+<li>hexo：4.2.1</li>
+<li>hexo-cli: 3.1.0</li>
+<li>hexo-theme-next: v8.0.0-rc.2</li>
+</ul></li>
+<li>需求：让hexo的next主题支持渲染LaTeX语法的数学公式。</li>
+<li>参考链接：
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL3RoaXJkLXBhcnR5LXNlcnZpY2VzL21hdGgtZXF1YXRpb25zLmh0bWw=">官方文档<i class="fa fa-external-link-alt"></i></span></li>
+</ul></li>
+</ul>
+<a id="more"></a>
+<h1 id="步骤">步骤</h1>
+<p>根据官方文档，让Next主题支持公式多种方式（无法正常渲染请刷新页面）：</p>
+<pre class="mermaid" style="text-align: center;">
+            graph LR
+            H[Hexo] ==> |主题| T(NexT)
+T ==> |公式渲染引擎1| MJ{MathJax}
+T -.-> |公式渲染引擎2| KT{KaTeX}
+style KT text-decoration:line-through
+
+MJ ==> |markdown渲染引擎1| PD(hexo-renderer-pandoc)
+MJ -.-> |markdown渲染引擎2| KR(hexo-renderer-kramed)
+MJ -.-> |化学公式插件| MC((mhchem))
+
+KT -.-> |markdown渲染引擎1| MDIP(hexo-renderer-markdown-it-plus)
+KT -.-> |markdown渲染引擎2| MDI(hexo-renderer-markdown-it)
+KT -.-> |公式复制插件| CPTEX((Copy-tex))
+KT -.-> |bug| KTBUG>解析$有Bug需手动修复]
+
+          </pre>
+<p>我的测试中只有上图中的实体粗线的方式成功，这里就记录一下这种方式的步骤，即</p>
+<ul>
+<li>NexT =&gt; MathJax =&gt; hexo-renderer-pandoc</li>
+</ul>
+<ol type="1">
+<li><p>安装<span class="exturl" data-url="aHR0cHM6Ly9wYW5kb2Mub3JnL2luc3RhbGxpbmcuaHRtbA==">pandoc<i class="fa fa-external-link-alt"></i></span></p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install pandoc</span><br></pre></td></tr></table></figure></p></li>
+<li><p>将默认的markdown渲染引擎<code>hexo-renderer-marked</code>替换为<code>hexo-renderer-pandoc</code></p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm un hexo-renderer-marked</span><br><span class="line">npm i hexo-renderer-pandoc</span><br></pre></td></tr></table></figure></p></li>
+<li><p>修改next主题配置</p>
+<p><div class="note warning">
+            <p>Next的配置文件，有2种形式，请参考<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方文档<i class="fa fa-external-link-alt"></i></span></p>
+          </div></p>
+<p><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Math Formulas Render Support</span></span><br><span class="line"><span class="attr">math:</span></span><br><span class="line"><span class="comment"># Default (true) will load mathjax / katex script on demand.</span></span><br><span class="line"><span class="comment"># That is it only render those page which has `mathjax: true` in Front-matter.</span></span><br><span class="line"><span class="comment"># If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span></span><br><span class="line"><span class="attr">mathjax:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># See: https://mhchem.github.io/MathJax-mhchem/</span></span><br><span class="line">    <span class="attr">mhchem:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-markdown-it-plus (or hexo-renderer-markdown-it with markdown-it-katex plugin) required for full Katex support.</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment"># See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex</span></span><br><span class="line">    <span class="attr">copy_tex:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">vendors:</span></span><br><span class="line"><span class="comment"># MathJax</span></span><br><span class="line"><span class="attr">mathjax:</span> <span class="string">//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js</span></span><br></pre></td></tr></table></figure></p>
+<p><code>per_page</code>按需设置，具体可参考注释和官网说明。其他选项需要跟上述设置保持一直。</p></li>
+</ol>
+<h1 id="测试数学公式">测试数学公式</h1>
+<p>代码来自NexT官网，Mathjax渲染的公式已经内置了丰富的右键菜单，可以复制公式代码。</p>
+<h2 id="简单公式">简单公式</h2>
+<p>带label的公式</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq1&#125;</span></span></span></span><br><span class="line"><span class="formula">e=mc^2</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{equation} \label{eq1}
+e=mc^2
+\end{equation}\]</span></p>
+<p>根据label引用上述公式</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The famous matter-energy equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq1&#125;</span></span>$</span> proposed by Einstein...</span><br></pre></td></tr></table></figure>
+<p>The famous matter-energy equation <span class="math inline">\(\eqref{eq1}\)</span> proposed by Einstein...</p>
+<h2 id="多行公式">多行公式</h2>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq2&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">begin</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= d + e + f + g <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= h + i</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{equation} \label{eq2}
+\begin{aligned}
+a &amp;= b + c \\
+  &amp;= d + e + f + g \\
+  &amp;= h + i
+\end{aligned}
+\end{equation}\]</span></p>
+<p>引用上述多行公式</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq2&#125;</span></span>$</span> is a multi-line equation.</span><br></pre></td></tr></table></figure>
+<p>Equation <span class="math inline">\(\eqref{eq2}\)</span> is a multi-line equation.</p>
+<h2 id="多行多编号公式">多行多编号公式</h2>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">label</span><span class="string">&#123;eq3&#125;</span></span> <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">x &amp;= yz <span class="tag">\<span class="name">label</span><span class="string">&#123;eq4&#125;</span></span><span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">l &amp;= m - n <span class="tag">\<span class="name">label</span><span class="string">&#123;eq5&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{align}
+a &amp;= b + c \label{eq3} \\
+x &amp;= yz \label{eq4}\\
+l &amp;= m - n \label{eq5}
+\end{align}\]</span></p>
+<p>引用上述多行公式</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">There are three aligned equations: equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq3&#125;</span></span>$</span>, equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq4&#125;</span></span>$</span> and equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq5&#125;</span></span>$</span>.</span><br></pre></td></tr></table></figure>
+<p>There are three aligned equations: equation <span class="math inline">\(\eqref{eq3}\)</span>, equation <span class="math inline">\(\eqref{eq4}\)</span> and equation <span class="math inline">\(\eqref{eq5}\)</span>.</p>
+<h2 id="无编号公式">无编号公式</h2>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">-4 + 5x &amp;= 2+y <span class="tag">\<span class="name">nonumber</span></span>  <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> w+2 &amp;= -1+w <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> ab &amp;= cb</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{align}
+-4 + 5x &amp;= 2+y \nonumber  \\
+ w+2 &amp;= -1+w \\
+ ab &amp;= cb
+\end{align}\]</span></p>
+<h2 id="用tag指定编号文字">用\tag指定编号文字</h2>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="formula">$$x+1<span class="tag">\<span class="name">over</span></span><span class="tag">\<span class="name">sqrt</span><span class="string">&#123;1-x^2&#125;</span></span> <span class="tag">\<span class="name">tag</span><span class="string">&#123;i&#125;</span></span><span class="tag">\<span class="name">label</span><span class="string">&#123;eq_tag&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}\]</span></p>
+<p>引用上述公式</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq_tag&#125;</span></span>$</span> use `<span class="tag">\<span class="name">tag</span><span class="string">&#123;&#125;</span></span>` instead of automatic numbering.</span><br></pre></td></tr></table></figure>
+<p>Equation <span class="math inline">\(\eqref{eq_tag}\)</span> use <code>\tag{}</code> instead of automatic numbering.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tech/" rel="tag"># Tech</a>
+              <a href="/tags/latex/" rel="tag"># LaTeX</a>
+              <a href="/tags/math/" rel="tag"># Math</a>
+              <a href="/tags/hexo/" rel="tag"># Hexo</a>
+              <a href="/tags/hexo-next/" rel="tag"># Hexo Next</a>
+              <a href="/tags/blog/" rel="tag"># Blog</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/" rel="prev" title="用BasicTeX及TeXworks构建轻量的LaTex写作环境">
+      <i class="fa fa-chevron-left"></i> 用BasicTeX及TeXworks构建轻量的LaTex写作环境
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#按"><span class="nav-number">1.</span> <span class="nav-text">按</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#步骤"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试数学公式"><span class="nav-number">3.</span> <span class="nav-text">测试数学公式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单公式"><span class="nav-number">3.1.</span> <span class="nav-text">简单公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多行公式"><span class="nav-number">3.2.</span> <span class="nav-text">多行公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多行多编号公式"><span class="nav-number">3.3.</span> <span class="nav-text">多行多编号公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无编号公式"><span class="nav-number">3.4.</span> <span class="nav-text">无编号公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用tag指定编号文字"><span class="nav-number">3.5.</span> <span class="nav-text">用\tag指定编号文字</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dog2"
+      src="/images/dog2.jpeg">
+  <p class="site-author-name" itemprop="name">dog2</p>
+  <div class="site-description" itemprop="description">Where is dog1 ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0y" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dog-2"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      G.U.
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <span class="exturl" data-url="aHR0cDovL3d3dy5waHAxMDEuY24v" title="http:&#x2F;&#x2F;www.php101.cn&#x2F;">php101</span>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fab fa-lg fa-github-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dog2</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">125k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">1:54</span>
+</div>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  
+  <style>
+  
+  button.darkmode-toggle {
+  z-index: 9999;
+  }
+  
+  img, .darkmode-ignore {
+    isolation: isolate;
+    display: block;
+  }
+  </style>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
+
+
+<script>
+var options = {
+  bottom: '64px', // default: '32px'
+  right: 'unset', // default: '32px'
+  left: '32px', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌓', // default: ''
+  autoMatchOsTheme: true // default: true
+}
+const darkmode = new Darkmode(options);
+darkmode.showWidget();
+// window.onload = function(){
+//   setTimeout(
+//     function() {
+//       document.getElementsByClassName('darkmode-toggle')[0].click();
+//     },
+//     550,
+//   );
+//   document.getElementsByClassName('darkmode-toggle')[0].click();
+// }
+</script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script data-pjax>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+<script data-pjax>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'default',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+    <div id="pjax">
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://d0g2.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://dog.wtf/uncategorized/making-hexo-next-theme-latex-math-equation-supported/";
+    this.page.identifier = "uncategorized/making-hexo-next-theme-latex-math-equation-supported/";
+    this.page.title = "让Hexo Next (v8.0.0) 支持LaTeX数学公式";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://d0g2.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

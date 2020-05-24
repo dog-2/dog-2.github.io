@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,13 +16,13 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Where is dog1 ?">
@@ -98,9 +98,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -120,7 +120,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -153,7 +152,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -208,6 +207,236 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/uncategorized/making-hexo-next-theme-latex-math-equation-supported/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/uncategorized/making-hexo-next-theme-latex-math-equation-supported/" class="post-title-link" itemprop="url">让Hexo Next (v8.0.0) 支持LaTeX数学公式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-24 15:46:34 / Modified: 17:51:21" itemprop="dateCreated datePublished" datetime="2020-05-24T15:46:34+09:00">2020-05-24</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/uncategorized/making-hexo-next-theme-latex-math-equation-supported/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uncategorized/making-hexo-next-theme-latex-math-equation-supported/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="按">按</h1>
+<ul>
+<li>环境
+<ul>
+<li>OS：Max OS 10.15</li>
+<li>node: 13.7.0</li>
+<li>hexo：4.2.1</li>
+<li>hexo-cli: 3.1.0</li>
+<li>hexo-theme-next: v8.0.0-rc.2</li>
+</ul></li>
+<li>需求：让hexo的next主题支持渲染LaTeX语法的数学公式。</li>
+<li>参考链接：
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL3RoaXJkLXBhcnR5LXNlcnZpY2VzL21hdGgtZXF1YXRpb25zLmh0bWw=">官方文档<i class="fa fa-external-link-alt"></i></span></li>
+</ul></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/uncategorized/making-hexo-next-theme-latex-math-equation-supported/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/" class="post-title-link" itemprop="url">用BasicTeX及TeXworks构建轻量的LaTex写作环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-24 12:17:55 / Modified: 17:32:51" itemprop="dateCreated datePublished" datetime="2020-05-24T12:17:55+09:00">2020-05-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Building a lightweight LaTeX Environment With BasicTeX And TeXworks</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="按">按</h1>
+<ul>
+<li>环境：Max OS 10.15</li>
+<li>需求 =&gt; 解决方案
+<ul>
+<li>轻量：TeX Live太重 =&gt; 用精简命令行版<code>BasicTeX</code>替代</li>
+<li>简单：仅编写公式及简单写作用 =&gt; 极简TeX编辑器<code>TeXworks</code></li>
+</ul></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/asyncio-and-asyncio-semaphore-in-python-3-8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -230,7 +459,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-22 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-22T22:22:22+09:00">2020-05-22</time>
             </span>
@@ -238,7 +467,7 @@
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited</span>
+                <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-05-23 09:58:25" itemprop="dateModified" datetime="2020-05-23T09:58:25+09:00">2020-05-23</time>
               </span>
             <span class="post-meta-item">
@@ -266,18 +495,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -294,8 +523,8 @@
 <li>Title(EN): <em><strong>asyncio and asyncio.Semaphore in Python 3.8+</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<p>以前的程序放在Python 3.8里跑出错了，原来是由于Python升级3.8后协程库<code>asyncio</code>又双叒叕更新了。<br>新版本里<code>asyncio.Semaphore</code>的用法改变了，本文简单记录一下新写法。</p>
+<hr />
+<p>以前的程序放在Python 3.8里跑出错了，原来是由于Python升级3.8后协程库<code>asyncio</code>又双叒叕更新了。 新版本里<code>asyncio.Semaphore</code>的用法改变了，本文简单记录一下新写法。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/tech/asyncio-and-asyncio-semaphore-in-python-3-8/#more" rel="contents">
@@ -344,7 +573,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-16 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-16T22:22:22+09:00">2020-05-16</time>
             </span>
@@ -352,7 +581,7 @@
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited</span>
+                <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-05-22 09:59:42" itemprop="dateModified" datetime="2020-05-22T09:59:42+09:00">2020-05-22</time>
               </span>
             <span class="post-meta-item">
@@ -380,18 +609,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>6.6k</span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>6.5k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>6 mins.</span>
             </span>
 
@@ -408,15 +637,14 @@
 <li>Title(EN): <em><strong>Overview of My Apps in Mac OS</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
             <p>工欲善其事，必先利其器</p>
 
             <i class="fa fa-quote-right"></i>
           </blockquote>
-
-<ol>
+<ol type="1">
 <li>常用必备软件（Chrome/QQ等）除外</li>
 <li>我使用的是Mac OS，因此列表中小部分软件可能没有windows版本</li>
 </ol>
@@ -468,7 +696,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-10 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-10T22:22:22+09:00">2020-05-10</time>
             </span>
@@ -497,18 +725,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.6k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -525,8 +753,9 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (15): Pagination</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvcGFnaW5hdGlvbi5weQ==">rest_framework.pagination<i class="fa fa-external-link-alt"></i></span></li>
 <li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGFnaW5hdGlvbi8=">API Guild - Pagination<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzE1X2RyZl9wYWdpbmF0aW9uLw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
@@ -579,7 +808,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-10 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-10T11:11:11+09:00">2020-05-10</time>
             </span>
@@ -608,18 +837,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>3.1k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>3 mins.</span>
             </span>
 
@@ -636,14 +865,15 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (14): Filters</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvZmlsdGVycy5weQ==">rest_framework.filters<i class="fa fa-external-link-alt"></i></span></li>
-<li>官方文档<ul>
+<li>官方文档
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmlsdGVyaW5nLw==">DRF API Guild - Filtering<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9kamFuZ28tZmlsdGVyLnJlYWR0aGVkb2NzLmlvL2VuL3N0YWJsZS8=">django-filter<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
+</ul></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzE0X2RyZl9maWx0ZXJzLw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
           <!--noindex-->
@@ -694,7 +924,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-09 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-09T11:11:11+09:00">2020-05-09</time>
             </span>
@@ -723,18 +953,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>6.2k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>6 mins.</span>
             </span>
 
@@ -751,8 +981,9 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (13): Throttle</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdGhyb3R0bGluZy5weQ==">rest_framework.throttling<i class="fa fa-external-link-alt"></i></span></li>
 <li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvdGhyb3R0bGluZy8=">API Guild - Throttling<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzEzX2RyZl90aHJvdHRsZS8=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
@@ -805,7 +1036,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-06 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-06T22:22:22+09:00">2020-05-06</time>
             </span>
@@ -834,18 +1065,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>4.3k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>4 mins.</span>
             </span>
 
@@ -862,8 +1093,9 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (12): Permissions</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvcGVybWlzc2lvbnMucHk=">rest_framework.permissions<i class="fa fa-external-link-alt"></i></span></li>
 <li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGVybWlzc2lvbnMv">API Guild - Permissions<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzEyX2RyZl9wZXJtaXNzaW9uLw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
@@ -916,7 +1148,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-06 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-06T11:11:11+09:00">2020-05-06</time>
             </span>
@@ -945,18 +1177,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>9k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>8 mins.</span>
             </span>
 
@@ -973,15 +1205,16 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (11): Authentication</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvYXV0aGVudGljYXRpb24ucHk=">rest_framework.authentication<i class="fa fa-external-link-alt"></i></span></li>
 <li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvYXV0aGVudGljYXRpb24v">API Guild - Authentication<i class="fa fa-external-link-alt"></i></span></li>
-<li>本文demo代码Github<ul>
+<li>本文demo代码Github
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzExX2RyZl9hdXRoZW50aWNhdGlvbi8=">自定义认证类<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzExX2RyZl9qd3Qv">jwt &amp; simple-jwt<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
+</ul></li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -1031,7 +1264,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-05 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-05T11:11:11+09:00">2020-05-05</time>
             </span>
@@ -1060,18 +1293,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>9.4k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>9 mins.</span>
             </span>
 
@@ -1088,21 +1321,22 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (10): Generic Views, MixIns, ViewSets and Routers</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
-<li>源码<ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
+<li>源码
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdmlld3MucHk=">rest_framework.views<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvZ2VuZXJpY3MucHk=">rest_framework.generics<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvdmlld3NldHMucHk=">rest_framework.viewsets<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvcm91dGVycy5weQ==">rest_framework.routers<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
-<li>官方文档<ul>
+</ul></li>
+<li>官方文档
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZ2VuZXJpYy12aWV3cy8=">API Guild - Generic views<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvdmlld3NldHMv">API Guild - ViewSets<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcm91dGVycy8=">API Guild - Routers<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
+</ul></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzEwX2RyZl92aWV3cw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
           <!--noindex-->
@@ -1153,7 +1387,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-04 02:22:22" itemprop="dateCreated datePublished" datetime="2020-05-04T02:22:22+09:00">2020-05-04</time>
             </span>
@@ -1182,18 +1416,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>3.4k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>3 mins.</span>
             </span>
 
@@ -1210,15 +1444,16 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
-<li>官方文档<ul>
+<li>官方文档
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
+</ul></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzlfZHJmX0xpc3RTZXJpYWxpemVy">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <p>DRF常用序列化类主要有</p>
@@ -1276,7 +1511,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-04 01:11:11" itemprop="dateCreated datePublished" datetime="2020-05-04T01:11:11+09:00">2020-05-04</time>
             </span>
@@ -1305,18 +1540,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>14k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>13 mins.</span>
             </span>
 
@@ -1333,15 +1568,16 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
-<li>官方文档<ul>
+<li>官方文档
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
+</ul></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzhfZHJmX01vZGVsU2VyaWFsaXplcg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <p>DRF常用序列化类主要有</p>
@@ -1399,7 +1635,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-04 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-04T00:00:00+09:00">2020-05-04</time>
             </span>
@@ -1428,18 +1664,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>6.9k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>6 mins.</span>
             </span>
 
@@ -1456,15 +1692,16 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (7): the Serialzier class in serialziers module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/serializers.py" target="_blank" rel="noopener"><code>rest_framework.response</code></a></li>
-<li>官方文档<ul>
+<li>官方文档
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
+</ul></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzdfZHJmX1NlcmlhbGl6ZXI=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <p>DRF常用序列化类主要有</p>
@@ -1522,7 +1759,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-03 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-03T22:22:22+09:00">2020-05-03</time>
             </span>
@@ -1551,18 +1788,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.3k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -1579,8 +1816,9 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (6): the response module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码：<a href="hhttps://github.com/encode/django-rest-framework/blob/master/rest_framework/response.py"><code>rest_framework.response</code></a></li>
 <li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVzcG9uc2VzLw==">API Guild - Exceptions<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
@@ -1632,7 +1870,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-03 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-03T11:11:11+09:00">2020-05-03</time>
             </span>
@@ -1661,18 +1899,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>3.6k</span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.7k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>3 mins.</span>
             </span>
 
@@ -1689,20 +1927,24 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (5): the exceptions module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/exceptions.py" target="_blank" rel="noopener"><code>rest_framework.exceptions</code></a></li>
 <li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZXhjZXB0aW9ucy8=">API Guild - Exceptions<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzVfZHJmX2V4Y2VwdGlvbg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
-<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><h2 id="DRF异常处理"><a href="#DRF异常处理" class="headerlink" title="DRF异常处理"></a>DRF异常处理</h2><ol>
+<h1 id="异常处理">异常处理</h1>
+<h2 id="drf异常处理">DRF异常处理</h2>
+<ol type="1">
 <li>所有经过drf的<code>APIView</code>视图类产生的异常，都可以提供异常处理方案</li>
 <li>drf默认提供了异常处理方案<code>rest_framework.views.exception_handler</code>，但是处理范围有限</li>
 <li>drf提供的处理方案两种，处理了返回异常现象，没处理返回None(后续就是服务器抛异常给前台)</li>
 </ol>
 <p>通常出于一些原因我们需要自定义异常处理，而非使用DRF的默认异常。</p>
-<h2 id="基于DRF自定义异常处理"><a href="#基于DRF自定义异常处理" class="headerlink" title="基于DRF自定义异常处理"></a>基于DRF自定义异常处理</h2><p>自定义异常处理的常见应用场景如下：</p>
-<ol>
+<h2 id="基于drf自定义异常处理">基于DRF自定义异常处理</h2>
+<p>自定义异常处理的常见应用场景如下：</p>
+<ol type="1">
 <li>解决drf没有处理的异常</li>
 <li>让前台得到合理的异常信息返回、隐藏异常细节而返回通用异常信息</li>
 <li>后台记录异常具体信息、如将异常细节写入日志以供审计等</li>
@@ -1710,234 +1952,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/tech/drf-learning-notes-5-the-exceptions-module/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/dog2.jpeg">
-      <meta itemprop="name" content="dog2">
-      <meta itemprop="description" content="Where is dog1 ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪泥鴻爪">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/tech/drf-learning-notes-4-the-parsers-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（四）：解析模块 parsers</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted</span>
-
-              <time title="Created: 2020-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-03T00:00:00+09:00">2020-05-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/tech/drf-learning-notes-4-the-parsers-module/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-4-the-parsers-module/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="Word Count">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="Reading Time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>Title(EN): <em><strong>Django REST Framework Learning Notes (4): the parsers module</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
-<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/parsers.py" target="_blank" rel="noopener"><code>rest_framework.parsers</code></a></li>
-<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGFyc2Vycy8=">API Guild - Parsers<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzRfZHJmX3BhcnNlcg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tech/drf-learning-notes-4-the-parsers-module/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-3-the-renders-module/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/dog2.jpeg">
-      <meta itemprop="name" content="dog2">
-      <meta itemprop="description" content="Where is dog1 ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪泥鴻爪">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/tech/drf-learning-notes-3-the-renders-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（三）：渲染模块 renders</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted</span>
-
-              <time title="Created: 2020-05-02 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-02T22:22:22+09:00">2020-05-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/tech/drf-learning-notes-3-the-renders-module/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-3-the-renders-module/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="Word Count">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>1.6k</span>
-            </span>
-            <span class="post-meta-item" title="Reading Time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>Title(EN): <em><strong>Django REST Framework Learning Notes (3): the renders module</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<p>用DRF做测试会发现，用浏览器请求API返回DRF定制的页面，对开发者相当友好，如下图：</p>
-<p><img data-src="https://www.django-rest-framework.org/img/quickstart.png" alt=""></p>
-<p>而若使用python第三方模块requests或者postman等工具，这则返回的是原生的json数据。</p>
-<p>实现这种差别响应的，正是本节的主角——(响应)渲染模块。</p>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
-<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/renders.py" target="_blank" rel="noopener"><code>rest_framework.renders</code></a><ul>
-<li><code>rest_framework.request.Request</code>：主要类</li>
-</ul>
-</li>
-<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVuZGVyZXJzLw==">API Guild - Renderers<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tech/drf-learning-notes-3-the-renders-module/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -2028,7 +2042,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -2041,7 +2055,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -2096,14 +2110,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -2142,8 +2156,6 @@
   
 
 
-
-
   
   <style>
   
@@ -2159,13 +2171,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -2225,7 +2235,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -2309,7 +2319,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -2326,6 +2336,59 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>

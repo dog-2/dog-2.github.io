@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,21 +16,21 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2                             前后端分离是大势所趋                           按最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，">
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2                             前后端分离是大势所趋                          按 最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django REST Framework 学习笔记（一）：RESTful API 初探">
 <meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-1-hello-restful-api/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2                             前后端分离是大势所趋                           按最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (1): Hello RESTful API Author: dog2                             前后端分离是大势所趋                          按 最近在学习Django Rest Framework，官方教程较短，看完感觉并没有学习到最佳实践，">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-01T15:00:00.000Z">
 <meta property="article:modified_time" content="2020-05-01T15:00:00.000Z">
@@ -107,9 +107,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -129,7 +129,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -162,7 +161,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -239,7 +238,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-02T00:00:00+09:00">2020-05-02</time>
             </span>
@@ -275,18 +274,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>2.8k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>3 mins.</span>
             </span>
 
@@ -303,71 +302,75 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (1): Hello RESTful API</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
             <p>前后端分离是大势所趋</p>
 
             <i class="fa fa-quote-right"></i>
           </blockquote>
-
-<h1 id="按"><a href="#按" class="headerlink" title="按"></a>按</h1><p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">官方API文档<i class="fa fa-external-link-alt"></i></span>虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
+<h1 id="按">按</h1>
+<p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">官方API文档<i class="fa fa-external-link-alt"></i></span>虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
 <p>于是找到了<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMW5FNDExSjdoeA==">一套不错的DRF源码分析视频<i class="fa fa-external-link-alt"></i></span>来学习，并且在这里记下学习笔记。</p>
 <p>参考了这两位同学的笔记，大部分是视频讲师在视频里做过的课堂笔记。</p>
 <ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vd2FuZ2N1aWNhbi9jYXRlZ29yeS8xNjA3ODIyLmh0bWw=">随笔分类 - Django REST framework笔记<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20veWFuZ2ppYW9zaG91L2NhdGVnb3J5LzE2NzUwMjEuaHRtbA==">随笔分类 - Django–drf相关 <i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20veWFuZ2ppYW9zaG91L2NhdGVnb3J5LzE2NzUwMjEuaHRtbA==">随笔分类 - Django--drf相关<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <p>根据我个人理解对笔记做了部分修改、整理和补充。这里有我的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZg==">测试代码<i class="fa fa-external-link-alt"></i></span>可供参考，包括django项目、db数据和postman的测试数据包。</p>
-<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+<h1 id="基本概念">基本概念</h1>
+<ul>
 <li><strong><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU4JUExJUE4JUU3JThFJUIwJUU1JUIxJTgyJUU3JThBJUI2JUU2JTgwJTgxJUU4JUJEJUFDJUU2JThEJUEy">RESTful<i class="fa fa-external-link-alt"></i></span></strong>: Representational State Transfer 表现层状态转换</li>
 <li><strong>ful</strong>: 形容词后缀，表示“（这一）类的、（这种）风格的”</li>
 <li><strong><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3poLWNuLyVFNSVCQSU5NCVFNyU5NCVBOCVFNyVBOCU4QiVFNSVCQSU4RiVFNiU4RSVBNSVFNSU4RiVBMw==">API<i class="fa fa-external-link-alt"></i></span></strong>: Application Programming Interface 应用程序接口</li>
 <li><strong>接口</strong>：联系两个物质的媒介，完成信息交互</li>
-<li><strong>Web程序接口</strong><ul>
+<li><strong>Web程序接口</strong>
+<ul>
 <li>功能：联系前台页面与后台数据库的媒介</li>
-<li>组成<ul>
+<li>组成
+<ul>
 <li>url: 长得像返回数据的url链接</li>
 <li>请求参数: 前台按照指定的key提供数据给后台</li>
 <li>响应数据: 后台与数据库交互后将数据反馈给前台</li>
-</ul>
-</li>
-</ul>
-</li>
+</ul></li>
+</ul></li>
 </ul>
 <a id="more"></a>
-
-<h1 id="RESTful-API"><a href="#RESTful-API" class="headerlink" title="RESTful API"></a>RESTful API</h1><h2 id="接口规范"><a href="#接口规范" class="headerlink" title="接口规范"></a>接口规范</h2><ul>
+<h1 id="restful-api">RESTful API</h1>
+<h2 id="接口规范">接口规范</h2>
+<ul>
 <li>功能：为了采用不同的后台语言，也能使用同样的接口，获取到同样的数据</li>
-<li>接口：<ul>
+<li>接口：
+<ul>
 <li>url</li>
 <li>相应数据</li>
-</ul>
-</li>
-<li>接口文档：<ul>
+</ul></li>
+<li>接口文档：
+<ul>
 <li>url + 请求参数</li>
 <li>响应数据</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h2 id="URL规范"><a href="#URL规范" class="headerlink" title="URL规范"></a>URL规范</h2><p>RESFful API的URL应包含如下部分：</p>
-<h3 id="用api关键字标识接口url"><a href="#用api关键字标识接口url" class="headerlink" title="用api关键字标识接口url"></a>用api关键字标识接口url</h3><p>如</p>
+<h2 id="url规范">URL规范</h2>
+<p>RESFful API的URL应包含如下部分：</p>
+<h3 id="用api关键字标识接口url">用api关键字标识接口url</h3>
+<p>如 - api.baidu.com - www.baidu.com/api</p>
+<h3 id="优先选择https协议">优先选择https协议</h3>
+<p>接口数据安全性考量</p>
+<h3 id="版本标识">版本标识</h3>
+<p>如</p>
 <ul>
-<li>api.baidu.com</li>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5iYWlkdS5jb20vYXBp">www.baidu.com/api<i class="fa fa-external-link-alt"></i></span></li>
+<li>api.baidu.com/v1/...</li>
+<li>api.baidu.com/v2/...</li>
 </ul>
-<h3 id="优先选择https协议"><a href="#优先选择https协议" class="headerlink" title="优先选择https协议"></a>优先选择https协议</h3><p>接口数据安全性考量</p>
-<h3 id="版本标识"><a href="#版本标识" class="headerlink" title="版本标识"></a>版本标识</h3><p>如</p>
-<ul>
-<li>api.baidu.com/v1/…</li>
-<li>api.baidu.com/v2/…</li>
-</ul>
-<h3 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h3><p>接口操作的数据对象，在url中一般采用资源（名词）复数形式。一个接口可以包含对该资源的多种操作方式。如</p>
+<h3 id="资源">资源</h3>
+<p>接口操作的数据对象，在url中一般采用资源（名词）复数形式。一个接口可以包含对该资源的多种操作方式。如</p>
 <ul>
 <li>api.baidu.com/books</li>
 <li>api.baidu.com/books/(pk)</li>
 </ul>
-<h3 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h3><p><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRUUC9NZXRob2Rz">HTTP请求方法<i class="fa fa-external-link-alt"></i></span>，标识操作资源的方式，如</p>
+<h3 id="请求方法">请求方法</h3>
+<p><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSFRUUC9NZXRob2Rz">HTTP请求方法<i class="fa fa-external-link-alt"></i></span>，标识操作资源的方式，如</p>
 <ul>
 <li><code>GET /books/</code> &amp; <code>GET /books/(pk)</code>: 获取所有/获取一个</li>
 <li><code>POST /books/</code>: 增加一个(多个)</li>
@@ -375,62 +378,67 @@
 <li><code>PUT /books/(pk)</code>: 整体更新一个</li>
 <li><code>PATCH /books/(pk)</code>: 局部更新一个</li>
 </ul>
-<h3 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h3><p>往往涉及数据的各种过滤操作及表现形式 - 筛选、排序、限制，如</p>
+<h3 id="请求参数">请求参数</h3>
+<p>往往涉及数据的各种过滤操作及表现形式 - 筛选、排序、限制，如</p>
 <ul>
 <li>api.baidu.com/books/?search=西&amp;ordering=-price&amp;limit=3</li>
 </ul>
-<h2 id="响应数据"><a href="#响应数据" class="headerlink" title="响应数据"></a>响应数据</h2><p>API返回的数据，一般为Json格式，如</p>
+<h2 id="响应数据">响应数据</h2>
+<p>API返回的数据，一般为Json格式，如</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="attr">"errcode"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"Query success."</span>,</span><br><span class="line">    <span class="attr">"body"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"location"</span>: <span class="string">"116.298457,39.848625"</span>,</span><br><span class="line">            <span class="attr">"radius"</span>: <span class="number">41</span>,</span><br><span class="line">            <span class="attr">"country"</span>: <span class="string">"中国"</span>,</span><br><span class="line">            <span class="attr">"province"</span>: <span class="string">"北京市"</span>,</span><br><span class="line">            <span class="attr">"city"</span>: <span class="string">"北京市"</span>,</span><br><span class="line">            <span class="attr">"citycode"</span>: <span class="string">"131"</span>,</span><br><span class="line">            <span class="attr">"district"</span>: <span class="string">"丰台区"</span>,</span><br><span class="line">            <span class="attr">"road"</span>: <span class="string">"丰台南路44号"</span>,</span><br><span class="line">            <span class="attr">"ctime"</span>: <span class="string">"1551178833"</span>,</span><br><span class="line">            <span class="attr">"indoor"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"error"</span>: <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>响应状态码：由开发者（前端、后端、客户）定义，是对资源请求结果的应用层状态码，非HTTP响应状态码。<ul>
-<li>常见字段名示例：<ul>
-<li><code>&quot;status&quot;</code></li>
-<li><code>&quot;errcode&quot;</code></li>
-</ul>
-</li>
-<li>常见值示例：<ul>
+<ol type="1">
+<li>响应状态码：由开发者（前端、后端、客户）定义，是对资源请求结果的应用层状态码，非HTTP响应状态码。
+<ul>
+<li>常见字段名示例：
+<ul>
+<li><code>"status"</code></li>
+<li><code>"errcode"</code></li>
+</ul></li>
+<li>常见值示例：
+<ul>
 <li><code>0</code>: 表示操作资源成功</li>
 <li><code>1</code>: 表示操作资源失败</li>
 <li><code>2</code>: 表示操作资源成功，但没匹配结果</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>响应状态码文字说明<ul>
-<li>常见字段名示例<ul>
-<li><code>&quot;msg&quot;</code></li>
-<li><code>&quot;message&quot;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>资源本身 <ul>
-<li>常见字段名示例<ul>
-<li><code>&quot;data&quot;</code></li>
-<li><code>&quot;results&quot;</code></li>
-</ul>
-</li>
-</ul>
-</li>
+</ul></li>
+</ul></li>
+<li>响应状态码文字说明
+<ul>
+<li>常见字段名示例
+<ul>
+<li><code>"msg"</code></li>
+<li><code>"message"</code></li>
+</ul></li>
+</ul></li>
+<li>资源本身
+<ul>
+<li>常见字段名示例
+<ul>
+<li><code>"data"</code></li>
+<li><code>"results"</code></li>
+</ul></li>
+</ul></li>
 </ol>
 <p>注意：不能直接返回的资源(子资源、图片、视频等资源)，而是返回该资源的url链接</p>
-<h1 id="基于restful规范的原生Django接口"><a href="#基于restful规范的原生Django接口" class="headerlink" title="基于restful规范的原生Django接口"></a>基于restful规范的原生Django接口</h1><p>测试代码及数据请参见 <a href="https://github.com/dog-2/hello_drf/tree/master/no1_my_restapi" target="_blank" rel="noopener">demo项目 <code>no1_my_restapi</code></a></p>
+<h1 id="基于restful规范的原生django接口">基于restful规范的原生Django接口</h1>
+<p>测试代码及数据请参见 <a href="https://github.com/dog-2/hello_drf/tree/master/no1_my_restapi" target="_blank" rel="noopener">demo项目 <code>no1_my_restapi</code></a></p>
 <div class="note warning">
-            <p>原生接口对<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dhbmdqdW41MTU5L2FydGljbGUvZGV0YWlscy80Nzc4MTQ0Mw==">各种格式的POST数据<i class="fa fa-external-link-alt"></i></span>的支持情况如下：</p><ul><li><input checked="" disabled="" type="checkbox"> form-data</li><li><input checked="" disabled="" type="checkbox"> x-www-form-urlencoded</li><li><input disabled="" type="checkbox"> <del>raw：包括 常见的json、xml等</del></li></ul><p>也就是说 <strong>原生接口并不支持对POST请求中json数据的自动解析，后端只能拿到整个json字符串</strong></p>
+            <p>原生接口对<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dhbmdqdW41MTU5L2FydGljbGUvZGV0YWlscy80Nzc4MTQ0Mw==">各种格式的POST数据<i class="fa fa-external-link-alt"></i></span>的支持情况如下：</p><ul class="task-list"><li><input type="checkbox" disabled="" checked="" />form-data</li><li><input type="checkbox" disabled="" checked="" />x-www-form-urlencoded</li><li><input type="checkbox" disabled="" /><del>raw：包括 常见的json、xml等</del></li></ul><p>也就是说 <strong>原生接口并不支持对POST请求中json数据的自动解析，后端只能拿到整个json字符串</strong></p>
           </div>
-
-<h1 id="DRF-Django-REST-Framework"><a href="#DRF-Django-REST-Framework" class="headerlink" title="DRF - Django REST Framework"></a>DRF - Django REST Framework</h1><p>DRF有如下主要模块：</p>
+<h1 id="drf---django-rest-framework">DRF - Django REST Framework</h1>
+<p>DRF有如下主要模块：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView, ...                      <span class="comment"># 视图模块 - 对django原生视图类的封装</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response, ...                  <span class="comment"># 响应模块 - 对django原生响应类的封装</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.request <span class="keyword">import</span> Request, ...                    <span class="comment"># 请求模块 - 对django原生请求类的封装</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.serializers <span class="keyword">import</span> Serializer, ...             <span class="comment"># 序列化与反序列化模块</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.settings <span class="keyword">import</span> APISettings                    <span class="comment"># DRF的配置文件</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.filters <span class="keyword">import</span> SearchFilter, ...               <span class="comment"># RESTful API 基础功能 - 过滤</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.pagination <span class="keyword">import</span> PageNumberPagination, ...    <span class="comment"># RESTful API 基础功能 - 分页</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.authentication <span class="keyword">import</span> TokenAuthentication, ... <span class="comment"># RESTful API 基础功能 - 认证</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> IsAuthenticated, ...        <span class="comment"># RESTful API 基础功能 - 权限（是否登录）</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.throttling <span class="keyword">import</span> SimpleRateThrottle           <span class="comment"># RESTful API 基础功能 - 频率</span></span><br></pre></td></tr></table></figure>
-
 <p>可以看到 DRF 在 django原有基础上进行类封装，并实现类 RESTful API的各大基础功能。</p>
 <p>原生View不同，DRF实现了对json格式的POST请求数据的自动解析：</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> form-data</li>
-<li><input checked="" disabled="" type="checkbox"> x-www-form-urlencoded</li>
-<li><input checked="" disabled="" type="checkbox"> raw：包括 常见的json、xml等</li>
+<ul class="task-list">
+<li><input type="checkbox" disabled="" checked="" />
+form-data</li>
+<li><input type="checkbox" disabled="" checked="" />
+x-www-form-urlencoded</li>
+<li><input type="checkbox" disabled="" checked="" />
+raw：包括 常见的json、xml等</li>
 </ul>
-<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><ul>
+<h1 id="扩展阅读">扩展阅读</h1>
+<ul>
 <li><strong><span class="exturl" data-url="aHR0cHM6Ly93d3cucmVzdGFwaXR1dG9yaWFsLmNvbS8=">A RESTful Tutorial<i class="fa fa-external-link-alt"></i></span></strong></li>
 <li><strong>API Design Cheat Sheet</strong>: <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1Jlc3RDaGVhdFNoZWV0L2FwaS1jaGVhdC1zaGVldC9ibG9iL21hc3Rlci9SRUFETUUtemgtSGFucy5tZA==">中文<i class="fa fa-external-link-alt"></i></span> / <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1Jlc3RDaGVhdFNoZWV0L2FwaS1jaGVhdC1zaGVldCNhcGktZGVzaWduLWNoZWF0LXNoZWV0">EN<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cDovL2RyZi5qaXV5b3UuaW5mby8jLw==">DRF API 指南<i class="fa fa-external-link-alt"></i></span></li>
@@ -533,7 +541,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#按"><span class="nav-number">1.</span> <span class="nav-text">按</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RESTful-API"><span class="nav-number">3.</span> <span class="nav-text">RESTful API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#接口规范"><span class="nav-number">3.1.</span> <span class="nav-text">接口规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL规范"><span class="nav-number">3.2.</span> <span class="nav-text">URL规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用api关键字标识接口url"><span class="nav-number">3.2.1.</span> <span class="nav-text">用api关键字标识接口url</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先选择https协议"><span class="nav-number">3.2.2.</span> <span class="nav-text">优先选择https协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本标识"><span class="nav-number">3.2.3.</span> <span class="nav-text">版本标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源"><span class="nav-number">3.2.4.</span> <span class="nav-text">资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求方法"><span class="nav-number">3.2.5.</span> <span class="nav-text">请求方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求参数"><span class="nav-number">3.2.6.</span> <span class="nav-text">请求参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应数据"><span class="nav-number">3.3.</span> <span class="nav-text">响应数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于restful规范的原生Django接口"><span class="nav-number">4.</span> <span class="nav-text">基于restful规范的原生Django接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DRF-Django-REST-Framework"><span class="nav-number">5.</span> <span class="nav-text">DRF - Django REST Framework</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展阅读"><span class="nav-number">6.</span> <span class="nav-text">扩展阅读</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#按"><span class="nav-number">1.</span> <span class="nav-text">按</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#restful-api"><span class="nav-number">3.</span> <span class="nav-text">RESTful API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#接口规范"><span class="nav-number">3.1.</span> <span class="nav-text">接口规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#url规范"><span class="nav-number">3.2.</span> <span class="nav-text">URL规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用api关键字标识接口url"><span class="nav-number">3.2.1.</span> <span class="nav-text">用api关键字标识接口url</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先选择https协议"><span class="nav-number">3.2.2.</span> <span class="nav-text">优先选择https协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本标识"><span class="nav-number">3.2.3.</span> <span class="nav-text">版本标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源"><span class="nav-number">3.2.4.</span> <span class="nav-text">资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求方法"><span class="nav-number">3.2.5.</span> <span class="nav-text">请求方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求参数"><span class="nav-number">3.2.6.</span> <span class="nav-text">请求参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应数据"><span class="nav-number">3.3.</span> <span class="nav-text">响应数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于restful规范的原生django接口"><span class="nav-number">4.</span> <span class="nav-text">基于restful规范的原生Django接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#drf---django-rest-framework"><span class="nav-number">5.</span> <span class="nav-text">DRF - Django REST Framework</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展阅读"><span class="nav-number">6.</span> <span class="nav-text">扩展阅读</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -549,7 +557,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -562,7 +570,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -617,14 +625,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -663,8 +671,6 @@
   
 
 
-
-
   
   <style>
   
@@ -680,13 +686,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -746,7 +750,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -830,7 +834,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -847,18 +851,61 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
-  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-1-hello-restful-api/',]
-      });
-      });
-  </script>
 
 <script>
   function loadCount() {

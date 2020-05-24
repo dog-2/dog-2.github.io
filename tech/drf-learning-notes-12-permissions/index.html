@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,21 +16,21 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (12): Permissions Author: dog2   基本信息 源码 rest_framework.permissions 官方文档 API Guild - Permissions 本文demo代码Github">
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (12): Permissions Author: dog2   基本信息  源码 rest_framework.permissions 官方文档 API Guild - Permissions 本文demo代码Github">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django REST Framework 学习笔记（十二）：权限组件">
 <meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-12-permissions/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (12): Permissions Author: dog2   基本信息 源码 rest_framework.permissions 官方文档 API Guild - Permissions 本文demo代码Github">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (12): Permissions Author: dog2   基本信息  源码 rest_framework.permissions 官方文档 API Guild - Permissions 本文demo代码Github">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-06T13:22:22.000Z">
 <meta property="article:modified_time" content="2020-05-06T13:22:22.000Z">
@@ -107,9 +107,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -129,7 +129,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -162,7 +161,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -239,7 +238,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-06 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-06T22:22:22+09:00">2020-05-06</time>
             </span>
@@ -275,18 +274,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>4.3k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>4 mins.</span>
             </span>
 
@@ -303,100 +302,86 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (12): Permissions</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvcGVybWlzc2lvbnMucHk=">rest_framework.permissions<i class="fa fa-external-link-alt"></i></span></li>
 <li>官方文档 <span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGVybWlzc2lvbnMv">API Guild - Permissions<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzEyX2RyZl9wZXJtaXNzaW9uLw==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <a id="more"></a>
-
-<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><h2 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h2><p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证</p>
-<ul>
-<li>认证组件 <code>self.perform_authentication(request)</code><ul>
-<li>校验用户：游客、合法用户、非法用户</li>
-<li>游客：代表校验通过，直接进入下一步校验（权限校验）</li>
-<li>合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验）</li>
-<li>非法用户：代表校验失败，抛出异常，返回403权限异常结果</li>
-</ul>
-</li>
-<li>权限组件 <code>self.check_permissions(request)</code><ul>
-<li>校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色</li>
-<li>认证通过：可以进入下一步校验（频率认证）</li>
-<li>认证失败：抛出异常，返回403权限异常结果</li>
-</ul>
-</li>
-<li>频率组件 <code>self.check_throttles(request)</code><ul>
-<li>限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s）</li>
-<li>没有达到限次：正常访问接口</li>
-<li>达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</li>
-</ul>
-</li>
-</ul>
+<h1 id="源码分析">源码分析</h1>
+<h2 id="入口">入口</h2>
+<p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证 - 认证组件 <code>self.perform_authentication(request)</code> - 校验用户：游客、合法用户、非法用户 - 游客：代表校验通过，直接进入下一步校验（权限校验） - 合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验） - 非法用户：代表校验失败，抛出异常，返回403权限异常结果 - 权限组件 <code>self.check_permissions(request)</code> - 校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色 - 认证通过：可以进入下一步校验（频率认证） - 认证失败：抛出异常，返回403权限异常结果 - 频率组件 <code>self.check_throttles(request)</code> - 限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s） - 没有达到限次：正常访问接口 - 达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</p>
 <p>本文介权限组件。</p>
-<h2 id="rest-framework-views-APIView-initial"><a href="#rest-framework-views-APIView-initial" class="headerlink" title="rest_framework.views.APIView.initial()"></a>rest_framework.views.APIView.initial()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Runs anything that needs to occur prior to calling the method handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.format_kwarg = self.get_format_suffix(**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Perform content negotiation and store the accepted info on the request</span></span><br><span class="line">        neg = self.perform_content_negotiation(request)</span><br><span class="line">        request.accepted_renderer, request.accepted_media_type = neg</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Determine the API version, if versioning is in use.</span></span><br><span class="line">        version, scheme = self.determine_version(request, *args, **kwargs)</span><br><span class="line">        request.version, request.versioning_scheme = version, scheme</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Ensure that the incoming request is permitted</span></span><br><span class="line">        self.perform_authentication(request) </span><br><span class="line">        self.check_permissions(request)  <span class="comment"># 权限</span></span><br><span class="line">        self.check_throttles(request)</span><br></pre></td></tr></table></figure>
-
-<h2 id="rest-framework-views-APIView-check-permissions"><a href="#rest-framework-views-APIView-check-permissions" class="headerlink" title="rest_framework.views.APIView.check_permissions()"></a>rest_framework.views.APIView.check_permissions()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_permissions</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    <span class="comment"># 遍历权限对象列表得到一个个权限对象(权限器)，进行权限认证</span></span><br><span class="line">    <span class="keyword">for</span> permission <span class="keyword">in</span> self.get_permissions():</span><br><span class="line">        <span class="comment"># 权限类一定有一个has_permission权限方法，用来做权限认证的</span></span><br><span class="line">        <span class="comment"># 参数：权限对象self、请求对象request、视图类对象</span></span><br><span class="line">        <span class="comment"># 返回值：有权限返回True，无权限返回False</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> permission.has_permission(request, self):</span><br><span class="line">            self.permission_denied(</span><br><span class="line">                request, message=getattr(permission, <span class="string">'message'</span>, <span class="literal">None</span>)</span><br><span class="line">            )</span><br></pre></td></tr></table></figure>
-
-<h2 id="rest-framework-views-APIView-get-permissions"><a href="#rest-framework-views-APIView-get-permissions" class="headerlink" title="rest_framework.views.APIView.get_permissions()"></a>rest_framework.views.APIView.get_permissions()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_permissions</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Instantiates and returns the list of permissions that this view requires.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> [permission() <span class="keyword">for</span> permission <span class="keyword">in</span> self.permission_classes]</span><br></pre></td></tr></table></figure>
-
-<h2 id="rest-framework-views-permission-classes"><a href="#rest-framework-views-permission-classes" class="headerlink" title="rest_framework.views.permission_classes"></a>rest_framework.views.permission_classes</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES</span><br></pre></td></tr></table></figure>
-
-<h2 id="api-settings-DEFAULT-PERMISSION-CLASSES"><a href="#api-settings-DEFAULT-PERMISSION-CLASSES" class="headerlink" title="api_settings.DEFAULT_PERMISSION_CLASSES"></a>api_settings.DEFAULT_PERMISSION_CLASSES</h2><p>指向 <code>settings.DEFAULTS</code>的<code>DEFAULT_PERMISSION_CLASSES</code></p>
+<h2 id="rest_framework.views.apiview.initial">rest_framework.views.APIView.initial()</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Runs anything that needs to occur prior to calling the method handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.format_kwarg = self.get_format_suffix(**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Perform content negotiation and store the accepted info on the request</span></span><br><span class="line">        neg = self.perform_content_negotiation(request)</span><br><span class="line">        request.accepted_renderer, request.accepted_media_type = neg</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Determine the API version, if versioning is in use.</span></span><br><span class="line">        version, scheme = self.determine_version(request, *args, **kwargs)</span><br><span class="line">        request.version, request.versioning_scheme = version, scheme</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Ensure that the incoming request is permitted</span></span><br><span class="line">        self.perform_authentication(request) </span><br><span class="line">        self.check_permissions(request)  <span class="comment"># 权限</span></span><br><span class="line">        self.check_throttles(request)</span><br></pre></td></tr></table></figure>
+<h2 id="rest_framework.views.apiview.check_permissions">rest_framework.views.APIView.check_permissions()</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_permissions</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    <span class="comment"># 遍历权限对象列表得到一个个权限对象(权限器)，进行权限认证</span></span><br><span class="line">    <span class="keyword">for</span> permission <span class="keyword">in</span> self.get_permissions():</span><br><span class="line">        <span class="comment"># 权限类一定有一个has_permission权限方法，用来做权限认证的</span></span><br><span class="line">        <span class="comment"># 参数：权限对象self、请求对象request、视图类对象</span></span><br><span class="line">        <span class="comment"># 返回值：有权限返回True，无权限返回False</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> permission.has_permission(request, self):</span><br><span class="line">            self.permission_denied(</span><br><span class="line">                request, message=getattr(permission, <span class="string">'message'</span>, <span class="literal">None</span>)</span><br><span class="line">            )</span><br></pre></td></tr></table></figure>
+<h2 id="rest_framework.views.apiview.get_permissions">rest_framework.views.APIView.get_permissions()</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_permissions</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Instantiates and returns the list of permissions that this view requires.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> [permission() <span class="keyword">for</span> permission <span class="keyword">in</span> self.permission_classes]</span><br></pre></td></tr></table></figure>
+<h2 id="rest_framework.views.permission_classes">rest_framework.views.permission_classes</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES</span><br></pre></td></tr></table></figure>
+<h2 id="api_settings.default_permission_classes">api_settings.DEFAULT_PERMISSION_CLASSES</h2>
+<p>指向 <code>settings.DEFAULTS</code>的<code>DEFAULT_PERMISSION_CLASSES</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DEFAULTS = &#123;</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="string">'DEFAULT_PERMISSION_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'rest_framework.permissions.AllowAny'</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="pemissions-py"><a href="#pemissions-py" class="headerlink" title="pemissions.py"></a>pemissions.py</h2><p>在源码<code>permissions.py</code>中的系统自带权限类，这里举例四个</p>
-<ol>
-<li><p><code>AllowAny</code></p>
+<h2 id="pemissions.py">pemissions.py</h2>
+<p>在源码<code>permissions.py</code>中的系统自带权限类，这里举例四个</p>
+<ol type="1">
+<li><code>AllowAny</code>
 <ul>
 <li>默认是这个权限</li>
 <li>认证规则全部返还<code>True</code>：<code>return True</code></li>
 <li>游客与登陆用户都有所有权限</li>
-</ul>
-</li>
-<li><p>IsAuthenticated</p>
+</ul></li>
+<li>IsAuthenticated
 <ul>
 <li>常用这个</li>
 <li>认证规则必须有登陆的合法用户：<code>return bool(request.user and request.user.is_authenticated)</code></li>
 <li>有登录用户名并且认证成功</li>
 <li>游客没有任何权限，登陆用户才有权限</li>
-</ul>
-</li>
-<li><p>IsAdminUser</p>
+</ul></li>
+<li>IsAdminUser
 <ul>
 <li>认证规则必须是后台管理用户：<code>return bool(request.user and request.user.is_staff)</code></li>
 <li>游客没有任何权限，登陆用户才有权限</li>
-</ul>
-</li>
-<li><p>IsAuthenticatedOrReadOnly</p>
+</ul></li>
+<li>IsAuthenticatedOrReadOnly
 <ul>
-<li>认证规则必须是只读请求或是合法用户  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> bool(</span><br><span class="line">    request.method <span class="keyword">in</span> SAFE_METHODS <span class="keyword">or</span></span><br><span class="line">    request.user <span class="keyword">and</span></span><br><span class="line">    request.user.is_authenticated</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li>认证规则必须是只读请求或是合法用户 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> bool(</span><br><span class="line">    request.method <span class="keyword">in</span> SAFE_METHODS <span class="keyword">or</span></span><br><span class="line">    request.user <span class="keyword">and</span></span><br><span class="line">    request.user.is_authenticated</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
 <li>游客只读，合法用户无限制</li>
-</ul>
-</li>
+</ul></li>
 </ol>
 <p>另外，<code>permission.py</code>里还定义了安全的HTTP请求方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SAFE_METHODS = (<span class="string">'GET'</span>, <span class="string">'HEAD'</span>, <span class="string">'OPTIONS'</span>)</span><br></pre></td></tr></table></figure>
-
-<h1 id="权限组使用"><a href="#权限组使用" class="headerlink" title="权限组使用"></a>权限组使用</h1><h2 id="全局使用"><a href="#全局使用" class="headerlink" title="全局使用"></a>全局使用</h2><p>默认全局配置的权限类是<code>AllowAny</code>，在<code>settings</code>文件中配置：</p>
+<h1 id="权限组使用">权限组使用</h1>
+<h2 id="全局使用">全局使用</h2>
+<p>默认全局配置的权限类是<code>AllowAny</code>，在<code>settings</code>文件中配置：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 权限类配置</span></span><br><span class="line">    <span class="string">'DEFAULT_PERMISSION_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'rest_framework.permissions.AllowAny'</span>,   <span class="comment">#默认所有权限</span></span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="局部使用"><a href="#局部使用" class="headerlink" title="局部使用"></a>局部使用</h2><p><code>views.py</code></p>
+<h2 id="局部使用">局部使用</h2>
+<p><code>views.py</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#只有登录后才能访问</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> IsAuthenticated</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAuthenticatedAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    permission_classes = [IsAuthenticated]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'test 登录才能访问的接口 ok'</span>)</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="自定义权限类"><a href="#自定义权限类" class="headerlink" title="自定义权限类"></a>自定义权限类</h1><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>1) 创建继承BasePermission的权限类<br>2) 实现has_permission方法<br>3) 实现体根据权限规则 确定有无权限</p>
+<h1 id="自定义权限类">自定义权限类</h1>
+<h2 id="方法">方法</h2>
+<ol type="1">
+<li>创建继承BasePermission的权限类</li>
+<li>实现has_permission方法</li>
+<li>实现体根据权限规则 确定有无权限
 <ul>
 <li>满足设置的用户条件，代表有权限，返回True</li>
-<li>不满足设置的用户条件，代表有权限，返回False<br>4) 进行全局或局部配置</li>
-</ul>
-<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><h3 id="utils-permissions-py"><a href="#utils-permissions-py" class="headerlink" title="utils.permissions.py"></a>utils.permissions.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> BasePermission</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> Group</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPermission</span><span class="params">(BasePermission)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">has_permission</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="comment"># 只读接口判断</span></span><br><span class="line">        r1 = request.method <span class="keyword">in</span> (<span class="string">'GET'</span>, <span class="string">'HEAD'</span>, <span class="string">'OPTIONS'</span>)</span><br><span class="line">        <span class="comment"># group为有权限的分组</span></span><br><span class="line">        group = Group.objects.filter(name=<span class="string">'管理员'</span>).first()</span><br><span class="line">        <span class="comment"># groups为当前用户所属的所有分组</span></span><br><span class="line">        groups = request.user.groups.all()</span><br><span class="line">        r2 = group <span class="keyword">and</span> groups <span class="comment"># group和groups必须有值</span></span><br><span class="line">        r3 = group <span class="keyword">in</span> groups</span><br><span class="line">        <span class="comment"># 读接口大家都有权限，写接口必须为指定分组下的登陆用户</span></span><br><span class="line">        <span class="keyword">return</span> r1 <span class="keyword">or</span> (r2 <span class="keyword">and</span> r3)</span><br></pre></td></tr></table></figure>
-
-<h3 id="views-py"><a href="#views-py" class="headerlink" title="views.py"></a>views.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils.permissions <span class="keyword">import</span> MyPermission</span><br><span class="line"><span class="keyword">from</span> utils.response <span class="keyword">import</span> APIResponse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 游客只读，登录用户只读，只有登录用户属于 管理员 分组，才可以增删改</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAdminOrReadOnlyAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    permission_classes = [MyPermission]</span><br><span class="line">    <span class="comment"># 所有用户都可以访问</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'自定义读 OK'</span>)</span><br><span class="line">    <span class="comment"># 必须是 自定义“管理员”分组 下的用户</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'自定义写 OK'</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="urls-py"><a href="#urls-py" class="headerlink" title="urls.py"></a>urls.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'test3/'</span>, views.TestAdminOrReadOnlyAPIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<h2 id="Postman测试"><a href="#Postman测试" class="headerlink" title="Postman测试"></a>Postman测试</h2><ul>
+<li>不满足设置的用户条件，代表有权限，返回False</li>
+</ul></li>
+<li>进行全局或局部配置</li>
+</ol>
+<h2 id="示例代码">示例代码</h2>
+<h3 id="utils.permissions.py">utils.permissions.py</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> BasePermission</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> Group</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPermission</span><span class="params">(BasePermission)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">has_permission</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="comment"># 只读接口判断</span></span><br><span class="line">        r1 = request.method <span class="keyword">in</span> (<span class="string">'GET'</span>, <span class="string">'HEAD'</span>, <span class="string">'OPTIONS'</span>)</span><br><span class="line">        <span class="comment"># group为有权限的分组</span></span><br><span class="line">        group = Group.objects.filter(name=<span class="string">'管理员'</span>).first()</span><br><span class="line">        <span class="comment"># groups为当前用户所属的所有分组</span></span><br><span class="line">        groups = request.user.groups.all()</span><br><span class="line">        r2 = group <span class="keyword">and</span> groups <span class="comment"># group和groups必须有值</span></span><br><span class="line">        r3 = group <span class="keyword">in</span> groups</span><br><span class="line">        <span class="comment"># 读接口大家都有权限，写接口必须为指定分组下的登陆用户</span></span><br><span class="line">        <span class="keyword">return</span> r1 <span class="keyword">or</span> (r2 <span class="keyword">and</span> r3)</span><br></pre></td></tr></table></figure>
+<h3 id="views.py">views.py</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils.permissions <span class="keyword">import</span> MyPermission</span><br><span class="line"><span class="keyword">from</span> utils.response <span class="keyword">import</span> APIResponse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 游客只读，登录用户只读，只有登录用户属于 管理员 分组，才可以增删改</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAdminOrReadOnlyAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    permission_classes = [MyPermission]</span><br><span class="line">    <span class="comment"># 所有用户都可以访问</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'自定义读 OK'</span>)</span><br><span class="line">    <span class="comment"># 必须是 自定义“管理员”分组 下的用户</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(<span class="number">0</span>, <span class="string">'自定义写 OK'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="urls.py">urls.py</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'test3/'</span>, views.TestAdminOrReadOnlyAPIView.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="postman测试">Postman测试</h2>
+<ul>
 <li><code>get</code>请求：加不加<code>Authorization</code>，都可以读</li>
 <li><code>post</code>请求：不加<code>Authorization</code>，就不能进行写操作，必须要写<code>Authorization</code></li>
 </ul>
@@ -496,7 +481,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#入口"><span class="nav-number">2.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-initial"><span class="nav-number">2.2.</span> <span class="nav-text">rest_framework.views.APIView.initial()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-check-permissions"><span class="nav-number">2.3.</span> <span class="nav-text">rest_framework.views.APIView.check_permissions()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-APIView-get-permissions"><span class="nav-number">2.4.</span> <span class="nav-text">rest_framework.views.APIView.get_permissions()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest-framework-views-permission-classes"><span class="nav-number">2.5.</span> <span class="nav-text">rest_framework.views.permission_classes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#api-settings-DEFAULT-PERMISSION-CLASSES"><span class="nav-number">2.6.</span> <span class="nav-text">api_settings.DEFAULT_PERMISSION_CLASSES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pemissions-py"><span class="nav-number">2.7.</span> <span class="nav-text">pemissions.py</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#权限组使用"><span class="nav-number">3.</span> <span class="nav-text">权限组使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局使用"><span class="nav-number">3.1.</span> <span class="nav-text">全局使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部使用"><span class="nav-number">3.2.</span> <span class="nav-text">局部使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义权限类"><span class="nav-number">4.</span> <span class="nav-text">自定义权限类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">4.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">4.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#utils-permissions-py"><span class="nav-number">4.2.1.</span> <span class="nav-text">utils.permissions.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views-py"><span class="nav-number">4.2.2.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urls-py"><span class="nav-number">4.2.3.</span> <span class="nav-text">urls.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Postman测试"><span class="nav-number">4.3.</span> <span class="nav-text">Postman测试</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#入口"><span class="nav-number">2.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest_framework.views.apiview.initial"><span class="nav-number">2.2.</span> <span class="nav-text">rest_framework.views.APIView.initial()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest_framework.views.apiview.check_permissions"><span class="nav-number">2.3.</span> <span class="nav-text">rest_framework.views.APIView.check_permissions()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest_framework.views.apiview.get_permissions"><span class="nav-number">2.4.</span> <span class="nav-text">rest_framework.views.APIView.get_permissions()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rest_framework.views.permission_classes"><span class="nav-number">2.5.</span> <span class="nav-text">rest_framework.views.permission_classes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#api_settings.default_permission_classes"><span class="nav-number">2.6.</span> <span class="nav-text">api_settings.DEFAULT_PERMISSION_CLASSES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pemissions.py"><span class="nav-number">2.7.</span> <span class="nav-text">pemissions.py</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#权限组使用"><span class="nav-number">3.</span> <span class="nav-text">权限组使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局使用"><span class="nav-number">3.1.</span> <span class="nav-text">全局使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部使用"><span class="nav-number">3.2.</span> <span class="nav-text">局部使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义权限类"><span class="nav-number">4.</span> <span class="nav-text">自定义权限类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">4.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">4.2.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#utils.permissions.py"><span class="nav-number">4.2.1.</span> <span class="nav-text">utils.permissions.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#views.py"><span class="nav-number">4.2.2.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#urls.py"><span class="nav-number">4.2.3.</span> <span class="nav-text">urls.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#postman测试"><span class="nav-number">4.3.</span> <span class="nav-text">Postman测试</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -512,7 +497,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -525,7 +510,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -580,14 +565,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -626,8 +611,6 @@
   
 
 
-
-
   
   <style>
   
@@ -643,13 +626,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -709,7 +690,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -793,7 +774,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -810,18 +791,61 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
-  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-12-permissions/',]
-      });
-      });
-  </script>
 
 <script>
   function loadCount() {

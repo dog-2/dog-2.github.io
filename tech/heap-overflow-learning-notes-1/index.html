@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,13 +16,13 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Title(EN): Heap Overflow Learning Notes(Win2K) #1 Author: dog2   最近在啃《0day安全：软件漏洞分析技术》（第二版）一书，打算入门二进制漏洞分析。书中第五章“堆溢出利用”较前几章难度有所增大，原因在于堆结构较之前学习的栈更复杂，第五章中的例子涵盖了堆的分布、堆块分配和释放、堆溢出利用，利用堆溢出进行攻击的例子是通过修改P.E.B（">
@@ -134,9 +134,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -156,7 +156,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -189,7 +188,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -266,7 +265,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2016-05-30 22:22:22" itemprop="dateCreated datePublished" datetime="2016-05-30T22:22:22+09:00">2016-05-30</time>
             </span>
@@ -302,18 +301,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>8.6k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>8 mins.</span>
             </span>
 
@@ -330,37 +329,34 @@
 <li>Title(EN): <em><strong>Heap Overflow Learning Notes(Win2K) #1</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <p>最近在啃《0day安全：软件漏洞分析技术》（第二版）一书，打算入门二进制漏洞分析。书中第五章“堆溢出利用”较前几章难度有所增大，原因在于堆结构较之前学习的栈更复杂，第五章中的例子涵盖了堆的分布、堆块分配和释放、堆溢出利用，利用堆溢出进行攻击的例子是通过修改P.E.B（进程环境块）中指向RtlEnterCriticalSection()函数的指针，该函数在程序退出时被调用。在调试完所有例子以后，对堆的内部细节和堆溢出利用终于有了些许的理解。</p>
-<p>第六章中也涉及到堆溢出利用，不过此处是利用Windows异常处理机制S.E.H（异常处理结构体）来实现攻击的，看完后打算调试一遍，发现几天前通过调试建立的对内存中堆分布和操作的理解都忘得差不多了，这时候终于体会到 _<strong>学习过程中根据自己的体会做一些重要笔记并且据此定期复习的重要性</strong>_，因此有了本篇。</p>
+<p>第六章中也涉及到堆溢出利用，不过此处是利用Windows异常处理机制S.E.H（异常处理结构体）来实现攻击的，看完后打算调试一遍，发现几天前通过调试建立的对内存中堆分布和操作的理解都忘得差不多了，这时候终于体会到 <em><strong>学习过程中根据自己的体会做一些重要笔记并且据此定期复习的重要性</strong></em>，因此有了本篇。</p>
 <p>希望这是个好的开头，提醒自己谨记对于复杂的重难点，要以日志的形式形成学习笔记，以供日后温故知新。</p>
 <p>关于堆以及P.E.B、S.E.H等机制的介绍，0day书中已经非常系统详尽，本文不再赘述，这里仅给出我的实验调试过程，记录其中踩的坑以及一些体会，因此以过程截图为主，相关简述为辅。第六章中堆的例子作者并没有给出相关代码及过程细节，这里也会附上。由于初学，文中难免存在错误，欢迎指正。</p>
 <a id="more"></a>
-
-<h2 id="0x00-准备工作"><a href="#0x00-准备工作" class="headerlink" title="0x00 准备工作"></a>0x00 准备工作</h2><blockquote><p>调试堆与调试栈不同，不能直接用调试器OllyDBG、WinDBG来加载程序，否则堆管理函数会检测到当前进程处于调试状态，而使用调试态堆管理策略。</p>
+<h2 id="x00-准备工作">0x00 准备工作</h2>
+<blockquote><p>调试堆与调试栈不同，不能直接用调试器OllyDBG、WinDBG来加载程序，否则堆管理函数会检测到当前进程处于调试状态，而使用调试态堆管理策略。</p>
 <p>调试态对管理策略和常态堆管理策略有很大差异。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P153</cite></footer></blockquote>
-
 <p>因此需要防止程序运行后进入调试态，按照书中所述以如下方式设置：</p>
 <ul>
 <li>设置OllyDBG为默认调试器：OllyDBG -&gt; Options菜单 -&gt; Just-in-time debugging</li>
 </ul>
-<img data-src="/tech/heap-overflow-learning-notes-1/0_1.png" class="" title="图0.1">
-
+<img src="/tech/heap-overflow-learning-notes-1/0_1.png" class="" title="图0.1">
 <ul>
 <li>设置OllyDBG 不捕获INT3中断：OllyDBG -&gt; Options菜单 -&gt; Debugging options</li>
 </ul>
-<img data-src="/tech/heap-overflow-learning-notes-1/0_2.png" class="" title="图0.2">
-
-<h2 id="0x01-初识堆"><a href="#0x01-初识堆" class="headerlink" title="0x01 初识堆"></a>0x01 初识堆</h2><hr>
+<img src="/tech/heap-overflow-learning-notes-1/0_2.png" class="" title="图0.2">
+<h2 id="x01-初识堆">0x01 初识堆</h2>
+<hr />
 <blockquote><p>在Windows中，占用态的堆块被使用它的程序索引，而堆表只索引所有空闲态的堆块。其中最重要的堆表有两种：空闲双向链表Freelist（以下简称空表）和 快速单向链表Lookaside（以下简称快表）。</p>
 <p>堆的操作中可以分为堆块分配、堆块释放和堆块合并（Coalesce）三种。其中，“分配”和“释放”是在程序_（即在用户代码中）_提交申请和执行的，而堆块合并则是有对管理系统自己完成的。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P147 & P149</cite></footer></blockquote>
-
 <p>下面观察空表的分配、释放及合并，快表中没有合并操作，因此观察它的分配及释放。</p>
-<h3 id="1-空闲双向链表Freelist"><a href="#1-空闲双向链表Freelist" class="headerlink" title="1. 空闲双向链表Freelist"></a>1. 空闲双向链表Freelist</h3><p>示例代码如下</p>
+<h3 id="空闲双向链表freelist">1. 空闲双向链表Freelist</h3>
+<p>示例代码如下</p>
 <figure class="highlight c"><figcaption><span>《0day安全：软件漏洞分析技术》(第二版) -> P152 -> heap_debug.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*****************************************************************************</span></span><br><span class="line"><span class="comment">      To be the apostrophe which changed "Impossible" into "I'm possible"!</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">POC code of chapter 6.2 in book "Vulnerability Exploit and Analysis Technique"</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment">file name	: heap_debug.c</span></span><br><span class="line"><span class="comment">author		: failwest  </span></span><br><span class="line"><span class="comment">date		: 2007.04.04</span></span><br><span class="line"><span class="comment">description	: demo show of how heap works</span></span><br><span class="line"><span class="comment">Noticed		:	1 only run on windows 2000</span></span><br><span class="line"><span class="comment">				2 complied with VC 6.0</span></span><br><span class="line"><span class="comment">				3 build into release version</span></span><br><span class="line"><span class="comment">				4 only used for run time debugging</span></span><br><span class="line"><span class="comment">version		: 1.0</span></span><br><span class="line"><span class="comment">E-mail		: failwest@gmail.com</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">	Only for educational purposes    enjoy the fun from exploiting :)</span></span><br><span class="line"><span class="comment">******************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">	HLOCAL h1,h2,h3,h4,h5,h6;</span><br><span class="line">	HANDLE hp;</span><br><span class="line">	hp = HeapCreate(<span class="number">0</span>,<span class="number">0x1000</span>,<span class="number">0x10000</span>);</span><br><span class="line">	__asm <span class="keyword">int</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">	h1 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">3</span>);</span><br><span class="line">	h2 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">5</span>);</span><br><span class="line">	h3 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">6</span>);</span><br><span class="line">	h4 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">8</span>);</span><br><span class="line">	h5 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">19</span>);</span><br><span class="line">	h6 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">24</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//free block and prevent coaleses</span></span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h1); <span class="comment">//free to freelist[2] </span></span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h3); <span class="comment">//free to freelist[2] </span></span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h5); <span class="comment">//free to freelist[4]</span></span><br><span class="line">	</span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h4); <span class="comment">//coalese h3,h4,h5,link the large block to freelist[8]</span></span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>编译环境如下：</p>
 <ul>
 <li>操作系统：运行于Vmware虚拟机，版本Win 2K SP4 5.00.2195 EN</li>
@@ -369,27 +365,24 @@
 <li>build版本：release版</li>
 </ul>
 <p>运行程序，由于INT3中断产生异常，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_1.png" class="" title="图1.1.1">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_1_1.png" class="" title="图1.1.1">
 <p>选择Cancel以加载默认调试器OllyDBG。</p>
-<h4 id="1-寻找代码HeapCreate-所创建的堆"><a href="#1-寻找代码HeapCreate-所创建的堆" class="headerlink" title="(1) 寻找代码HeapCreate()所创建的堆"></a>(1) 寻找代码HeapCreate()所创建的堆</h4><p>进入OllyDBG后，单击下图中的M按钮，以查看程序当前的内存映射状态：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_2.png" class="" title="图1.1.2">
-
+<h4 id="寻找代码heapcreate所创建的堆">(1) 寻找代码HeapCreate()所创建的堆</h4>
+<p>进入OllyDBG后，单击下图中的M按钮，以查看程序当前的内存映射状态：</p>
+<img src="/tech/heap-overflow-learning-notes-1/1_1_2.png" class="" title="图1.1.2">
 <p>与上图对应的0day书中图5.2.5指出了内存映射Memory Map中进程堆、malloc使用堆、实验中HeapCreate()创建的堆的起始地址，作者没有说明后2个是如何判断的，我的理解如下：</p>
 <ul>
 <li>malloc使用堆：这里我还无法判断，因为上图的内存映射情况跟书中的图有较大不同。</li>
 <li>实验中HeapCreate()创建的堆：可用根据大小为0x1000以及Type为Priv来筛选，0x0012D000虽然也满足，但是地址很小，在线程及进程堆附近，应该不是用户所创建的堆。因此可用筛选出0x00360000为程序代码创建的堆。</li>
 </ul>
 <p>上面讨论的是只根据观察Memory map来识别各种类型的堆，其实本例中要判断HeapCreate()创建的堆可直接根据当前汇编代码运行到INT3时EAX的值来判断，即为0x00360000，因为在INT3代码之前刚刚调用了HeapCreate()函数，并且返回了创建的堆的其实地址，该值正存储在EAX中，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_3.png" class="" title="图1.1.3">
-
-<h4 id="2-观察堆表信息"><a href="#2-观察堆表信息" class="headerlink" title="(2) 观察堆表信息"></a>(2) 观察堆表信息</h4><blockquote><p>空闲堆块的块首中包含一对重要指针，这对指针用于将空闲堆块组织成双向链表。按照堆块的大小不同，空表总共被分为128条。</p>
+<img src="/tech/heap-overflow-learning-notes-1/1_1_3.png" class="" title="图1.1.3">
+<h4 id="观察堆表信息">(2) 观察堆表信息</h4>
+<blockquote><p>空闲堆块的块首中包含一对重要指针，这对指针用于将空闲堆块组织成双向链表。按照堆块的大小不同，空表总共被分为128条。</p>
 <p>堆区一开始的堆表区中有一个128项的指针数组，被称做空表索引（Freelist array）。该数组的每一项包括两个指针，用于标识一个空表。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P147</cite></footer></blockquote>
-
 <p>在内存查看窗口中，Ctrl+G来到地址0x00360000处，观察内存，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_4.png" class="" title="图1.1.4">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_1_4.png" class="" title="图1.1.4">
 <p>按照书中介绍，从0x00360000开始，堆表中包含的信息依次为</p>
 <ul>
 <li>段表索引 Segment List</li>
@@ -399,13 +392,10 @@
 </ul>
 <p>这里只关心从偏移0x178处(距离堆起始地址0x00360000的偏移，后文省略)开始的空表索引区，这个区域存放着Freelist数组Freelist[0]~Freelist[127]，每个数组元素大小为8Byte，包含2个4Byte指针，前向指针flink（指向所在链表中下一个堆块）和后向指针blink（指向所在链表中前一个堆块）。</p>
 <p>参考书中图5.1.2，空表索引是用来索引不同大小的堆块数据链的。堆块用来存储数据，其最小单位为8 Byte，空闲堆块按照其大小被区分开来，相同大小的空闲堆块被串接起来，形成一个包含若干个同样大小的堆块堆块链。如Freelist[1]指向的是一条由若干个大小都为 1 x 8 Byte的堆块串接起来的堆块数据链，依此类推，Freelist[127]指向的是一条由若干个大小都为 127 x 8 Byte的堆块串接起来的堆块数据链，其中前向指针flink指向的是堆块数据链中的第一个堆块，后向指针blink指向的是最后一个堆块。Freelist[0]较为特殊，它链入所有 大于等于1024 Byte且小于512 KB的堆块，这些堆块按照各自的大小在Freelist[0]中升序串接。</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/0day_5_1_2.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P148 -&gt; 图5.1.2">
-
+<img src="/tech/heap-overflow-learning-notes-1/0day_5_1_2.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P148 -&gt; 图5.1.2">
 <p>值得一提的是，参考书中图5.2.8和5.2.9，每个完整的堆块的前8 Byte是块首，存储着该块大小、状态等相关信息。</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/0day_5_2_8.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P156 -&gt; 图5.2.8">
-
-<img data-src="/tech/heap-overflow-learning-notes-1/0day_5_2_9.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P157 -&gt; 图5.2.9">
-
+<img src="/tech/heap-overflow-learning-notes-1/0day_5_2_8.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P156 -&gt; 图5.2.8">
+<img src="/tech/heap-overflow-learning-notes-1/0day_5_2_9.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P157 -&gt; 图5.2.9">
 <p>块首之后数据的作用根据该堆块是否空闲有所不同：</p>
 <ul>
 <li>空闲态堆块中，紧接着块首的8 Byte包含该空闲块的前向指针和后向指针，余下的字节就是实际数据了。</li>
@@ -414,33 +404,27 @@
 <p>因此，1个包含8 Byte数据的堆块，在内存中占用的实际空间为16 Byte。当该堆块为空闲态时，8-15 Byte为前向指针和后向指针；当该堆块为占用态时，后8 Byte为实际数据。</p>
 <p>我们发现图1.1.4中的空表索引区中除了Freelist[0]中的2个指针都指向0x688，之后每个元素中的前向指针和后向指针都指向该元素的起始地址，这是因为初始状态下的堆是没有的固定大小的空闲块的，除了一个非常大、连续的初始空闲块，即尾块，它正是Freelist[0]的2个指针所指的堆块。</p>
 <p>我们来到0x680观察尾块，如下图</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_5.png" class="" title="图1.1.5">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_1_5.png" class="" title="图1.1.5">
 <p>从上图可以看出，尾块的大小为0x130 x 8 Byte，前后向指针都指向freelist[0]。</p>
 <p>这里值得一提的是块首信息中的Self Size的单位是8 Byte，也就是说该Self Size值为1的最小堆数据块占用的内存为 1 x 8 Byte，这是堆块数据的最小占用内存。</p>
 <p>注意，尾块块首位于0x680，而非Freelist[0]中指针指向的0x688，因为<strong>空表中的前向指针和后向指针指向的都是堆块中实际数据的内存地址，而非块首的地址。</strong></p>
-<h4 id="3-观察堆块的分配"><a href="#3-观察堆块的分配" class="headerlink" title="(3) 观察堆块的分配"></a>(3) 观察堆块的分配</h4><p>继续跟进代码，来观察堆块的分配与释放，但随即遇到一个坑：不管 Debugging options中怎么设置，代码执行到0x0040101D处的INT3之前，继续F8执行INT3，会进入内核代码直到终止，不会继续执行INT3之后的代码。在看雪论坛里看到大家也遇到了这种情况，也没有太好的解决办法。问题肯定出在汇编代码int3，因此我的解决办法是手动将int3改变为nop，执行空指令，这样就可以继续执行后面的代码了，但是也有不方便的地方，每次重启程序执行到该处都得手动修改此处。</p>
+<h4 id="观察堆块的分配">(3) 观察堆块的分配</h4>
+<p>继续跟进代码，来观察堆块的分配与释放，但随即遇到一个坑：不管 Debugging options中怎么设置，代码执行到0x0040101D处的INT3之前，继续F8执行INT3，会进入内核代码直到终止，不会继续执行INT3之后的代码。在看雪论坛里看到大家也遇到了这种情况，也没有太好的解决办法。问题肯定出在汇编代码int3，因此我的解决办法是手动将int3改变为nop，执行空指令，这样就可以继续执行后面的代码了，但是也有不方便的地方，每次重启程序执行到该处都得手动修改此处。</p>
 <p>连续几次F8代码执行到0x0040102B处，即完成h1堆内存分配之后，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_6.png" class="" title="图1.1.6">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_1_6.png" class="" title="图1.1.6">
 <p>从上图中可以观察到，h1的堆内存地址是之前的空闲尾块的起始地址0x688，那原来的尾块何去何从？这时可以再观察一下空表索引区，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_7.png" class="" title="图1.1.7">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_1_7.png" class="" title="图1.1.7">
 <p>从上图可以看到，Freelist[0]所指向的空闲尾块的起始地址变为0x698。再到地址0x680进行观察，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_8.png" class="" title="图1.1.8">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_1_8.png" class="" title="图1.1.8">
 <p>可以看到，尾块变小到 0x12E x 8 Byte了，缩小了(0x130 - 0x12E) x 8 Byte = 16 Byte，这16 Byte即为h1所用，虽然在C代码中h1申请大小仅为3 Byte，但是据前所述，堆块数据的最小占用内存为 8 Byte，因此包括块首的h1还是占用了16 Byte的内存空间。由于h1仅申请了3 Byte，因此0x688的前4 Byte被置为0，而后4 Byte不做改变也不会被使用，所以其值仍为之前的尾块的后向指针的值。</p>
 <p>随后的h2-h6分配过程类似，不再赘述，下面两图给出h6分配完毕后的空表索引区及对数据区的状态:</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_9.png" class="" title="图1.1.9">
-
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_10.png" class="" title="图1.1.10">
-
-<h4 id="4-观察堆块的释放"><a href="#4-观察堆块的释放" class="headerlink" title="(4) 观察堆块的释放"></a>(4) 观察堆块的释放</h4><p>接着观察堆块的释放，C代码中首先释放的是3个不相邻的堆块h1 h3 h5，由于它们不连续，因此不会发生合并。</p>
+<img src="/tech/heap-overflow-learning-notes-1/1_1_9.png" class="" title="图1.1.9">
+<img src="/tech/heap-overflow-learning-notes-1/1_1_10.png" class="" title="图1.1.10">
+<h4 id="观察堆块的释放">(4) 观察堆块的释放</h4>
+<p>接着观察堆块的释放，C代码中首先释放的是3个不相邻的堆块h1 h3 h5，由于它们不连续，因此不会发生合并。</p>
 <p>将汇编代码执行到h5释放完毕，h6开始释放之前，观察空表索引区及堆数据区的状态：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_11.png" class="" title="图1.1.11">
-
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_12.png" class="" title="图1.1.12">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_1_11.png" class="" title="图1.1.11">
+<img src="/tech/heap-overflow-learning-notes-1/1_1_12.png" class="" title="图1.1.12">
 <p>由于h1和h3的Self Size都为2且不相邻，当它们被释放时会先后与Freelist[2]串联构成双向链表，具体的链接方式为</p>
 <ul>
 <li>flink: FreeList[2] -&gt; h1 -&gt; h3 -&gt; FreeList[2]</li>
@@ -448,23 +432,20 @@
 </ul>
 <p>释放后的h5被单独串联到Freelist[4]。</p>
 <p>可以观察到在分配及释放前后，h1 h3 h5的块首中从左至右第6 Byte的数据由0x01变为0x00，该字节数据为堆块标识，值0x01表示该块处于Busy状态。处于Busy状态的空闲堆块不会被合并，而0x00状态的空闲堆块在合适的时候会被系统自动合并。</p>
-<h4 id="5-观察堆块的合并"><a href="#5-观察堆块的合并" class="headerlink" title="(5) 观察堆块的合并"></a>(5) 观察堆块的合并</h4><p>继续执行释放h4的代码，当h4被释放后，观察空表索引区及堆数据区：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_13.png" class="" title="图1.1.13">
-
-<img data-src="/tech/heap-overflow-learning-notes-1/1_1_14.png" class="" title="图1.1.14">
-
+<h4 id="观察堆块的合并">(5) 观察堆块的合并</h4>
+<p>继续执行释放h4的代码，当h4被释放后，观察空表索引区及堆数据区：</p>
+<img src="/tech/heap-overflow-learning-notes-1/1_1_13.png" class="" title="图1.1.13">
+<img src="/tech/heap-overflow-learning-notes-1/1_1_14.png" class="" title="图1.1.14">
 <p>h4被释放后，系统并不会把它与Freelist[4]串联，因为系统检测到h4 前与h3 后与h4相邻，会将它们合并，合并后新空闲块的大小为(2+2+4) x 8 Byte = 8 x 8 Byte，因此新块的Self Size为8。</p>
-<p>同时观察空表索引区，由于h3被“拿走”，与Freelist[2]串联的只剩下了h1，原先与Freelist[4]串联的h5也被“拿走”，因此Freelist[4]中的指针再次指向了它自身，而合并得到的Self Size为8的新块与Freelist[8]进行了串接。 </p>
-<h3 id="2-快速单向链表Lookaside"><a href="#2-快速单向链表Lookaside" class="headerlink" title="2. 快速单向链表Lookaside"></a>2. 快速单向链表Lookaside</h3><blockquote><p>快表是Windows用来加速堆块分配而采用的一种堆表。这里之所以把它叫做“快表”是因为这类单向链表中从来不会发生堆块合并（其中的空闲块块首被设置为占用态，用来防止堆块合并）。</p>
+<p>同时观察空表索引区，由于h3被“拿走”，与Freelist[2]串联的只剩下了h1，原先与Freelist[4]串联的h5也被“拿走”，因此Freelist[4]中的指针再次指向了它自身，而合并得到的Self Size为8的新块与Freelist[8]进行了串接。</p>
+<h3 id="快速单向链表lookaside">2. 快速单向链表Lookaside</h3>
+<blockquote><p>快表是Windows用来加速堆块分配而采用的一种堆表。这里之所以把它叫做“快表”是因为这类单向链表中从来不会发生堆块合并（其中的空闲块块首被设置为占用态，用来防止堆块合并）。</p>
 <p>快表也有128条，组织结构与空表类似，只是其中的堆块按照单链表组织。快表总是被初始化为空，而且每条快表最多只有4个节点，故很快就会被填满。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P148-149</cite></footer></blockquote>
-
 <p>快表结构如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/0day_5_1_3.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P148 -&gt; 图5.1.3">
-
+<img src="/tech/heap-overflow-learning-notes-1/0day_5_1_3.png" class="" title="《0day安全：软件漏洞分析技术》(第二版) -&gt; P148 -&gt; 图5.1.3">
 <p>示例代码如下：</p>
 <figure class="highlight c"><figcaption><span>《0day安全：软件漏洞分析技术》(第二版) -> P161 -> heap_lookaside.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*****************************************************************************</span></span><br><span class="line"><span class="comment">      To be the apostrophe which changed "Impossible" into "I'm possible"!</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">POC code of chapter 5 in book "Lookaside Using"</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment">file name	: heap_lookaside.c</span></span><br><span class="line"><span class="comment">author		: failwest  </span></span><br><span class="line"><span class="comment">date		: 2010.09.04</span></span><br><span class="line"><span class="comment">description	: demo show of how heap works</span></span><br><span class="line"><span class="comment">Noticed		:	1 only run on windows 2000</span></span><br><span class="line"><span class="comment">				2 complied with VC 6.0</span></span><br><span class="line"><span class="comment">				3 build into release version</span></span><br><span class="line"><span class="comment">				4 only used for run time debugging</span></span><br><span class="line"><span class="comment">version		: 1.0</span></span><br><span class="line"><span class="comment">E-mail		: failwest@gmail.com</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">	Only for educational purposes    enjoy the fun from exploiting :)</span></span><br><span class="line"><span class="comment">******************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HLOCAL h1,h2,h3,h4;</span><br><span class="line">	HANDLE hp;</span><br><span class="line">	hp = HeapCreate(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">	__asm <span class="keyword">int</span> <span class="number">3</span></span><br><span class="line">	h1 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">8</span>);</span><br><span class="line">	h2 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">8</span>);</span><br><span class="line">	h3 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">16</span>);</span><br><span class="line">	h4 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">24</span>);</span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h1);</span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h2);</span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h3);</span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h4);</span><br><span class="line">	h2 = HeapAlloc(hp,HEAP_ZERO_MEMORY,<span class="number">16</span>);</span><br><span class="line">	HeapFree(hp,<span class="number">0</span>,h2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>编译环境如下：</p>
 <ul>
 <li>操作系统：运行于Vmware虚拟机，版本Win 2K SP4 5.00.2195 EN</li>
@@ -475,34 +456,31 @@
 <p>本例中创建堆与上例中创建堆时的不同之处在于HeapCreate函数的使用，该函数细节详见<span class="exturl" data-url="aHR0cHM6Ly9tc2RuLm1pY3Jvc29mdC5jb20vemgtY24vbGlicmFyeS9hYTM2NjU5OQ==">MSDN<i class="fa fa-external-link-alt"></i></span>，该函数的第3个参数dwMaximumSize指定了该堆所能占用的最大空间，若dwMaximumSize=0，则将会创建一个按所需空间大小动态自增长的堆。</p>
 <p>0day书中没有指出是否在调用HeapCreate时，将dwMaximumSize设置为0时系统就会自动启用快表，而置为非零时系统默认不使用快表，根据我的理解应该是这样的。</p>
 <p><strong>在实验调试中，我发现0day书中5.2.7 “快表的使用”一节中有较为明显的错误，而后连锁反应式地在本节中引发了一连串错误。一开始还不敢确定，后来经过反复调试并阅读，基本确定错误属实而非环境不同造成的结果差异，下文将详述之。</strong></p>
-<h4 id="1-观察堆表信息"><a href="#1-观察堆表信息" class="headerlink" title="(1) 观察堆表信息"></a>(1) 观察堆表信息</h4><p>0x178处存储的尾块指针不再指向0x688，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_2_1.png" class="" title="图1.2.1">
-
+<h4 id="观察堆表信息-1">(1) 观察堆表信息</h4>
+<p>0x178处存储的尾块指针不再指向0x688，如下图：</p>
+<img src="/tech/heap-overflow-learning-notes-1/1_2_1.png" class="" title="图1.2.1">
 <blockquote>
 <p>这里插播一个在学习过程中发现的OllyDBG使用小Tips，之前没看过OllyDBG的使用文档，一些最基本的操作都是从0day书中学习到的，因此已经熟悉OllyDBG使用的同学可忽略这条Tips。</p>
 <p>观察上图中0x178处指针指向的尾块地址0x00361E90，若我们想要跳转到该地址去查看尾块，可以按照0day书中的方法在上图的内存查看窗口中按下Ctrl+G，然后键入361E90（默认16进制），就能够转到该地址查看内存。</p>
-<p>此外，还可以用鼠标右键单击内存0x178处的值0x90，选择”Follow DWORD in Dump”，即可跳转到内存0x00361E90处。还可以通过单击+或-以来回切换前面的或后面的内存窗口查看，以实现0x178和0x1E90处内存的快速来回切换查看。</p>
+<p>此外，还可以用鼠标右键单击内存0x178处的值0x90，选择"Follow DWORD in Dump"，即可跳转到内存0x00361E90处。还可以通过单击+或-以来回切换前面的或后面的内存窗口查看，以实现0x178和0x1E90处内存的快速来回切换查看。</p>
 </blockquote>
 <p>0x688处已经被快表所霸占，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_2_2.png" class="" title="图1.2.2">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_2_2.png" class="" title="图1.2.2">
 <blockquote>
 <p>与上图对应的0day书中图5.2.17标注的Lookaside[0]位于0x6b8处而非0x688处，书中的标注有误。</p>
 </blockquote>
-<h4 id="2-观察堆块的分配"><a href="#2-观察堆块的分配" class="headerlink" title="(2) 观察堆块的分配"></a>(2) 观察堆块的分配</h4><p>接着，我们来观察堆块分配操作，观察h1申请后的内存，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_2_3.png" class="" title="图1.2.3">
-
+<h4 id="观察堆块的分配-1">(2) 观察堆块的分配</h4>
+<p>接着，我们来观察堆块分配操作，观察h1申请后的内存，如下图：</p>
+<img src="/tech/heap-overflow-learning-notes-1/1_2_3.png" class="" title="图1.2.3">
 <p>此时0x178处的尾块指针指向0x1EA0，说明跟上节中讨论的空表内存申请一样，申请过程也是Freelist[0]所指向的尾块为h1腾出了空间，结果表现为尾块缩小 2 x 8 Byte，它的起始部分“向后移动”了。</p>
 <p>接着执行代码，完成h1至h4的分配，观察此时内存数据，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_2_4.png" class="" title="图1.2.4">
-
-<h4 id="3-观察堆块的释放"><a href="#3-观察堆块的释放" class="headerlink" title="(3) 观察堆块的释放"></a>(3) 观察堆块的释放</h4><p>再观察h1至h4释放后的内存数据，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_2_5.png" class="" title="图1.2.5">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_2_4.png" class="" title="图1.2.4">
+<h4 id="观察堆块的释放-1">(3) 观察堆块的释放</h4>
+<p>再观察h1至h4释放后的内存数据，如下图：</p>
+<img src="/tech/heap-overflow-learning-notes-1/1_2_5.png" class="" title="图1.2.5">
 <p>可以看到，与空表中不同的是，在释放后各块块首中从左至右第6 Byte的数据并未改变，仍为0x01即Busy状态，该标识可以保证即使该堆块现在已变为空闲堆块也不会被系统自动合并。</p>
 <p>其中，被释放后的h2中多出了一个指针，关于其用途，待观察0x688处的快表即可明白，如下图：</p>
-<img data-src="/tech/heap-overflow-learning-notes-1/1_2_6.png" class="" title="图1.2.6">
-
+<img src="/tech/heap-overflow-learning-notes-1/1_2_6.png" class="" title="图1.2.6">
 <p>从上图可以看出，被释放后的各块被链入快表中，形成了3条单向链表：</p>
 <ul>
 <li>Lookaside[2] -&gt; h2 -&gt; h1</li>
@@ -537,8 +515,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/tech/shell-interaction-in-python-1-telnet/" rel="prev" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇">
-      <i class="fa fa-chevron-left"></i> Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇
+    <a href="/tech/shell-interaction-in-python-2-ssh/" rel="prev" title="Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇">
+      <i class="fa fa-chevron-left"></i> Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（二）: SSH篇
     </a></div>
       <div class="post-nav-item">
     <a href="/tech/heap-overflow-learning-notes-2/" rel="next" title="堆溢出学习笔记(Win2K) (下)">
@@ -609,7 +587,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-准备工作"><span class="nav-number">1.</span> <span class="nav-text">0x00 准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-初识堆"><span class="nav-number">2.</span> <span class="nav-text">0x01 初识堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-空闲双向链表Freelist"><span class="nav-number">2.1.</span> <span class="nav-text">1. 空闲双向链表Freelist</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-寻找代码HeapCreate-所创建的堆"><span class="nav-number">2.1.1.</span> <span class="nav-text">(1) 寻找代码HeapCreate()所创建的堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-观察堆表信息"><span class="nav-number">2.1.2.</span> <span class="nav-text">(2) 观察堆表信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-观察堆块的分配"><span class="nav-number">2.1.3.</span> <span class="nav-text">(3) 观察堆块的分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-观察堆块的释放"><span class="nav-number">2.1.4.</span> <span class="nav-text">(4) 观察堆块的释放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-观察堆块的合并"><span class="nav-number">2.1.5.</span> <span class="nav-text">(5) 观察堆块的合并</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-快速单向链表Lookaside"><span class="nav-number">2.2.</span> <span class="nav-text">2. 快速单向链表Lookaside</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-观察堆表信息"><span class="nav-number">2.2.1.</span> <span class="nav-text">(1) 观察堆表信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-观察堆块的分配"><span class="nav-number">2.2.2.</span> <span class="nav-text">(2) 观察堆块的分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-观察堆块的释放"><span class="nav-number">2.2.3.</span> <span class="nav-text">(3) 观察堆块的释放</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#x00-准备工作"><span class="nav-number">1.</span> <span class="nav-text">0x00 准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#x01-初识堆"><span class="nav-number">2.</span> <span class="nav-text">0x01 初识堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#空闲双向链表freelist"><span class="nav-number">2.1.</span> <span class="nav-text">1. 空闲双向链表Freelist</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#寻找代码heapcreate所创建的堆"><span class="nav-number">2.1.1.</span> <span class="nav-text">(1) 寻找代码HeapCreate()所创建的堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察堆表信息"><span class="nav-number">2.1.2.</span> <span class="nav-text">(2) 观察堆表信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察堆块的分配"><span class="nav-number">2.1.3.</span> <span class="nav-text">(3) 观察堆块的分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察堆块的释放"><span class="nav-number">2.1.4.</span> <span class="nav-text">(4) 观察堆块的释放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察堆块的合并"><span class="nav-number">2.1.5.</span> <span class="nav-text">(5) 观察堆块的合并</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速单向链表lookaside"><span class="nav-number">2.2.</span> <span class="nav-text">2. 快速单向链表Lookaside</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#观察堆表信息-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">(1) 观察堆表信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察堆块的分配-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">(2) 观察堆块的分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察堆块的释放-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">(3) 观察堆块的释放</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -625,7 +603,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -638,7 +616,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -693,14 +671,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -739,8 +717,6 @@
   
 
 
-
-
   
   <style>
   
@@ -756,13 +732,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -822,7 +796,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -906,7 +880,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -923,18 +897,61 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
-  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/heap-overflow-learning-notes-1/',]
-      });
-      });
-  </script>
 
 <script>
   function loadCount() {

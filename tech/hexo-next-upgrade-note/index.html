@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,21 +16,21 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Hexo &amp; Next Upgrade Note Author: dog2   几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。 由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下： 目的 node: v6.17.1  &#x3D;&gt; v13.7.0 hexo: v3.2.x &#x3D;&gt; v4.2.0 next: v4.x &#x3D;&amp;gt">
+  <meta name="description" content="Title(EN): Hexo &amp; Next Upgrade Note Author: dog2   几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。 由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下： 目的  node: v6.17.1 &#x3D;&gt; v13.7.0 hexo: v3.2.x &#x3D;&gt; v4.2.0 next: v4.x &#x3D;&amp;gt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo &amp; Next 升级笔记">
 <meta property="og:url" content="http://dog.wtf/tech/hexo-next-upgrade-note/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Hexo &amp; Next Upgrade Note Author: dog2   几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。 由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下： 目的 node: v6.17.1  &#x3D;&gt; v13.7.0 hexo: v3.2.x &#x3D;&gt; v4.2.0 next: v4.x &#x3D;&amp;gt">
+<meta property="og:description" content="Title(EN): Hexo &amp; Next Upgrade Note Author: dog2   几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。 由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下： 目的  node: v6.17.1 &#x3D;&gt; v13.7.0 hexo: v3.2.x &#x3D;&gt; v4.2.0 next: v4.x &#x3D;&amp;gt">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-01T01:24:00.000Z">
 <meta property="article:modified_time" content="2020-05-01T13:22:22.000Z">
@@ -103,9 +103,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -125,7 +125,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -158,7 +157,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -235,7 +234,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
               
 
               <time title="Created: 2020-05-01 10:24:00 / Modified: 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-01T10:24:00+09:00">2020-05-01</time>
@@ -272,18 +271,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.6k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -300,75 +299,69 @@
 <li>Title(EN): <em><strong>Hexo &amp; Next Upgrade Note</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <p>几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。</p>
 <p>由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下：</p>
-<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><ul>
-<li>node: <code>v6.17.1</code>  =&gt; <code>v13.7.0</code></li>
+<h2 id="目的">目的</h2>
+<ul>
+<li>node: <code>v6.17.1</code> =&gt; <code>v13.7.0</code></li>
 <li>hexo: <code>v3.2.x</code> =&gt; <code>v4.2.0</code></li>
 <li>next: <code>v4.x</code> =&gt; <code>v7.8.0</code></li>
 </ul>
-<h2 id="更新-node"><a href="#更新-node" class="headerlink" title="更新 node"></a>更新 node</h2><p> 我的系统使用nvm管理多版本node，首先更新npm：</p>
+<h2 id="更新-node">更新 node</h2>
+<p>我的系统使用nvm管理多版本node，首先更新npm：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm</span><br></pre></td></tr></table></figure>
-
 <p>清除npm缓存，可能需要 sudo</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm cache clean -f</span><br></pre></td></tr></table></figure>
-
 <a id="more"></a>
-
-<h2 id="更新-hexo"><a href="#更新-hexo" class="headerlink" title="更新 hexo"></a>更新 hexo</h2><p>进入blog目录，执行如下命令：</p>
+<h2 id="更新-hexo">更新 hexo</h2>
+<p>进入blog目录，执行如下命令：</p>
 <ul>
-<li>更新package.json中的hexo及个插件版本  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm-check</span><br><span class="line">npm install -g npm-upgrade</span><br><span class="line">npm-check</span><br><span class="line">npm-upgrade</span><br></pre></td></tr></table></figure></li>
-<li>更新hexo及所有插件  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure></li>
-<li>确认hexo版本号是否已更新  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo version</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>更新package.json中的hexo及个插件版本 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm-check</span><br><span class="line">npm install -g npm-upgrade</span><br><span class="line">npm-check</span><br><span class="line">npm-upgrade</span><br></pre></td></tr></table></figure></li>
+<li>更新hexo及所有插件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure></li>
+<li>确认hexo版本号是否已更新 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo version</span><br></pre></td></tr></table></figure></li>
 </ul>
 <div class="note warning">
-            <h3 id="潜在错误"><a href="#潜在错误" class="headerlink" title="潜在错误"></a>潜在错误</h3><p>此时运行 hexo generate 命令，若出现了如下错误：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>通过重新安装 `hexo-cli` 可以解决<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+            <h3 id="潜在错误">潜在错误</h3>此时运行 hexo generate 命令，若出现了如下错误：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>通过重新安装 <code>hexo-cli</code> 可以解决<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
           </div>
-
-<h2 id="更新-Next-主题"><a href="#更新-Next-主题" class="headerlink" title="更新 Next 主题"></a>更新 Next 主题</h2><h3 id="备份（可选）"><a href="#备份（可选）" class="headerlink" title="备份（可选）"></a>备份（可选）</h3><p>我备份了如下旧配置文件：</p>
+<h2 id="更新-next-主题">更新 Next 主题</h2>
+<h3 id="备份可选">备份（可选）</h3>
+<p>我备份了如下旧配置文件：</p>
 <ul>
 <li><code>{blog_dir}/themes/next/_config.yml</code></li>
 <li><code>{blog_dir}/themes/next/languages/en.yml</code></li>
 <li><code>{blog_dir}/themes/next/languages/zh-Hans.yml</code></li>
 <li><code>{blog_dir}/themes/next/source/404.yml</code></li>
 </ul>
-<p>后来发现新版Next变化太大，很多配置项和方式都变了。<br>但是旧文件可以作为过去喜好的参考。</p>
-<h3 id="更新-Next"><a href="#更新-Next" class="headerlink" title="更新 Next"></a>更新 Next</h3><p>想要更新Next时，发现已经有了天翻地覆的变化，连github的项目目录都变了，该项目已经社区化：</p>
+<p>后来发现新版Next变化太大，很多配置项和方式都变了。 但是旧文件可以作为过去喜好的参考。</p>
+<h3 id="更新-next">更新 Next</h3>
+<p>想要更新Next时，发现已经有了天翻地覆的变化，连github的项目目录都变了，该项目已经社区化：</p>
 <ul>
-<li>旧目录 <code>~ v5.x</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2lpc3NuYW4vaGV4by10aGVtZS1uZXh0">https://github.com/iissnan/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></li>
-<li>新目录 <code>v6.x ~</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0">https://github.com/theme-next/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></li>
+<li><p>旧目录 <code>~ v5.x</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2lpc3NuYW4vaGV4by10aGVtZS1uZXh0">https://github.com/iissnan/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p></li>
+<li><p>新目录 <code>v6.x ~</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0">https://github.com/theme-next/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p></li>
+<li><p>删除旧的 next <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -fm themes/next</span><br></pre></td></tr></table></figure></p></li>
+<li><p>克隆最新的 next <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
 </ul>
-<ul>
-<li>删除旧的 next  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -fm themes/next</span><br></pre></td></tr></table></figure></li>
-<li>克隆最新的 next  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="配置-Next"><a href="#配置-Next" class="headerlink" title="配置 Next"></a>配置 Next</h3><p>从官方文档获悉，Next的配置变了很多。</p>
+<h3 id="配置-next">配置 Next</h3>
+<p>从官方文档获悉，Next的配置变了很多。</p>
 <p>其实首先该插一句，官网也变了。。。</p>
 <ul>
 <li>旧官网：<span class="exturl" data-url="aHR0cHM6Ly9ub3Rlcy5paXNzbmFuLmNvbS8=">https://notes.iissnan.com/<i class="fa fa-external-link-alt"></i></span></li>
 <li>新官网：<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy8=">https://theme-next.org/<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
-<p>新Next的配置文件，有2种设置方式，请参考官方文档：</p>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>每个人的配置不尽相同，我只是简单的配置了一部分，这里给出大佬们的非常全面的配置以供参考</p>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly90ZGluZy50b3AvYXJjaGl2ZXMvNDJjMzhiMTAuaHRtbA==">Hexo-NexT (v7.0+) 主题配置<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU0JUI4JUJCJUU5JUEyJTk4JUU3JUJFJThFJUU1JThDJTk2Lmh0bWw=">Next主题美化(仅7.1版本)<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<h3 id="定制-Next"><a href="#定制-Next" class="headerlink" title="定制 Next"></a>定制 Next</h3><h4 id="Dark-Mode-暗色背景（夜间模式）"><a href="#Dark-Mode-暗色背景（夜间模式）" class="headerlink" title="Dark Mode 暗色背景（夜间模式）"></a>Dark Mode 暗色背景（夜间模式）</h4><p>这部分内容较多，我单独写到了另一篇文章里 <a href="/tech/hexo-dark-mode-note/">Hexo（Next主题）Dark Mode(暗色背景/夜间模式)折腾笔记</a></p>
-<h4 id="代码块Mac-Panel特效"><a href="#代码块Mac-Panel特效" class="headerlink" title="代码块Mac Panel特效"></a>代码块Mac Panel特效</h4><p>这个属于美化，我没有尝试，请参见<span class="exturl" data-url="aHR0cHM6Ly9oYXNhaWsuY29tL3Bvc3RzL2Q3Mzk5ZTgwLmh0bWw=">大佬的订制<i class="fa fa-external-link-alt"></i></span>。</p>
-<h3 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h3><ol>
+<p>新Next的配置文件，有2种设置方式，请参考官方文档： - <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span> - <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></p>
+<p>每个人的配置不尽相同，我只是简单的配置了一部分，这里给出大佬们的非常全面的配置以供参考 - <span class="exturl" data-url="aHR0cHM6Ly90ZGluZy50b3AvYXJjaGl2ZXMvNDJjMzhiMTAuaHRtbA==">Hexo-NexT (v7.0+) 主题配置<i class="fa fa-external-link-alt"></i></span> - <span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU0JUI4JUJCJUU5JUEyJTk4JUU3JUJFJThFJUU1JThDJTk2Lmh0bWw=">Next主题美化(仅7.1版本)<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="定制-next">定制 Next</h3>
+<h4 id="dark-mode-暗色背景夜间模式">Dark Mode 暗色背景（夜间模式）</h4>
+<p>这部分内容较多，我单独写到了另一篇文章里 <a href="/tech/hexo-dark-mode-note/">Hexo（Next主题）Dark Mode(暗色背景/夜间模式)折腾笔记</a></p>
+<h4 id="代码块mac-panel特效">代码块Mac Panel特效</h4>
+<p>这个属于美化，我没有尝试，请参见<span class="exturl" data-url="aHR0cHM6Ly9oYXNhaWsuY29tL3Bvc3RzL2Q3Mzk5ZTgwLmh0bWw=">大佬的订制<i class="fa fa-external-link-alt"></i></span>。</p>
+<h3 id="遗留问题">遗留问题</h3>
+<ol type="1">
 <li>当前版本的Next 相关文章（<code>hexo-related-popular-posts</code>插件）<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RlYTMvaGV4by1yZWxhdGVkLXBvcHVsYXItcG9zdHMvaXNzdWVzLzIx">无法使用<i class="fa fa-external-link-alt"></i></span>，不知道是不是我的姿势不对</li>
 </ol>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<h2 id="参考链接">参考链接</h2>
+<ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly9zZWN1cml0eXRlY2guc2l0ZS96aC1DTi8zYmEzYmU5Lw==">Hexo版本升级指南<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vZW50cnkvNWI5NjUxOTVlNTFkNDUwZTU1MTlkMmM0">Hexo的DTraceProviderBindings MODULE_NOT_FOUND问题<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9zZXZlbmNoby5naXRodWIuaW8vYXJjaGl2ZXMvMTQ1MzRiZWIuaHRtbA==">Hexo博客NexT主题从v5.x.x更新到v6.x.x的记录及总结<i class="fa fa-external-link-alt"></i></span></li>
@@ -466,7 +459,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目的"><span class="nav-number">1.</span> <span class="nav-text">目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-node"><span class="nav-number">2.</span> <span class="nav-text">更新 node</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-hexo"><span class="nav-number">3.</span> <span class="nav-text">更新 hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#潜在错误"><span class="nav-number">3.1.</span> <span class="nav-text">潜在错误</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-Next-主题"><span class="nav-number">4.</span> <span class="nav-text">更新 Next 主题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#备份（可选）"><span class="nav-number">4.1.</span> <span class="nav-text">备份（可选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新-Next"><span class="nav-number">4.2.</span> <span class="nav-text">更新 Next</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-Next"><span class="nav-number">4.3.</span> <span class="nav-text">配置 Next</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制-Next"><span class="nav-number">4.4.</span> <span class="nav-text">定制 Next</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dark-Mode-暗色背景（夜间模式）"><span class="nav-number">4.4.1.</span> <span class="nav-text">Dark Mode 暗色背景（夜间模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码块Mac-Panel特效"><span class="nav-number">4.4.2.</span> <span class="nav-text">代码块Mac Panel特效</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗留问题"><span class="nav-number">4.5.</span> <span class="nav-text">遗留问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目的"><span class="nav-number">1.</span> <span class="nav-text">目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-node"><span class="nav-number">2.</span> <span class="nav-text">更新 node</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-hexo"><span class="nav-number">3.</span> <span class="nav-text">更新 hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#潜在错误"><span class="nav-number">3.1.</span> <span class="nav-text">潜在错误</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-next-主题"><span class="nav-number">4.</span> <span class="nav-text">更新 Next 主题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#备份可选"><span class="nav-number">4.1.</span> <span class="nav-text">备份（可选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新-next"><span class="nav-number">4.2.</span> <span class="nav-text">更新 Next</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-next"><span class="nav-number">4.3.</span> <span class="nav-text">配置 Next</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制-next"><span class="nav-number">4.4.</span> <span class="nav-text">定制 Next</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dark-mode-暗色背景夜间模式"><span class="nav-number">4.4.1.</span> <span class="nav-text">Dark Mode 暗色背景（夜间模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码块mac-panel特效"><span class="nav-number">4.4.2.</span> <span class="nav-text">代码块Mac Panel特效</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗留问题"><span class="nav-number">4.5.</span> <span class="nav-text">遗留问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -482,7 +475,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -495,7 +488,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -550,14 +543,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -596,8 +589,6 @@
   
 
 
-
-
   
   <style>
   
@@ -613,13 +604,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -679,7 +668,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -763,7 +752,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -780,18 +769,61 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
-  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/hexo-next-upgrade-note/',]
-      });
-      });
-  </script>
 
 <script>
   function loadCount() {

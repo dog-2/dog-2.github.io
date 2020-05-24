@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,13 +16,13 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Where is dog1 ?">
@@ -98,9 +98,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -120,7 +120,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -153,7 +152,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -208,6 +207,236 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-4-the-parsers-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-4-the-parsers-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（四）：解析模块 parsers</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-03T00:00:00+09:00">2020-05-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-4-the-parsers-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-4-the-parsers-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (4): the parsers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/parsers.py" target="_blank" rel="noopener"><code>rest_framework.parsers</code></a></li>
+<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcGFyc2Vycy8=">API Guild - Parsers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzRfZHJmX3BhcnNlcg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-4-the-parsers-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-3-the-renders-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/drf-learning-notes-3-the-renders-module/" class="post-title-link" itemprop="url">Django REST Framework 学习笔记（三）：渲染模块 renders</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-02 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-02T22:22:22+09:00">2020-05-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/drf-learning-notes-3-the-renders-module/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/drf-learning-notes-3-the-renders-module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (3): the renders module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<p>用DRF做测试会发现，用浏览器请求API返回DRF定制的页面，对开发者相当友好，如下图：</p>
+<p><img src="https://www.django-rest-framework.org/img/quickstart.png" /></p>
+<p>而若使用python第三方模块requests或者postman等工具，这则返回的是原生的json数据。</p>
+<p>实现这种差别响应的，正是本节的主角——(响应)渲染模块。</p>
+<h1 id="基本信息">基本信息</h1>
+<ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/renders.py" target="_blank" rel="noopener"><code>rest_framework.renders</code></a>
+<ul>
+<li><code>rest_framework.request.Request</code>：主要类</li>
+</ul></li>
+<li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVuZGVyZXJzLw==">API Guild - Renderers<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/drf-learning-notes-3-the-renders-module/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/drf-learning-notes-2-the-request-module/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -230,7 +459,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-02 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-02T11:11:11+09:00">2020-05-02</time>
             </span>
@@ -259,18 +488,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.5k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -287,22 +516,25 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (2): the request module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="DRF请求生命周期流程"><a href="#DRF请求生命周期流程" class="headerlink" title="DRF请求生命周期流程"></a>DRF请求生命周期流程</h1><ol>
+<hr />
+<h1 id="drf请求生命周期流程">DRF请求生命周期流程</h1>
+<ol type="1">
 <li>根据应用中<code>urls.py</code>，走<code>as_view</code>方法，但是视图类没有该方法，所以请求走的是<code>APIView</code>的<code>as_view</code>方法</li>
 <li>在<code>APIView</code>的<code>as_view</code>调用父类(django原生View)的<code>as_view</code>，同时还禁用了 csrf 认证</li>
-<li>在父类（django原生View）的<code>as_view</code>中<code>dispatch</code>方法请求走的又是<code>APIView</code>的<code>dispatch</code><ul>
+<li>在父类（django原生View）的<code>as_view</code>中<code>dispatch</code>方法请求走的又是<code>APIView</code>的<code>dispatch</code>
+<ul>
 <li>因为<code>APIView</code>也可以走<code>dispatch</code>，视图类是先继承<code>APIView</code>，<code>APIView</code>中没有再去原生<code>View</code>中</li>
-</ul>
-</li>
+</ul></li>
 <li>完成任务方法交给视图类的请求函数处理，得到请求的响应结果，返回给前台</li>
 </ol>
 <p>因此直接从APIView的dispatch入口看源码。</p>
-<h1 id="请求模块"><a href="#请求模块" class="headerlink" title="请求模块"></a>请求模块</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><ul>
-<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/request.py" target="_blank" rel="noopener"><code>rest_framework.request</code></a><ul>
+<h1 id="请求模块">请求模块</h1>
+<h2 id="基本信息">基本信息</h2>
+<ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/request.py" target="_blank" rel="noopener"><code>rest_framework.request</code></a>
+<ul>
 <li><code>rest_framework.request.Request</code>：主要类</li>
-</ul>
-</li>
+</ul></li>
 <li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">API Guild - Requests<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
           <!--noindex-->
@@ -353,7 +585,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-02 00:00:00" itemprop="dateCreated datePublished" datetime="2020-05-02T00:00:00+09:00">2020-05-02</time>
             </span>
@@ -382,18 +614,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>2.8k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>3 mins.</span>
             </span>
 
@@ -410,37 +642,38 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (1): Hello RESTful API</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
             <p>前后端分离是大势所趋</p>
 
             <i class="fa fa-quote-right"></i>
           </blockquote>
-
-<h1 id="按"><a href="#按" class="headerlink" title="按"></a>按</h1><p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">官方API文档<i class="fa fa-external-link-alt"></i></span>虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
+<h1 id="按">按</h1>
+<p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">官方API文档<i class="fa fa-external-link-alt"></i></span>虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
 <p>于是找到了<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMW5FNDExSjdoeA==">一套不错的DRF源码分析视频<i class="fa fa-external-link-alt"></i></span>来学习，并且在这里记下学习笔记。</p>
 <p>参考了这两位同学的笔记，大部分是视频讲师在视频里做过的课堂笔记。</p>
 <ul>
 <li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vd2FuZ2N1aWNhbi9jYXRlZ29yeS8xNjA3ODIyLmh0bWw=">随笔分类 - Django REST framework笔记<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20veWFuZ2ppYW9zaG91L2NhdGVnb3J5LzE2NzUwMjEuaHRtbA==">随笔分类 - Django–drf相关 <i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20veWFuZ2ppYW9zaG91L2NhdGVnb3J5LzE2NzUwMjEuaHRtbA==">随笔分类 - Django--drf相关<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <p>根据我个人理解对笔记做了部分修改、整理和补充。这里有我的<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZg==">测试代码<i class="fa fa-external-link-alt"></i></span>可供参考，包括django项目、db数据和postman的测试数据包。</p>
-<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+<h1 id="基本概念">基本概念</h1>
+<ul>
 <li><strong><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU4JUExJUE4JUU3JThFJUIwJUU1JUIxJTgyJUU3JThBJUI2JUU2JTgwJTgxJUU4JUJEJUFDJUU2JThEJUEy">RESTful<i class="fa fa-external-link-alt"></i></span></strong>: Representational State Transfer 表现层状态转换</li>
 <li><strong>ful</strong>: 形容词后缀，表示“（这一）类的、（这种）风格的”</li>
 <li><strong><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3poLWNuLyVFNSVCQSU5NCVFNyU5NCVBOCVFNyVBOCU4QiVFNSVCQSU4RiVFNiU4RSVBNSVFNSU4RiVBMw==">API<i class="fa fa-external-link-alt"></i></span></strong>: Application Programming Interface 应用程序接口</li>
 <li><strong>接口</strong>：联系两个物质的媒介，完成信息交互</li>
-<li><strong>Web程序接口</strong><ul>
+<li><strong>Web程序接口</strong>
+<ul>
 <li>功能：联系前台页面与后台数据库的媒介</li>
-<li>组成<ul>
+<li>组成
+<ul>
 <li>url: 长得像返回数据的url链接</li>
 <li>请求参数: 前台按照指定的key提供数据给后台</li>
 <li>响应数据: 后台与数据库交互后将数据反馈给前台</li>
-</ul>
-</li>
-</ul>
-</li>
+</ul></li>
+</ul></li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -490,7 +723,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-01 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-01T22:22:22+09:00">2020-05-01</time>
             </span>
@@ -519,18 +752,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.5k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -547,7 +780,7 @@
 <li>Title(EN): <em><strong>Hexo Dark Mode Note</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <blockquote>
 <p>Dark Mode —— 中老年程序🐶的眼睛续命必备功能</p>
 </blockquote>
@@ -601,7 +834,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
               
 
               <time title="Created: 2020-05-01 10:24:00 / Modified: 22:22:22" itemprop="dateCreated datePublished" datetime="2020-05-01T10:24:00+09:00">2020-05-01</time>
@@ -631,18 +864,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.6k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -659,17 +892,18 @@
 <li>Title(EN): <em><strong>Hexo &amp; Next Upgrade Note</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <p>几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。</p>
 <p>由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下：</p>
-<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><ul>
-<li>node: <code>v6.17.1</code>  =&gt; <code>v13.7.0</code></li>
+<h2 id="目的">目的</h2>
+<ul>
+<li>node: <code>v6.17.1</code> =&gt; <code>v13.7.0</code></li>
 <li>hexo: <code>v3.2.x</code> =&gt; <code>v4.2.0</code></li>
 <li>next: <code>v4.x</code> =&gt; <code>v7.8.0</code></li>
 </ul>
-<h2 id="更新-node"><a href="#更新-node" class="headerlink" title="更新 node"></a>更新 node</h2><p> 我的系统使用nvm管理多版本node，首先更新npm：</p>
+<h2 id="更新-node">更新 node</h2>
+<p>我的系统使用nvm管理多版本node，首先更新npm：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm</span><br></pre></td></tr></table></figure>
-
 <p>清除npm缓存，可能需要 sudo</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm cache clean -f</span><br></pre></td></tr></table></figure>
           <!--noindex-->
@@ -720,7 +954,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2016-07-18 20:20:00" itemprop="dateCreated datePublished" datetime="2016-07-18T20:20:00+09:00">2016-07-18</time>
             </span>
@@ -749,18 +983,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.8k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>2 mins.</span>
             </span>
 
@@ -774,11 +1008,12 @@
 
       
           <ul>
-<li>Title(EN): <em><strong>Dog2’s Cooking Notes #2: Slowly Fried DingDingDing(Cookbook)</strong></em></li>
+<li>Title(EN): <em><strong>Dog2's Cooking Notes #2: Slowly Fried DingDingDing(Cookbook)</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本菜谱是根据<span class="exturl" data-url="aHR0cDovL3d3dy54aWFjaHVmYW5nLmNvbS9y">「下厨房」<i class="fa fa-external-link-alt"></i></span>菜谱<span class="exturl" data-url="aHR0cDovL3d3dy54aWFjaHVmYW5nLmNvbS9yZWNpcGUvMTAwMjg3NTY2Lw==">「毛豆肉丁炒茄子」<i class="fa fa-external-link-alt"></i></span> 改进而来。</p>
+<hr />
+<h2 id="前言">前言</h2>
+<p>本菜谱是根据<span class="exturl" data-url="aHR0cDovL3d3dy54aWFjaHVmYW5nLmNvbS9y">「下厨房」<i class="fa fa-external-link-alt"></i></span>菜谱<span class="exturl" data-url="aHR0cDovL3d3dy54aWFjaHVmYW5nLmNvbS9yZWNpcGUvMTAwMjg3NTY2Lw==">「毛豆肉丁炒茄子」<i class="fa fa-external-link-alt"></i></span> 改进而来。</p>
 <p>改进后的菜谱在食材中去掉了茄丁，用胡萝卜丁替换，因茄丁按照原菜谱的处理方式仍比较吸盐，且原菜谱中处理茄丁不像烹制肉末茄子那样会使用过量油煎透，这会导致最终烹制的茄丁带有些许生茄特有的腥味。</p>
 <p>后续佐料以及烹制方法也有较大改动，具体见新菜谱。</p>
           <!--noindex-->
@@ -829,7 +1064,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2016-07-09 16:39:43" itemprop="dateCreated datePublished" datetime="2016-07-09T16:39:43+09:00">2016-07-09</time>
             </span>
@@ -858,18 +1093,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>786</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -883,16 +1118,18 @@
 
       
           <ul>
-<li>Title(EN): <em><strong>Dog2’s Cooking Notes #1: Salt Absorption Rate of Food Ingredients</strong></em></li>
+<li>Title(EN): <em><strong>Dog2's Cooking Notes #1: Salt Absorption Rate of Food Ingredients</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <blockquote>
 <p>学习炒菜已两月有余，觉得有些普适性的经验值得总结，便在此记录一下。</p>
 <p>本篇总结一下不同食材的吸盐度。</p>
 </blockquote>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一道菜通常由多种食材混合烹制而成，其咸味轻重会直接影响口感。不同食材对盐的吸收能力不尽相同，因此较好地平衡不同食材的咸度是佳作的重要因素之一。但网上绝大多数菜谱或教程很少考虑这一点，大多数菜谱都是在所有食材都已入锅且烹制即将完成前放入盐的，这容易造成一道菜最终由于不同食材咸淡不均而影响口感。</p>
-<h2 id="食材吸盐度表"><a href="#食材吸盐度表" class="headerlink" title="食材吸盐度表"></a>食材吸盐度表</h2><ul>
+<h2 id="前言">前言</h2>
+<p>一道菜通常由多种食材混合烹制而成，其咸味轻重会直接影响口感。不同食材对盐的吸收能力不尽相同，因此较好地平衡不同食材的咸度是佳作的重要因素之一。但网上绝大多数菜谱或教程很少考虑这一点，大多数菜谱都是在所有食材都已入锅且烹制即将完成前放入盐的，这容易造成一道菜最终由于不同食材咸淡不均而影响口感。</p>
+<h2 id="食材吸盐度表">食材吸盐度表</h2>
+<ul>
 <li>下表记录在炒制或煮制过程中不同食材对盐的吸收难易程度，完全根据个人经验，因此未必准确，如有不妥欢迎指正。</li>
 <li>虽然此表反应的是吸盐难易程度，但也可引申为相关食材入味（酸/甜/苦/辣）的难易程度。</li>
 <li>可以参考下表调整烹制时食材的形状，或调整盐与各种食材入锅的先后，以平衡不同食材的咸度。</li>
@@ -946,7 +1183,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2016-06-01 12:34:56" itemprop="dateCreated datePublished" datetime="2016-06-01T12:34:56+09:00">2016-06-01</time>
             </span>
@@ -975,18 +1212,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>14k</span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>13k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>12 mins.</span>
             </span>
 
@@ -1003,9 +1240,11 @@
 <li>Title(EN): <em><strong>Heap Overflow Learning Notes(Win2K) #2</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h2 id="堆溢出原理及利用"><a href="#堆溢出原理及利用" class="headerlink" title="堆溢出原理及利用"></a>堆溢出原理及利用</h2><hr>
-<h3 id="1-堆溢出原理"><a href="#1-堆溢出原理" class="headerlink" title="1. 堆溢出原理"></a>1. 堆溢出原理</h3><blockquote><p>堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把更新的新块“链入”空表。</p>
+<hr />
+<h2 id="堆溢出原理及利用">堆溢出原理及利用</h2>
+<hr />
+<h3 id="堆溢出原理">1. 堆溢出原理</h3>
+<blockquote><p>堆管理系统的三类操作：堆块分配、堆块释放和堆块合并归根结底都是堆链表的修改。例如，分配就是将堆块从空表中“卸下”；释放是把堆块“链入”空表；合并稍微复杂点，但也可以看成是把若干个堆块先从空表中“卸下”，修改块首信息（大小），之后把更新的新块“链入”空表。</p>
 <p>所有“卸下”和“链入”堆块的工作都发生在链表，如果我们能伪造链表结点的指针，在“卸下”和“链入”的过程中就有可能获得一次读写内存的机会。</p>
 <p>堆溢出利用的精髓就是用精心构造的数据去溢出下一个堆块的块首，改写块首中的前向指针(flink)和后向指针(blink)，然后再分配、释放、合并等操作发生时伺机获得一次向内存任意地址写入任意数据的机会。</p>
 <p>我们把这种能够向内存任意位置写入任意数据的机会成为”DWORD SHOOT“。注意：DWORD SHOOT发生时，我们不但可以控制射击的目标（任意地址），还可以选用适当的子弹（4字节恶意数据）。</p>
@@ -1059,7 +1298,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2016-05-30 22:22:22" itemprop="dateCreated datePublished" datetime="2016-05-30T22:22:22+09:00">2016-05-30</time>
             </span>
@@ -1088,18 +1327,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>8.6k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>8 mins.</span>
             </span>
 
@@ -1116,141 +1355,14 @@
 <li>Title(EN): <em><strong>Heap Overflow Learning Notes(Win2K) #1</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
+<hr />
 <p>最近在啃《0day安全：软件漏洞分析技术》（第二版）一书，打算入门二进制漏洞分析。书中第五章“堆溢出利用”较前几章难度有所增大，原因在于堆结构较之前学习的栈更复杂，第五章中的例子涵盖了堆的分布、堆块分配和释放、堆溢出利用，利用堆溢出进行攻击的例子是通过修改P.E.B（进程环境块）中指向RtlEnterCriticalSection()函数的指针，该函数在程序退出时被调用。在调试完所有例子以后，对堆的内部细节和堆溢出利用终于有了些许的理解。</p>
-<p>第六章中也涉及到堆溢出利用，不过此处是利用Windows异常处理机制S.E.H（异常处理结构体）来实现攻击的，看完后打算调试一遍，发现几天前通过调试建立的对内存中堆分布和操作的理解都忘得差不多了，这时候终于体会到 _<strong>学习过程中根据自己的体会做一些重要笔记并且据此定期复习的重要性</strong>_，因此有了本篇。</p>
+<p>第六章中也涉及到堆溢出利用，不过此处是利用Windows异常处理机制S.E.H（异常处理结构体）来实现攻击的，看完后打算调试一遍，发现几天前通过调试建立的对内存中堆分布和操作的理解都忘得差不多了，这时候终于体会到 <em><strong>学习过程中根据自己的体会做一些重要笔记并且据此定期复习的重要性</strong></em>，因此有了本篇。</p>
 <p>希望这是个好的开头，提醒自己谨记对于复杂的重难点，要以日志的形式形成学习笔记，以供日后温故知新。</p>
 <p>关于堆以及P.E.B、S.E.H等机制的介绍，0day书中已经非常系统详尽，本文不再赘述，这里仅给出我的实验调试过程，记录其中踩的坑以及一些体会，因此以过程截图为主，相关简述为辅。第六章中堆的例子作者并没有给出相关代码及过程细节，这里也会附上。由于初学，文中难免存在错误，欢迎指正。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/tech/heap-overflow-learning-notes-1/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/shell-interaction-in-python-1-telnet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/dog2.jpeg">
-      <meta itemprop="name" content="dog2">
-      <meta itemprop="description" content="Where is dog1 ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪泥鴻爪">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/tech/shell-interaction-in-python-1-telnet/" class="post-title-link" itemprop="url">Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted</span>
-
-              <time title="Created: 2015-12-30 22:22:22" itemprop="dateCreated datePublished" datetime="2015-12-30T22:22:22+09:00">2015-12-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/tech/shell-interaction-in-python-1-telnet/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/shell-interaction-in-python-1-telnet/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="Word Count">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>2.3k</span>
-            </span>
-            <span class="post-meta-item" title="Reading Time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>Title(EN): <em><strong>Shell Interaction in Python #1: Telent</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr>
-<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>我们常常需要使用编程语言实现与某些终端交互，以实现交互过程的可控性。具体到这类涉及终端交互的漏洞，只有编写合适的PoC/Exp，并与目标有正确的交互逻辑，才能进行漏洞验证。</p>
-<p>这里，我们以Juniper后门漏洞CVE-2015-7755为例，介绍如何使用Python编写Telnet交互程序，且:</p>
-<ul>
-<li>要求该程序是可以用于高并发扫描的。</li>
-<li>实现Exp，获取相关敏感信息。</li>
-</ul>
-<p>Juniper后门漏洞相关信息可参见<span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS9uZXdzLzkwMzIzLmh0bWw=">Freebuf相关文章<i class="fa fa-external-link-alt"></i></span>。简而言之，即可使用任意用户名及密码 <strong>*&lt;&lt;&lt; %s(un=’%s’) = %u*</strong> 来登录一些Juniper ScreenOS设备的Telnet及SSh服务。</p>
-<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><h4 id="模块选择"><a href="#模块选择" class="headerlink" title="模块选择"></a>模块选择</h4><p>初版PoC程序我使用了相对底层的socket模块来简单实现，用于检测单个目标没有问题，但在高并发扫描的时候效率极低，猜测是I/O阻塞的原因。</p>
-<p>转而使用系统库内置模块telnetlib：</p>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L3RlbG5ldGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi90ZWxuZXRsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>使用telnet模块后并发扫描的效率就非常高了，CPU及带宽占用率都上去了。简单翻阅telnetlib的源码，发现它是有I/O控制的。</p>
-<h4 id="Exp"><a href="#Exp" class="headerlink" title="Exp"></a>Exp</h4><p>Juniper设备使用get命令来获取设备的各类信息，可以使用 <em><strong>get ?</strong></em> 来查看相关命令，其中最重要的是2个：</p>
-<ul>
-<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
-<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
-</ul>
-<p>但存在一个问题，如上2个命令返回的全部信息总量通常比较大，一般&gt;=40KB，而服务端不是一次性将信息全部输出给客户端的，而是分批输出到管道中的，客户端需要不断地键入回车，来顺序获取各个信息分段。</p>
-<p>这就要求程序能不断获取结果信息，并正确判断最后一个分段以适时终止。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tech/shell-interaction-in-python-1-telnet/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1296,9 +1408,9 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-12-30 22:22:22" itemprop="dateCreated datePublished" datetime="2015-12-30T22:22:22+09:00">2015-12-30</time>
+              <time title="Created: 2015-12-30 22:22:23" itemprop="dateCreated datePublished" datetime="2015-12-30T22:22:23+09:00">2015-12-30</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1325,18 +1437,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>4.6k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>4 mins.</span>
             </span>
 
@@ -1353,9 +1465,12 @@
 <li>Title(EN): <em><strong>Shell Interaction in Python #2: SSH</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><h4 id="1-模块选择"><a href="#1-模块选择" class="headerlink" title="1. 模块选择"></a>1. 模块选择</h4><p>对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。</p>
-<h5 id="1-paramiko"><a href="#1-paramiko" class="headerlink" title="(1) paramiko"></a>(1) paramiko</h5><p>SSH交互最常用的是第三方模块是paramiko：</p>
+<hr />
+<h3 id="难点">难点</h3>
+<h4 id="模块选择">1. 模块选择</h4>
+<p>对于SSH交互而言，很难以纯socket去实现，因为SSH的认证过程中涉及到各种算法，工作量太大，因此考虑使用已有的SSH模块实现。</p>
+<h5 id="paramiko">(1) paramiko</h5>
+<p>SSH交互最常用的是第三方模块是paramiko：</p>
 <ul>
 <li><span class="exturl" data-url="aHR0cDovL2RvY3MucGFyYW1pa28ub3JnLw==">文档<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhcmFtaWtvL3BhcmFtaWtvL3RyZWUvbWFzdGVyL3BhcmFtaWtv">源码<i class="fa fa-external-link-alt"></i></span></li>
@@ -1363,6 +1478,137 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/tech/shell-interaction-in-python-2-ssh/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://dog.wtf/tech/shell-interaction-in-python-1-telnet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/dog2.jpeg">
+      <meta itemprop="name" content="dog2">
+      <meta itemprop="description" content="Where is dog1 ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪泥鴻爪">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/tech/shell-interaction-in-python-1-telnet/" class="post-title-link" itemprop="url">Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-12-30 22:22:22" itemprop="dateCreated datePublished" datetime="2015-12-30T22:22:22+09:00">2015-12-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/tech/shell-interaction-in-python-1-telnet/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="tech/shell-interaction-in-python-1-telnet/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>Title(EN): <em><strong>Shell Interaction in Python #1: Telent</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h3 id="背景">背景</h3>
+<p>我们常常需要使用编程语言实现与某些终端交互，以实现交互过程的可控性。具体到这类涉及终端交互的漏洞，只有编写合适的PoC/Exp，并与目标有正确的交互逻辑，才能进行漏洞验证。</p>
+<p>这里，我们以Juniper后门漏洞CVE-2015-7755为例，介绍如何使用Python编写Telnet交互程序，且:</p>
+<ul>
+<li>要求该程序是可以用于高并发扫描的。</li>
+<li>实现Exp，获取相关敏感信息。</li>
+</ul>
+<p>Juniper后门漏洞相关信息可参见<span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS9uZXdzLzkwMzIzLmh0bWw=">Freebuf相关文章<i class="fa fa-external-link-alt"></i></span>。简而言之，即可使用任意用户名及密码 <strong><em>&lt;&lt;&lt; %s(un='%s') = %u</em></strong> 来登录一些Juniper ScreenOS设备的Telnet及SSh服务。</p>
+<h3 id="难点">难点</h3>
+<h4 id="模块选择">模块选择</h4>
+<p>初版PoC程序我使用了相对底层的socket模块来简单实现，用于检测单个目标没有问题，但在高并发扫描的时候效率极低，猜测是I/O阻塞的原因。</p>
+<p>转而使用系统库内置模块telnetlib：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L3RlbG5ldGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi90ZWxuZXRsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>使用telnet模块后并发扫描的效率就非常高了，CPU及带宽占用率都上去了。简单翻阅telnetlib的源码，发现它是有I/O控制的。</p>
+<h4 id="exp">Exp</h4>
+<p>Juniper设备使用get命令来获取设备的各类信息，可以使用 <em><strong>get ?</strong></em> 来查看相关命令，其中最重要的是2个：</p>
+<ul>
+<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
+<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
+</ul>
+<p>但存在一个问题，如上2个命令返回的全部信息总量通常比较大，一般&gt;=40KB，而服务端不是一次性将信息全部输出给客户端的，而是分批输出到管道中的，客户端需要不断地键入回车，来顺序获取各个信息分段。</p>
+<p>这就要求程序能不断获取结果信息，并正确判断最后一个分段以适时终止。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tech/shell-interaction-in-python-1-telnet/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1408,7 +1654,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2015-09-15 22:22:22" itemprop="dateCreated datePublished" datetime="2015-09-15T22:22:22+09:00">2015-09-15</time>
             </span>
@@ -1437,18 +1683,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>5.9k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>5 mins.</span>
             </span>
 
@@ -1465,8 +1711,9 @@
 <li>Title(EN): <em><strong>Downloading FTP Directory Recursively with Python</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><ul>
+<hr />
+<h3 id="需求">需求</h3>
+<ul>
 <li>快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。</li>
 </ul>
           <!--noindex-->
@@ -1562,7 +1809,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1575,7 +1822,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1630,14 +1877,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -1676,8 +1923,6 @@
   
 
 
-
-
   
   <style>
   
@@ -1693,13 +1938,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -1759,7 +2002,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -1843,7 +2086,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -1860,6 +2103,59 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,21 +16,21 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (5): the exceptions module Author: dog2   基本信息 源码：rest_framework.exceptions 官方文档：API Guild - Exceptions 本文demo代码Github  异常处理DRF异常处理 所有经过drf的APIView视图类产">
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (5): the exceptions module Author: dog2   基本信息  源码：rest_framework.exceptions 官方文档：API Guild - Exceptions 本文demo代码Github  异常处理 DRF异常处理  所有经过drf的APIView视">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django REST Framework 学习笔记（五）：异常模块 exceptions">
 <meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-5-the-exceptions-module/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (5): the exceptions module Author: dog2   基本信息 源码：rest_framework.exceptions 官方文档：API Guild - Exceptions 本文demo代码Github  异常处理DRF异常处理 所有经过drf的APIView视图类产">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (5): the exceptions module Author: dog2   基本信息  源码：rest_framework.exceptions 官方文档：API Guild - Exceptions 本文demo代码Github  异常处理 DRF异常处理  所有经过drf的APIView视">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-03T02:11:11.000Z">
 <meta property="article:modified_time" content="2020-05-03T02:11:11.000Z">
@@ -107,9 +107,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -129,7 +129,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -162,7 +161,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -239,7 +238,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-03 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-03T11:11:11+09:00">2020-05-03</time>
             </span>
@@ -275,18 +274,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
-              <span>3.6k</span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.7k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>3 mins.</span>
             </span>
 
@@ -303,68 +302,60 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (5): the exceptions module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
 <li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/exceptions.py" target="_blank" rel="noopener"><code>rest_framework.exceptions</code></a></li>
 <li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZXhjZXB0aW9ucy8=">API Guild - Exceptions<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzVfZHJmX2V4Y2VwdGlvbg==">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
-<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><h2 id="DRF异常处理"><a href="#DRF异常处理" class="headerlink" title="DRF异常处理"></a>DRF异常处理</h2><ol>
+<h1 id="异常处理">异常处理</h1>
+<h2 id="drf异常处理">DRF异常处理</h2>
+<ol type="1">
 <li>所有经过drf的<code>APIView</code>视图类产生的异常，都可以提供异常处理方案</li>
 <li>drf默认提供了异常处理方案<code>rest_framework.views.exception_handler</code>，但是处理范围有限</li>
 <li>drf提供的处理方案两种，处理了返回异常现象，没处理返回None(后续就是服务器抛异常给前台)</li>
 </ol>
 <p>通常出于一些原因我们需要自定义异常处理，而非使用DRF的默认异常。</p>
-<h2 id="基于DRF自定义异常处理"><a href="#基于DRF自定义异常处理" class="headerlink" title="基于DRF自定义异常处理"></a>基于DRF自定义异常处理</h2><p>自定义异常处理的常见应用场景如下：</p>
-<ol>
+<h2 id="基于drf自定义异常处理">基于DRF自定义异常处理</h2>
+<p>自定义异常处理的常见应用场景如下：</p>
+<ol type="1">
 <li>解决drf没有处理的异常</li>
 <li>让前台得到合理的异常信息返回、隐藏异常细节而返回通用异常信息</li>
 <li>后台记录异常具体信息、如将异常细节写入日志以供审计等</li>
 </ol>
 <a id="more"></a>
-
-<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 异常模块：APIView类的dispatch方法中</span></span><br><span class="line">response = self.handle_exception(exc)  <span class="comment"># 点进去</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#自定义异常就是提供异常处理函数exception_handler,处理的目的就是让response一定有值</span></span><br><span class="line"><span class="comment">#自定义：自己写exception_handler函数，在自己的配置文件配置EXCEPTION_HANDLER指向自己的处理异常函数</span></span><br><span class="line">exception_handler = self.get_exception_handler() <span class="comment">#点进去 #获取处理异常的方法，也可以自定义异常处理方法，在settings文件中配置</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#settings中获取异常处理的方式</span></span><br><span class="line"><span class="keyword">return</span> self.settings.EXCEPTION_HANDLER</span><br><span class="line"></span><br><span class="line"><span class="comment"># APIView类属性settings</span></span><br><span class="line">settings = api_settings</span><br><span class="line"></span><br><span class="line"><span class="comment"># api_settings中定义的默认异常处理函数，又指向回了views.exception_handler函数</span></span><br><span class="line"><span class="string">'EXCEPTION_HANDLER'</span>: <span class="string">'rest_framework.views.exception_handler'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 异常处理的结果</span></span><br><span class="line"><span class="comment"># 自定义异常就是提供exception_handler异常处理函数，处理的目的就是让response一定有值</span></span><br><span class="line">response = exception_handler(exc, context)   <span class="comment">#最后发现在views中的exception_handler就是处理异常的方法</span></span><br></pre></td></tr></table></figure>
-
+<h1 id="源码分析">源码分析</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 异常模块：APIView类的dispatch方法中</span></span><br><span class="line">response = self.handle_exception(exc)  <span class="comment"># 点进去</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#自定义异常就是提供异常处理函数exception_handler,处理的目的就是让response一定有值</span></span><br><span class="line"><span class="comment">#自定义：自己写exception_handler函数，在自己的配置文件配置EXCEPTION_HANDLER指向自己的处理异常函数</span></span><br><span class="line">exception_handler = self.get_exception_handler() <span class="comment">#点进去 #获取处理异常的方法，也可以自定义异常处理方法，在settings文件中配置</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#settings中获取异常处理的方式</span></span><br><span class="line"><span class="keyword">return</span> self.settings.EXCEPTION_HANDLER</span><br><span class="line"></span><br><span class="line"><span class="comment"># APIView类属性settings</span></span><br><span class="line">settings = api_settings</span><br><span class="line"></span><br><span class="line"><span class="comment"># api_settings中定义的默认异常处理函数，又指向回了views.exception_handler函数</span></span><br><span class="line"><span class="string">'EXCEPTION_HANDLER'</span>: <span class="string">'rest_framework.views.exception_handler'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 异常处理的结果</span></span><br><span class="line"><span class="comment"># 自定义异常就是提供exception_handler异常处理函数，处理的目的就是让response一定有值</span></span><br><span class="line">response = exception_handler(exc, context)   <span class="comment">#最后发现在views中的exception_handler就是处理异常的方法</span></span><br></pre></td></tr></table></figure>
 <p>从<code>dispatch中的handle_exception</code>进入，<code>get_exception_handler()</code>获得处理异常方法<code>exception_handler()</code>，在这里也可以自定义异常方法。执行<code>exception_handler()</code>获取异常处理的结果。</p>
-<h1 id="用法示例"><a href="#用法示例" class="headerlink" title="用法示例"></a>用法示例</h1><h2 id="自定义全局配置"><a href="#自定义全局配置" class="headerlink" title="自定义全局配置"></a>自定义全局配置</h2><p>这是视频教程里的做法，它对于所有视图都采用自己定制的异常处理函数。</p>
-<ol>
+<h1 id="用法示例">用法示例</h1>
+<h2 id="自定义全局配置">自定义全局配置</h2>
+<p>这是视频教程里的做法，它对于所有视图都采用自己定制的异常处理函数。</p>
+<ol type="1">
 <li>在项目的<code>settings.py</code>中</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改自己的配置文件setting.py</span></span><br><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 全局配置异常模块</span></span><br><span class="line">    <span class="string">'EXCEPTION_HANDLER'</span>: <span class="string">'api.exception.exception_handler'</span>,  <span class="comment">#设置自定义异常文件路径，在api应用下创建exception文件，exception_handler函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>创建自定义异常处理函数，函数内部逻辑一般为<ol>
+<ol start="2" type="1">
+<li>创建自定义异常处理函数，函数内部逻辑一般为
+<ol type="1">
 <li>先将异常处理交给<code>rest_framework.views</code>的<code>exception_handler</code>去处理</li>
 <li>判断处理的结果(返回值)<code>response</code>，有值代表drf已经处理了，<code>None</code>代表drf处理不了的异常，需要自定义去处理</li>
-</ol>
-</li>
+</ol></li>
 </ol>
 <p>api应用下创建处理异常文件exception.py</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义异常处理文件exception，重写exception_handler函数</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> exception_handler <span class="keyword">as</span> drf_exception_handler   <span class="comment">#drf原生处理异常函数取别名 drf_exception_handler</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> status</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exception_handler</span><span class="params">(exc, context)</span>:</span>  <span class="comment">#自定义处理异常函数</span></span><br><span class="line">    <span class="comment"># drf的exception_handler做基础处理</span></span><br><span class="line">    response = drf_exception_handler(exc, context)</span><br><span class="line">    <span class="comment"># 为空，就是drf框架处理不了的异常</span></span><br><span class="line">    <span class="keyword">if</span> response <span class="keyword">is</span> <span class="literal">None</span>: <span class="comment">#处理之后为空，再进行自定义的二次处理</span></span><br><span class="line">        <span class="comment"># print(exc)    #错误原因   还可以做更详细的原因，通过判断exc信息类型</span></span><br><span class="line">        <span class="comment"># print(context)  #错误信息</span></span><br><span class="line">        print(<span class="string">'%s - %s - %s'</span> % (context[<span class="string">'view'</span>], context[<span class="string">'request'</span>].method, exc))</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'detail'</span>: <span class="string">'global customized exception: internal server error'</span> <span class="comment"># 全局定制异常：服务器错误</span></span><br><span class="line">        &#125;, status=status.HTTP_500_INTERNAL_SERVER_ERROR, exception=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> response     <span class="comment">#处理之后有值，就直接返回结果</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="自定义局部配置"><a href="#自定义局部配置" class="headerlink" title="自定义局部配置"></a>自定义局部配置</h2><p>这是我拓展的方法，它可以针对某个特定的视图类，定制不同于全局定制异常的特有处理方式。</p>
+<h2 id="自定义局部配置">自定义局部配置</h2>
+<p>这是我拓展的方法，它可以针对某个特定的视图类，定制不同于全局定制异常的特有处理方式。</p>
 <p>根据前面的源码分析中可以知道，要为视图类单独定制异常处理函数，可以这样做：</p>
-<ol>
+<ol type="1">
 <li>在继承<code>APIView</code>编写视图类时，重写父类的<code>get_exception_handler</code>函数，让异常处理函数指向自定义的异常处理函数。</li>
 <li>在视图类中加入定制的异常处理函数。</li>
 </ol>
 <p>示例代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.views.decorators.csrf <span class="keyword">import</span> csrf_exempt</span><br><span class="line"><span class="keyword">from</span> django.utils.decorators <span class="keyword">import</span> method_decorator</span><br><span class="line"><span class="comment"># drf原生处理异常函数取别名 drf_exception_handler</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> exception_handler <span class="keyword">as</span> drf_exception_handler</span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> status</span><br><span class="line"></span><br><span class="line"><span class="meta">@method_decorator(csrf_exempt, name='dispatch')</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalExceptionView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        print(request.query_params)</span><br><span class="line">        print(request.data)</span><br><span class="line">        print(request.not_exists) <span class="comment"># error code</span></span><br><span class="line">        <span class="keyword">return</span> Response(<span class="string">'post ok'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_exception_handler</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.exception_handler</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exception_handler</span><span class="params">(self, exc, context)</span>:</span></span><br><span class="line">        <span class="comment"># drf的exception_handler做基础处理</span></span><br><span class="line">        response = drf_exception_handler(exc, context)</span><br><span class="line">        <span class="comment"># 为空，就是drf框架处理不了的异常</span></span><br><span class="line">        <span class="keyword">if</span> response <span class="keyword">is</span> <span class="literal">None</span>: <span class="comment">#处理之后为空，再进行自定义的二次处理</span></span><br><span class="line">            <span class="comment"># print(exc)    #错误原因   还可以做更详细的原因，通过判断exc信息类型</span></span><br><span class="line">            <span class="comment"># print(context)  #错误信息</span></span><br><span class="line">            print(<span class="string">'%s - %s - %s'</span> % (context[<span class="string">'view'</span>], context[<span class="string">'request'</span>].method, exc))</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'detail'</span>: <span class="string">'local customized exception: internal server error'</span> <span class="comment"># 局部定制异常：服务器错误</span></span><br><span class="line">            &#125;, status=status.HTTP_500_INTERNAL_SERVER_ERROR, exception=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> response     <span class="comment">#处理之后有值，就直接返回结果</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="测试demo"><a href="#测试demo" class="headerlink" title="测试demo"></a>测试demo</h2><p>测试代码在这里：<a href="">no5_drf_exception</a></p>
-<p>其中包含：</p>
-<ul>
-<li>django项目<ul>
-<li>全局定制异常</li>
-<li>局部定制异常</li>
-</ul>
-</li>
-<li>postman测试数据包<ul>
-<li>全局定制异常测试</li>
-<li>局部定制异常测试</li>
-</ul>
-</li>
-</ul>
+<h2 id="测试demo">测试demo</h2>
+<p>测试代码在这里：<a href="">no5_drf_exception</a></p>
+<p>其中包含： - django项目 - 全局定制异常 - 局部定制异常 - postman测试数据包 - 全局定制异常测试 - 局部定制异常测试</p>
 
     </div>
 
@@ -461,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常处理"><span class="nav-number">2.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF异常处理"><span class="nav-number">2.1.</span> <span class="nav-text">DRF异常处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于DRF自定义异常处理"><span class="nav-number">2.2.</span> <span class="nav-text">基于DRF自定义异常处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用法示例"><span class="nav-number">4.</span> <span class="nav-text">用法示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义全局配置"><span class="nav-number">4.1.</span> <span class="nav-text">自定义全局配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义局部配置"><span class="nav-number">4.2.</span> <span class="nav-text">自定义局部配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试demo"><span class="nav-number">4.3.</span> <span class="nav-text">测试demo</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常处理"><span class="nav-number">2.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#drf异常处理"><span class="nav-number">2.1.</span> <span class="nav-text">DRF异常处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于drf自定义异常处理"><span class="nav-number">2.2.</span> <span class="nav-text">基于DRF自定义异常处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用法示例"><span class="nav-number">4.</span> <span class="nav-text">用法示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义全局配置"><span class="nav-number">4.1.</span> <span class="nav-text">自定义全局配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义局部配置"><span class="nav-number">4.2.</span> <span class="nav-text">自定义局部配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试demo"><span class="nav-number">4.3.</span> <span class="nav-text">测试demo</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -477,7 +468,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -490,7 +481,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -545,14 +536,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -591,8 +582,6 @@
   
 
 
-
-
   
   <style>
   
@@ -608,13 +597,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -674,7 +661,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -758,7 +745,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -775,18 +762,61 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
-  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-5-the-exceptions-module/',]
-      });
-      });
-  </script>
 
 <script>
   function loadCount() {

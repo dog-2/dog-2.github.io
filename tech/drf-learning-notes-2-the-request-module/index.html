@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/eye.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/eye.ico">
@@ -16,21 +16,21 @@
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-flash.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3/dist/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (2): the request module Author: dog2   DRF请求生命周期流程 根据应用中urls.py，走as_view方法，但是视图类没有该方法，所以请求走的是APIView的as_view方法 在APIView的as_view调用父类(django原生View)的as_vi">
+  <meta name="description" content="Title(EN): Django REST Framework Learning Notes (2): the request module Author: dog2   DRF请求生命周期流程  根据应用中urls.py，走as_view方法，但是视图类没有该方法，所以请求走的是APIView的as_view方法 在APIView的as_view调用父类(django原生View)的as_v">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django REST Framework 学习笔记（二）：请求模块 request">
 <meta property="og:url" content="http://dog.wtf/tech/drf-learning-notes-2-the-request-module/index.html">
 <meta property="og:site_name" content="雪泥鴻爪">
-<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (2): the request module Author: dog2   DRF请求生命周期流程 根据应用中urls.py，走as_view方法，但是视图类没有该方法，所以请求走的是APIView的as_view方法 在APIView的as_view调用父类(django原生View)的as_vi">
+<meta property="og:description" content="Title(EN): Django REST Framework Learning Notes (2): the request module Author: dog2   DRF请求生命周期流程  根据应用中urls.py，走as_view方法，但是视图类没有该方法，所以请求走的是APIView的as_view方法 在APIView的as_view调用父类(django原生View)的as_v">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-02T02:11:11.000Z">
 <meta property="article:modified_time" content="2020-05-02T02:11:11.000Z">
@@ -107,9 +107,9 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
@@ -129,7 +129,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -162,7 +161,7 @@
   </li>
         <li class="menu-item menu-item-commonweal">
 
-    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>4♡4</a>
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -239,7 +238,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted</span>
+              <span class="post-meta-item-text">Posted on</span>
 
               <time title="Created: 2020-05-02 11:11:11" itemprop="dateCreated datePublished" datetime="2020-05-02T11:11:11+09:00">2020-05-02</time>
             </span>
@@ -275,18 +274,18 @@
   </span>
   
   <br>
-            <span class="post-meta-item" title="Word Count">
+            <span class="post-meta-item" title="Symbols count in article">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">Word Count: </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
               <span>1.5k</span>
             </span>
-            <span class="post-meta-item" title="Reading Time">
+            <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">Reading Time &asymp;</span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
               <span>1 mins.</span>
             </span>
 
@@ -303,38 +302,43 @@
 <li>Title(EN): <em><strong>Django REST Framework Learning Notes (2): the request module</strong></em></li>
 <li>Author: dog2</li>
 </ul>
-<hr>
-<h1 id="DRF请求生命周期流程"><a href="#DRF请求生命周期流程" class="headerlink" title="DRF请求生命周期流程"></a>DRF请求生命周期流程</h1><ol>
+<hr />
+<h1 id="drf请求生命周期流程">DRF请求生命周期流程</h1>
+<ol type="1">
 <li>根据应用中<code>urls.py</code>，走<code>as_view</code>方法，但是视图类没有该方法，所以请求走的是<code>APIView</code>的<code>as_view</code>方法</li>
 <li>在<code>APIView</code>的<code>as_view</code>调用父类(django原生View)的<code>as_view</code>，同时还禁用了 csrf 认证</li>
-<li>在父类（django原生View）的<code>as_view</code>中<code>dispatch</code>方法请求走的又是<code>APIView</code>的<code>dispatch</code><ul>
+<li>在父类（django原生View）的<code>as_view</code>中<code>dispatch</code>方法请求走的又是<code>APIView</code>的<code>dispatch</code>
+<ul>
 <li>因为<code>APIView</code>也可以走<code>dispatch</code>，视图类是先继承<code>APIView</code>，<code>APIView</code>中没有再去原生<code>View</code>中</li>
-</ul>
-</li>
+</ul></li>
 <li>完成任务方法交给视图类的请求函数处理，得到请求的响应结果，返回给前台</li>
 </ol>
 <p>因此直接从APIView的dispatch入口看源码。</p>
-<h1 id="请求模块"><a href="#请求模块" class="headerlink" title="请求模块"></a>请求模块</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><ul>
-<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/request.py" target="_blank" rel="noopener"><code>rest_framework.request</code></a><ul>
+<h1 id="请求模块">请求模块</h1>
+<h2 id="基本信息">基本信息</h2>
+<ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/request.py" target="_blank" rel="noopener"><code>rest_framework.request</code></a>
+<ul>
 <li><code>rest_framework.request.Request</code>：主要类</li>
-</ul>
-</li>
+</ul></li>
 <li>官方文档：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">API Guild - Requests<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 <a id="more"></a>
-
-<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在`APIView`类的`dispatch`方法中，二次封装request (请求模块)</span></span><br><span class="line">request = self.initialize_request(request, *args, **kwargs)   <span class="comment">#点进去</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#点击查看Request源码</span></span><br><span class="line"><span class="keyword">return</span> Request(</span><br><span class="line">　　request,</span><br><span class="line">　　...</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在rest_framework.request.Request实例化方法中</span></span><br><span class="line">self._request = request         <span class="comment">#将原生request作为drf request的_request属性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在rest_framework.request.Request的__getattr__方法中</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">return</span> getattr(self._request, attr)  <span class="comment"># 访问属性完全兼容原生request</span></span><br><span class="line"><span class="keyword">except</span> AttributeError:</span><br><span class="line">    <span class="keyword">return</span> self.__getattribute__(attr)</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<h2 id="源码分析">源码分析</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在`APIView`类的`dispatch`方法中，二次封装request (请求模块)</span></span><br><span class="line">request = self.initialize_request(request, *args, **kwargs)   <span class="comment">#点进去</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#点击查看Request源码</span></span><br><span class="line"><span class="keyword">return</span> Request(</span><br><span class="line">　　request,</span><br><span class="line">　　...</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在rest_framework.request.Request实例化方法中</span></span><br><span class="line">self._request = request         <span class="comment">#将原生request作为drf request的_request属性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在rest_framework.request.Request的__getattr__方法中</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">return</span> getattr(self._request, attr)  <span class="comment"># 访问属性完全兼容原生request</span></span><br><span class="line"><span class="keyword">except</span> AttributeError:</span><br><span class="line">    <span class="keyword">return</span> self.__getattribute__(attr)</span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2>
+<ol type="1">
 <li>drf 对原生<code>request</code>做了二次封装，设置<code>request._request</code>等于原生<code>request</code></li>
 <li>原生<code>request</code>对象的属性和方法都可以被drf的<code>request</code>对象直接访问(兼容)</li>
-<li>drf请求的所有url拼接参数均被解析到<code>query_params</code>中，所有数据包数据都被<code>parser</code>解析到<code>data</code>中<ul>
+<li>drf请求的所有url拼接参数均被解析到<code>query_params</code>中，所有数据包数据都被<code>parser</code>解析到<code>data</code>中
+<ul>
 <li>get请求：url中拼接的参数通过<code>request.query_params</code>获取</li>
 <li>post请求：所有请求方式所携带的数据包都是通过<code>request.data</code>获取</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h2 id="用法示例"><a href="#用法示例" class="headerlink" title="用法示例"></a>用法示例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># url拼接的参数</span></span><br><span class="line">        print(request._request.GET)  <span class="comment"># 二次封装方式</span></span><br><span class="line">        print(request.GET) <span class="comment"># 兼容</span></span><br><span class="line">        print(request.query_params) <span class="comment"># 拓展</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(<span class="string">'drf get ok'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 所有请求方式携带的数据包</span></span><br><span class="line">        print(request._request.POST)  <span class="comment"># 二次封装方式</span></span><br><span class="line">        print(request.POST)  <span class="comment"># 兼容</span></span><br><span class="line">        print(request.data)  <span class="comment"># 拓展，兼容性最强，三种传参方式都可以：form-data,urlencoding,json</span></span><br><span class="line"></span><br><span class="line">        print(request.query_params)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(<span class="string">'drf post ok'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="用法示例">用法示例</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># url拼接的参数</span></span><br><span class="line">        print(request._request.GET)  <span class="comment"># 二次封装方式</span></span><br><span class="line">        print(request.GET) <span class="comment"># 兼容</span></span><br><span class="line">        print(request.query_params) <span class="comment"># 拓展</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(<span class="string">'drf get ok'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 所有请求方式携带的数据包</span></span><br><span class="line">        print(request._request.POST)  <span class="comment"># 二次封装方式</span></span><br><span class="line">        print(request.POST)  <span class="comment"># 兼容</span></span><br><span class="line">        print(request.data)  <span class="comment"># 拓展，兼容性最强，三种传参方式都可以：form-data,urlencoding,json</span></span><br><span class="line"></span><br><span class="line">        print(request.query_params)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(<span class="string">'drf post ok'</span>)</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -430,7 +434,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DRF请求生命周期流程"><span class="nav-number">1.</span> <span class="nav-text">DRF请求生命周期流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#请求模块"><span class="nav-number">2.</span> <span class="nav-text">请求模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本信息"><span class="nav-number">2.1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">2.2.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用法示例"><span class="nav-number">2.4.</span> <span class="nav-text">用法示例</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#drf请求生命周期流程"><span class="nav-number">1.</span> <span class="nav-text">DRF请求生命周期流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#请求模块"><span class="nav-number">2.</span> <span class="nav-text">请求模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本信息"><span class="nav-number">2.1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">2.2.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用法示例"><span class="nav-number">2.4.</span> <span class="nav-text">用法示例</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -446,7 +450,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -459,7 +463,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">36</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -514,14 +518,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Word Count Total">118k</span>
+    <span title="Symbols count total">125k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading Time Total">1:47</span>
+    <span title="Reading time total">1:54</span>
 </div>
-  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly9tdXNlLnRoZW1lLW5leHQub3Jn">NexT.Muse</span>
+  <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
 
         
@@ -560,8 +564,6 @@
   
 
 
-
-
   
   <style>
   
@@ -577,13 +579,11 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/pjax/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3/dist/js/jquery.fancybox.pack.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
   <script src="/lib/darkmode-js/lib/darkmode-js.min.js"></script>
-
 
 
 <script>
@@ -643,7 +643,7 @@ var pjax = new Pjax({
   scrollTo : !CONFIG.bookmark.enable
 });
 
-window.addEventListener('pjax:success', () => {
+document.addEventListener('pjax:success', () => {
   document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
     var code = element.text || element.textContent || element.innerHTML || '';
     var parent = element.parentNode;
@@ -727,7 +727,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 <script data-pjax>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'default',
       logLevel : 3,
@@ -744,18 +744,61 @@ if (document.querySelectorAll('pre.mermaid').length) {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
-  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
-  <script>
-      window.addEventListener('load', () => {
-      quicklink({
-        timeout : 3000,
-        priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://dog.wtf/tech/drf-learning-notes-2-the-request-module/',]
-      });
-      });
-  </script>
 
 <script>
   function loadCount() {
