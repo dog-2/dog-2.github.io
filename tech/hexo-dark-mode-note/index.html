@@ -37,9 +37,9 @@
 <meta property="article:modified_time" content="2020-05-01T13:22:22.000Z">
 <meta property="article:author" content="dog2">
 <meta property="article:tag" content="Tech">
-<meta property="article:tag" content="Blog">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="Hexo Next">
+<meta property="article:tag" content="Blog">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://dog.wtf/tech/hexo-dark-mode-note/1.gif">
 
@@ -350,7 +350,7 @@
 <h2 id="为next订制darkmode.js">为Next订制darkmode.js</h2>
 <p>可以参考这里我fork的next对比具体做了哪些配置和修改：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hleG8tdGhlbWUtbmV4dA==">dog-2/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p>
 <p>最终效果图见文章最后，下面是具体步骤：</p>
-<h3 id="加darkmode.js添加为next的submodule">1. 加darkmode.js添加为Next的submodule</h3>
+<h3 id="将darkmode.js添加为next的submodule">1. 将darkmode.js添加为Next的submodule</h3>
 <p>.gitignore 最后添加 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!<span class="built_in">source</span>/lib/darkmode-js</span><br></pre></td></tr></table></figure></p>
 <p>进入 <code>{blog_dir}/themes/next/</code>，执行如下命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add https://github.com/sandoche/Darkmode.js.git <span class="built_in">source</span>/lib/darkmode-js/</span><br></pre></td></tr></table></figure></p>
 <h3 id="根据偏好修改配置文件">2. 根据偏好修改配置文件</h3>
@@ -384,9 +384,9 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/tech/" rel="tag"># Tech</a>
-              <a href="/tags/blog/" rel="tag"># Blog</a>
               <a href="/tags/hexo/" rel="tag"># Hexo</a>
               <a href="/tags/hexo-next/" rel="tag"># Hexo Next</a>
+              <a href="/tags/blog/" rel="tag"># Blog</a>
           </div>
 
         
@@ -467,7 +467,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方案1官方最新版next"><span class="nav-number">1.</span> <span class="nav-text">方案1：官方最新版Next</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案2hexo-next-nightmode插件"><span class="nav-number">2.</span> <span class="nav-text">方案2：hexo-next-nightmode插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案3引入js库-darkmode.js"><span class="nav-number">3.</span> <span class="nav-text">方案3：引入js库 darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘由非重点可略过"><span class="nav-number">3.1.</span> <span class="nav-text">缘由（非重点可略过）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为next订制darkmode.js"><span class="nav-number">3.2.</span> <span class="nav-text">为Next订制darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加darkmode.js添加为next的submodule"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 加darkmode.js添加为Next的submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据偏好修改配置文件"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 根据偏好修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制vendors加入darkmode.js"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 定制vendors加入darkmode.js</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终效果"><span class="nav-number">4.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方案1官方最新版next"><span class="nav-number">1.</span> <span class="nav-text">方案1：官方最新版Next</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案2hexo-next-nightmode插件"><span class="nav-number">2.</span> <span class="nav-text">方案2：hexo-next-nightmode插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案3引入js库-darkmode.js"><span class="nav-number">3.</span> <span class="nav-text">方案3：引入js库 darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘由非重点可略过"><span class="nav-number">3.1.</span> <span class="nav-text">缘由（非重点可略过）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为next订制darkmode.js"><span class="nav-number">3.2.</span> <span class="nav-text">为Next订制darkmode.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#将darkmode.js添加为next的submodule"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 将darkmode.js添加为Next的submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据偏好修改配置文件"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 根据偏好修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制vendors加入darkmode.js"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 定制vendors加入darkmode.js</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最终效果"><span class="nav-number">4.</span> <span class="nav-text">最终效果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -483,7 +483,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -496,7 +496,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -551,12 +551,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">125k</span>
+    <span title="Symbols count total">129k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:54</span>
+    <span title="Reading time total">1:57</span>
 </div>
   <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>

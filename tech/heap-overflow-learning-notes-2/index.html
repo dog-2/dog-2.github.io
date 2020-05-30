@@ -361,7 +361,7 @@
 </ul>
 <p>代码中第3个为最终版本的shellcode，这个shellcode效果是执行MessageBoxA()弹出一个对话框，但据0day书中解释，shellcode中调用的函数也需要使用临界区，因此在其执行过程中也需要调用P.E.B中0x20偏移处的指针指向的RtlEnterCriticalSection()函数，但该处的函数指针在shellcode执行时已经被我们掉包，因此会导致shellcode中的函数执行不成功。为了避免这个问题，需要在shellcode调用关键函数前修复该处的值，shellcode中77-79行的代码就是进行修复工作的。</p>
 <p>首先，去掉代码104行处的注释，通过INT 3中断进入OllyDBG进行调试。</p>
-<p>由于RtlEnterCriticalSection()函数的实际地址在不同操作系统上有所差异，因此此处需要手动确定，由于P.E.B的地址是固定的，为0x7FFDF000，因此在内存查看窗口中通过Ctrl+G并键入0x7FFDF020来到其偏移0x20处观察，得到在我的系统中RtlEnterCriticalSection()函数的地址为0x77F82060，因此将shellcode中78行处的修复代码中的该函数地址进行修改，本行整体改为""，其中EBX的机器码。</p>
+<p>由于RtlEnterCriticalSection()函数的实际地址在不同操作系统上有所差异，因此此处需要手动确定，由于P.E.B的地址是固定的，为0x7FFDF000，因此在内存查看窗口中通过Ctrl+G并键入0x7FFDF020来到其偏移0x20处观察，得到在我的系统中RtlEnterCriticalSection()函数的地址为0x77F82060，因此将shellcode中78行处的修复代码中的该函数地址进行修改，本行整体改为&quot;6020877&quot;，其中EBX的机器码。</p>
 <p>接着，观察shellcode中第92行，0day书中尾块的地址为0x00520688，而我的机器上为0x00360688，因此将其中的52修改为36即可。</p>
 <p>最后，再将第104行的INT 3中断注释掉，重新编译运行程序，即可成功弹窗。这里有个问题，如果不注释掉该行代码，INT 3中断后进入OllyDBG进行调试，最终程序会终止在ntdll的内核代码中，不会成功弹窗，也不会执行到我们的shellcode，我尝试了很多修改选项或者不同断点的方式都无法解决这个问题，由于它不影响我们对利用P.E.B进行堆溢出利用的理解，因此放在后面讨论。</p>
 <h5 id="关于其中细节的思考">3) 关于其中细节的思考</h5>
@@ -383,7 +383,7 @@
 <p>因此本例可最终理解为进行了如下操作</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Memory(<span class="number">0x7FFDF020</span>) = <span class="number">0x00360688</span>; <span class="comment">//P.E.B DWORD SHOOT</span></span><br><span class="line">Memory(<span class="number">0x0036068C</span>) = <span class="number">0x7FFDF020</span>; <span class="comment">//指针反射</span></span><br></pre></td></tr></table></figure>
 <p>如上代码中第一行向内存地址0x7FFDF020写入了DWORD值0x00360688，篡改了该处原来存储的指向临界区函数RtlEnterCriticalSection()的指针，因此在程序出错退出调用ExitProcess()时，就会需要到P.E.B便宜0x20处获得指向RtlEnterCriticalSection()函数的指针，结果获得的是shellcode的地址0x00360688，因此转而去执行shellcode。</p>
-<p>但观察第二行代码，代码会向shellcode前部第5 Byte处写入DWORD 值0x7FFDF020，因此位于shellcode中的7F会被当做机器码执行，这有可能影响shellcode的正确执行，这种现象叫做_<strong>指针反射</strong>_，好在本例中这些指令无关痛痒“，并没有影响shellcode关键代码的执行。</p>
+<p>但观察第二行代码，代码会向shellcode前部第5 Byte处写入DWORD 值0x7FFDF020，因此位于shellcode中的2007F会被当做机器码执行，这有可能影响shellcode的正确执行，这种现象叫做_<strong>指针反射</strong>_，好在本例中这些指令无关痛痒“，并没有影响shellcode关键代码的执行。</p>
 <blockquote><p>但如果在为某个特定漏洞开发exploit时，指针反射发生且目标指针不能当做”无关痛痒“的指令安全地执行过去，那就得开动脑筋使用别的目标，或者使用跳板技术。这也是我介绍了很多种利用思路给大家的原因——要不然就只有自认倒霉了。</p>
 <footer><strong>王清</strong><cite>《0day安全：软件漏洞分析技术》(第二版) -> P177</cite></footer></blockquote>
 <h4 id="通过s.e.h异常处理结构体实施攻击">(2) 通过S.E.H（异常处理结构体）实施攻击</h4>
@@ -419,7 +419,7 @@
 </ul>
 <p>可以观察到，本例中shellcode与上例中基本一致，不同之处有二：</p>
 <ul>
-<li>DWORD SHOOT的目标地址，即shellcode的最后4 Byte，本例中暂为，为异常处理函数地址，在进行一次调试确定后，再替换即可</li>
+<li>DWORD SHOOT的目标地址，即shellcode的最后4 Byte，本例中暂为90909090，为异常处理函数地址，在进行一次调试确定后，再替换即可</li>
 <li>本例中没有进行上例中对0x7FFDF020处临界区函数RtlEnterCriticalSection()指针的修复，因为本例中并没有改变它。</li>
 </ul>
 <p>在编译后执行程序之前，先改变OllyDBG设置，不忽略任何异常，如下图:</p>
@@ -429,7 +429,7 @@
 <p>但是，这时看到的SEH chain中并没有在我们的程序发生堆溢出异常时需要用到的第一个S.E.H。需要接着执行代码直到调用行的HeapAlloc()函数，这时会出现异常，指令窗口会从用户程序代码转入ntdll.dll中的内核代码，此时再观察S.E.H chain，如下图：</p>
 <img src="/tech/heap-overflow-learning-notes-2/2_2_2_3.png" class="" title="图2.2.2.3">
 <p>观察上图，0x0012FF2C即为处理本程序第一个异常的S.E.H的地址，前面介绍过，S.E.H是个结构体，其中先后包含着下一个S.E.H的指针和异常处理函数指针，因此，我们DWORD SHOOT的目标地址为 (0x0012FF2C + 4) = 0x0012FF30。</p>
-<p>接着，修改C代码第18行shellcode中DWORD SHOOT的目标地址为，注释掉第33行的INT3中断，重新编译执行，成功弹窗。</p>
+<p>接着，修改C代码第18行shellcode中DWORD SHOOT的目标地址为301200，注释掉第33行的INT3中断，重新编译执行，成功弹窗。</p>
 <p>可以看到，这次我们依然需要注释掉INT3，否则编译执行后进入OllyDBG调试后运行，程序是不会正常弹窗的，其原因在0day书中后文中有提到：</p>
 <blockquote><p>当异常发生时，系统会顺着S.E.H链表搜索能够处理异常的句柄；一旦找到了恰当的句柄，系统会将已经遍历过的S.E.H中的异常处理函数再调用一遍，这个过程就是所谓的unwind操作，第二轮地调用就是unwind调用。</p>
 <p>unwind操作通过kernel32.dll中的一个导出函数RtlUnwind实现，实际上kernel32.dll会转而再去调用ntdll.dll中的同名函数。</p>
@@ -548,7 +548,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -561,7 +561,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -616,12 +616,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">125k</span>
+    <span title="Symbols count total">129k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:54</span>
+    <span title="Reading time total">1:57</span>
 </div>
   <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>

@@ -331,7 +331,7 @@
 <li>无论目标是我的vps还是juniper设备，第18行输出的都是空字符串。在google上百度了一下，有人遇到类似问题（<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhcmFtaWtvL3BhcmFtaWtvL2lzc3Vlcy8yNzM=">#1<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BhcmFtaWtvL3BhcmFtaWtvL3B1bGwvNTg=">#2<i class="fa fa-external-link-alt"></i></span> <span class="exturl" data-url="aHR0cDovL3N0YWNrb3ZlcmZsb3cuY29tL3F1ZXN0aW9ucy8yNTYwOTE1My9wYXJhbWlrby1lcnJvci1yZWFkaW5nLXNzaC1wcm90b2NvbC1iYW5uZXI=">#3<i class="fa fa-external-link-alt"></i></span>），也有人做了解答，但大都还是说调用get_banner()函数，并不是解决办法。猜测这可能是paramiko自身的问题，没有深究，如果您知道原因及解决办法，还请指教。</li>
 </ul>
 <h5 id="pexpect">(2) pexpect</h5>
-<p>从Freebuf文章 <span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS92dWxzLzkwODg2Lmh0bWw=">"利用Censys批量获取Juniper Netscreen后门"<i class="fa fa-external-link-alt"></i></span> 中了解到pexpect可以用来实现SSH交互，于是简单了解一番。</p>
+<p>从Freebuf文章 <span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS92dWxzLzkwODg2Lmh0bWw=">&quot;利用Censys批量获取Juniper Netscreen后门&quot;<i class="fa fa-external-link-alt"></i></span> 中了解到pexpect可以用来实现SSH交互，于是简单了解一番。</p>
 <ul>
 <li><span class="exturl" data-url="aHR0cDovL3BleHBlY3QucmVhZHRoZWRvY3Mub3JnLw==">文档<i class="fa fa-external-link-alt"></i></span></li>
 <li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BleHBlY3QvcGV4cGVjdC90cmVlL21hc3Rlci9wZXhwZWN0">源码<i class="fa fa-external-link-alt"></i></span></li>
@@ -346,7 +346,7 @@
 <p>其实由于登录后并不是传统的SSH，而是该防火墙的操作终端，因此pxssh会认为并没有登录成功，而是返回超时异常，此时我们检测其返回的before字段如果有Remote Management Console字样就说明该主机存在后门。</p>
 </blockquote>
 <p>其中提到的pxssh是pexpect中的一个类pexpect.pxssh.pxssh，编写SSH交互程序需要用到它，使用示例参见<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDIv">IBM的文档<i class="fa fa-external-link-alt"></i></span>。</p>
-<p>尝试了一番，pxssh其实是可以登陆成功的，并没有文章中所说的 "返回异常"。</p>
+<p>尝试了一番，pxssh其实是可以登陆成功的，并没有文章中所说的 &quot;返回异常&quot;。</p>
 <p>其实pxssh底层实现还是以进程的方式调用Unix/Linux自带的SSH可执行程序的，而正如上面提到的自带的SSH兼容性很强，因此使用pxssh编写PoC是不错的选择。</p>
 <p>但若将程序用于高并发扫描，需要权衡一下并发数与机器性能，因为每扫描一个目标就需要运行一个SSH客户端程序进程。</p>
 <h4 id="exp">2. Exp</h4>
@@ -361,7 +361,7 @@
 <ul>
 <li>pxssh默认将上一次命令执行后返回的结果字符串存储在实例变量pxssh.before中，但是在多次获取结果分段时，连续2次获取的消息分段会有重叠。</li>
 <li>从源码可以看到pxssh类继承自pexpect.pyt_spawn.spawn类，而spawn类又继承自pexpect.spawnbase.SpawnBase类。在SpawnBase类中，存在类变量buffer，用于接收服务器端发回的消息。因此尝试直接使用pxssh.buffer变量来代替before变量，并在每一次发送新的命令之前，将pxssh.buffer清空，但是又出现了结果不完整的问题。</li>
-<li>可以尝试使用<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDIv">IBM的文章<i class="fa fa-external-link-alt"></i></span>中 "例 3：ssh 的使用" 提到的，直接使用spawn类来实现，但是该类较为底层，需要我们自己处理SSH的登录及交互逻辑，且其中expect函数的pattern参数需为pexpect.expect中定义的类实例，而不是直接传入字符串或正则表达式，使用起来较为繁琐。</li>
+<li>可以尝试使用<span class="exturl" data-url="aHR0cDovL3d3dy5pYm0uY29tL2RldmVsb3BlcndvcmtzL2NuL2xpbnV4L2wtY24tcGV4cGVjdDIv">IBM的文章<i class="fa fa-external-link-alt"></i></span>中 &quot;例 3：ssh 的使用&quot; 提到的，直接使用spawn类来实现，但是该类较为底层，需要我们自己处理SSH的登录及交互逻辑，且其中expect函数的pattern参数需为pexpect.expect中定义的类实例，而不是直接传入字符串或正则表达式，使用起来较为繁琐。</li>
 </ul>
 <p>最终找到了合适的类函数 pexpect.pty_spawn.read_nonblocking(size=1, timeout=-1) ，它读取服务器端发来的数据，直到数据字节数达到size，或者达到超时时间timeout。但终止字符串就还需由我们自己判断。</p>
 <h3 id="代码">代码</h3>
@@ -483,7 +483,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -496,7 +496,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -551,12 +551,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">125k</span>
+    <span title="Symbols count total">129k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:54</span>
+    <span title="Reading time total">1:57</span>
 </div>
   <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
