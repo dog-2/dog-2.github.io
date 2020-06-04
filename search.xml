@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python 3.8+里的asyncio和asyncio.Semaphore</title>
+    <url>/tech/asyncio-and-asyncio-semaphore-in-python-3-8/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>asyncio and asyncio.Semaphore in Python 3.8+</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<p>以前的程序放在Python 3.8里跑出错了，原来是由于Python升级3.8后协程库<code>asyncio</code>又双叒叕更新了。 新版本里<code>asyncio.Semaphore</code>的用法改变了，本文简单记录一下新写法。</p>
+<a id="more"></a>
+<p>代码说明：用<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy9hc3luYy8=">支持异步<i class="fa fa-external-link-alt"></i></span>的http库<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy8=">httpx<i class="fa fa-external-link-alt"></i></span>简单爬数据，用<code>asyncio.Semaphore</code>控制并发数，而<code>asyncio.Semaphore</code>在Python 3.8中需要配合上下文管理器<code>contextvars.ContextVar</code>使用。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> httpx</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> contextvars <span class="keyword">import</span> ContextVar</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crawl</span><span class="params">(concurrency=<span class="number">3</span>)</span>:</span></span><br><span class="line">    context = ContextVar(<span class="string">"concurrent"</span>)  <span class="comment"># 定义全局上下文管理器</span></span><br><span class="line">    URL_BASE = <span class="string">'https://github.com/topics?page='</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_one</span><span class="params">(i)</span>:</span></span><br><span class="line">        sem = context.get()  <span class="comment"># 获取上下文关键字</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> sem:</span><br><span class="line">            <span class="keyword">async</span> <span class="keyword">with</span> httpx.AsyncClient() <span class="keyword">as</span> client:</span><br><span class="line">                r = <span class="keyword">await</span> client.get(<span class="string">f"<span class="subst">&#123;URL_BASE&#125;</span><span class="subst">&#123;i&#125;</span>"</span>)</span><br><span class="line">                <span class="keyword">return</span> len(r.text)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_all</span><span class="params">()</span>:</span></span><br><span class="line">        context.set(asyncio.Semaphore(concurrency)) <span class="comment">#上下文管理器赋值，concurrency控制并发数</span></span><br><span class="line">        tasks = [asyncio.create_task(crawl_one(i)) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">30</span>)] <span class="comment"># 将协程封装成任务共30个</span></span><br><span class="line">        done, pending = <span class="keyword">await</span> asyncio.wait(tasks) <span class="comment"># 执行所有任务</span></span><br><span class="line">        <span class="keyword">return</span> done</span><br><span class="line"></span><br><span class="line">    tasks_done = asyncio.run(crawl_all())</span><br><span class="line">    <span class="keyword">return</span> [t.result() <span class="keyword">for</span> t <span class="keyword">in</span> tasks_done]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> crawl(concurrency=<span class="number">1</span>):</span><br><span class="line">        print(r)</span><br></pre></td></tr></table></figure>
+<p>参考链接： - <span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYy14LWEvcC8xMDg2ODQ5Ny5odG1s">Python 协程模块 asyncio 使用指南<i class="fa fa-external-link-alt"></i></span></p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Async</tag>
+        <tag>Coroutine</tag>
+        <tag>Dev</tag>
+        <tag>Python</tag>
+        <tag>Semaphore</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>用BasicTeX及TeXworks构建轻量LaTex写作环境</title>
     <url>/tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/</url>
     <content><![CDATA[<ul>
@@ -67,10 +92,10 @@
         <category>Tech</category>
       </categories>
       <tags>
+        <tag>Tech</tag>
         <tag>LaTeX</tag>
         <tag>Mac OS</tag>
         <tag>Math</tag>
-        <tag>Tech</tag>
         <tag>TeX</tag>
       </tags>
   </entry>
@@ -90,9 +115,9 @@
         <category>Tech</category>
       </categories>
       <tags>
+        <tag>Learning Notes</tag>
         <tag>Tech</tag>
         <tag>AI</tag>
-        <tag>Learning Notes</tag>
         <tag>Machine Learning</tag>
         <tag>Neural Network</tag>
       </tags>
@@ -344,6 +369,66 @@
       </tags>
   </entry>
   <entry>
+    <title>Python实现下载FTP服务器的整个目录（文件夹）</title>
+    <url>/tech/downloading-ftp-directory-recursively-with-python/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>Downloading FTP Directory Recursively with Python</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h3 id="需求">需求</h3>
+<ul>
+<li>快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。</li>
+</ul>
+<a id="more"></a>
+<h3 id="分析">分析</h3>
+<ul>
+<li>核心问题：针对一个FTP Server，要能够下载其指定目录。即递归遍历所有目录，针对每个目录中的子目录，创建本地相应目录；针对每个目录中的文件，下载到本地相应目录。</li>
+<li>下载所有文件的过程最好也是可并发的，以加快整个下载过程。</li>
+</ul>
+<h3 id="前车之轮">前车之轮</h3>
+<p>需求及实现思路已经清楚，剩下的就是编码测试了。</p>
+<p>按照惯例，为避免重复造轮子，在开工前有必要上谷歌百度一下，确定前人是否已经造出了好用的轮子。 找到如下几个：</p>
+<ol type="1">
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5qYjUxLm5ldC9hcnRpY2xlLzMzOTg2Lmh0bQ==">通过python下载FTP上的文件夹的实现代码<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL2Nhbmx5bmV0Lml0ZXllLmNvbS9ibG9nLzgzNjk5Ng==">python实现的ftp自动上传下载程序（支持目录递归操作）<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cDovL3d3dy5qYjUxLm5ldC9hcnRpY2xlLzY3MTk2Lmh0bQ==">python实现支持目录FTP上传下载文件的方法<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9weXBpLnB5dGhvbi5vcmcvcHlwaS9mdHB1dGlsLzMuMg==">python第三方库 ftputil<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9weXBpLnB5dGhvbi5vcmcvcHlwaS9weWZ0cHN5bmMvMS4wLjM=">python第三方库 pyftpsync<i class="fa fa-external-link-alt"></i></span></li>
+</ol>
+<p>逐一测试，都不太好用。</p>
+<p>1在现实时使用os.chdir切换本地下载目录，批量下载（多线程并发下载多个服务器目录）时会产生目录混乱。</p>
+<p>3在下载每个文件都需要执行ls函数确认其存在于远程目录，性能很低。</p>
+<p>使用2 4 5没有成功下载过，可能是用法不对，粗略扫了下文档和源码，也没找到正确用法。如果你知道正确用法，还请指点。</p>
+<h3 id="实现">实现</h3>
+<p>既然前人的轮子都不太好用，只好再造一个。相对其他协议而言，FTP协议还是比较复杂的，因此最好基于已有的FTP库来实现，python的自带FTP库是ftplib，这里就选用它。</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L2Z0cGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi9mdHBsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>大概实现思路及流程已在0x01中指出，这里可能需要用到ftplib中的两个函数</p>
+<ul>
+<li><strong>ftplib.FTP.dir()</strong> : 用于列举目录信息，其内部实现调用的是FTP协议中的LIST请求，输出格式类似linux下的命令_<strong>ls -alh</strong>_。这里需要注意，默认情况下，该函数是不返回目录信息的字符串的，它在内部实现中调用了ftplib.FTP.retrlines()函数得到返回数据的每一行，并默认使用println函数处理每行数据，即打印至标准输出。当然，处理每行数据的函数是可以被替换的，在dir()函数的参数中指出即可。尽管如此还是难以将目录信息存入到一个字符串并返回，以供我们后续调用。在0x02中提到的3是通过是给dir函数传入自定义类的实例函数，并将目录信息存储在自定义类的实例变量中来得到这个值的。当然，也可以通过自定义函数结合全局变量的方式来得到这个值。这种实现略显蹩脚，因此在这里，我们参照原有dir函数的实现方式，在自定义类中实现一个新的dir函数，它不用再传入处理每行数据的函数，且能够返回目录信息。</li>
+<li><strong>ftplib.FTP.retrbinary()</strong> : 用于指定并发送某种FTP请求，并以二进制数据接收响应。这里使用它来执行FTP协议中的RETR命令，以下载FTP服务器上指定路径的文件。</li>
+</ul>
+<h3 id="代码">代码</h3>
+<p>实现代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> ftplib</span><br><span class="line"><span class="keyword">import</span> traceback</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FtpDownloader</span><span class="params">(object)</span>:</span></span><br><span class="line">    PATH_TYPE_UNKNOWN = <span class="number">-1</span></span><br><span class="line">    PATH_TYPE_FILE = <span class="number">0</span></span><br><span class="line">    PATH_TYPE_DIR = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, user=None, passwd=None, port=<span class="number">21</span>, timeout=<span class="number">10</span>)</span>:</span></span><br><span class="line">        self.conn = ftplib.FTP(</span><br><span class="line">            host=host,</span><br><span class="line">            user=user,</span><br><span class="line">            passwd=passwd,</span><br><span class="line">            timeout=timeout</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dir</span><span class="params">(self, *args)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        by defualt, ftplib.FTP.dir() does not return any value.</span></span><br><span class="line"><span class="string">        Instead, it prints the dir info to the stdout.</span></span><br><span class="line"><span class="string">        So we re-implement it in FtpDownloader, which is able to return the dir info.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        info = []</span><br><span class="line">        cmd = <span class="string">'LIST'</span></span><br><span class="line">        <span class="keyword">for</span> arg <span class="keyword">in</span> args:</span><br><span class="line">            <span class="keyword">if</span> arg:</span><br><span class="line">                cmd = cmd + (<span class="string">' '</span> + arg)</span><br><span class="line">        self.conn.retrlines(cmd, <span class="keyword">lambda</span> x: info.append(x.strip().split()))</span><br><span class="line">        <span class="keyword">return</span> info</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tree</span><span class="params">(self, rdir=None, init=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        recursively get the tree structure of a directory on FTP Server.</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">            rdir - remote direcotry path of the FTP Server.</span></span><br><span class="line"><span class="string">            init - flag showing whether in a recursion.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> init <span class="keyword">and</span> rdir <span class="keyword">in</span> (<span class="string">'.'</span>, <span class="literal">None</span>):</span><br><span class="line">            rdir = self.conn.pwd()</span><br><span class="line">        tree = []</span><br><span class="line">        tree.append((rdir, self.PATH_TYPE_DIR))</span><br><span class="line"></span><br><span class="line">        dir_info = self.dir(rdir)</span><br><span class="line">        <span class="keyword">for</span> info <span class="keyword">in</span> dir_info:</span><br><span class="line">            attr = info[<span class="number">0</span>]  <span class="comment"># attribute</span></span><br><span class="line">            name = info[<span class="number">-1</span>]</span><br><span class="line">            path = os.path.join(rdir, name)</span><br><span class="line">            <span class="keyword">if</span> attr.startswith(<span class="string">'-'</span>):</span><br><span class="line">                tree.append((path, self.PATH_TYPE_FILE))</span><br><span class="line">            <span class="keyword">elif</span> attr.startswith(<span class="string">'d'</span>):</span><br><span class="line">                <span class="keyword">if</span> (name == <span class="string">'.'</span> <span class="keyword">or</span> name == <span class="string">'..'</span>):  <span class="comment"># skip . and ..</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                tree.extend(self.tree(rdir=path,init=<span class="literal">False</span>))  <span class="comment"># recurse</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tree.append(path, self.PATH_TYPE_UNKNOWN)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tree</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadFile</span><span class="params">(self, rfile, lfile)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        download a file with path %rfile on a FTP Server and save it to locate</span></span><br><span class="line"><span class="string">        path %lfile.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        ldir = os.path.dirname(lfile)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        f = open(lfile, <span class="string">'wb'</span>)</span><br><span class="line">        self.conn.retrbinary(<span class="string">'RETR %s'</span> % rfile, f.write)</span><br><span class="line">        f.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">treeStat</span><span class="params">(self, tree)</span>:</span></span><br><span class="line">        numDir = <span class="number">0</span></span><br><span class="line">        numFile = <span class="number">0</span></span><br><span class="line">        numUnknown = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> path, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                numDir += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                numFile += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                numUnknown += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadDir</span><span class="params">(self, rdir=<span class="string">'.'</span>, ldir=<span class="string">'.'</span>, tree=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    errHandleFunc=None, verbose=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        download a direcotry with path %rdir on a FTP Server and save it to</span></span><br><span class="line"><span class="string">        locate path %ldir.</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">            tree - the tree structure return by function FtpDownloader.tree()</span></span><br><span class="line"><span class="string">            errHandleFunc - error handling function when error happens in</span></span><br><span class="line"><span class="string">                downloading one file, such as a function that writes a log.</span></span><br><span class="line"><span class="string">                By default, the error is print to the stdout.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree:</span><br><span class="line">            tree = self.tree(rdir=rdir, init=<span class="literal">True</span>)</span><br><span class="line">        numDir, numFile, numUnknown = self.treeStat(tree)</span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s tree statistic:'</span> % self.conn.host</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d files, %d unknown type'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        ldir = os.path.abspath(ldir)</span><br><span class="line"></span><br><span class="line">        numDownOk = <span class="number">0</span></span><br><span class="line">        numDownErr = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> rpath, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            lpath = os.path.join(ldir, rpath.strip(<span class="string">'/'</span>).strip(<span class="string">'\\'</span>))</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(lpath):</span><br><span class="line">                    os.makedirs(lpath)</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    self.downloadFile(rpath, lpath)</span><br><span class="line">                    numDownOk += <span class="number">1</span></span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                    numDownErr += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> errHandleFunc:</span><br><span class="line">                        errHandleFunc(err, rpath, lpath)</span><br><span class="line">                    <span class="keyword">elif</span> verbose:</span><br><span class="line">                        <span class="keyword">print</span> <span class="string">'An Error occurred when downloading '</span>\</span><br><span class="line">                              <span class="string">'remote file %s'</span> % rpath</span><br><span class="line">                        traceback.print_exc()</span><br><span class="line">                        <span class="keyword">print</span></span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Host %s: %d/%d/%d(ok/err/total) files downloaded'</span> % (</span><br><span class="line">                        self.conn.host,</span><br><span class="line">                        numDownOk,</span><br><span class="line">                        numDownErr,</span><br><span class="line">                        numFile</span><br><span class="line">                    )</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Unknown type romote path got: %s'</span> % rpath</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s directory %s download finished:'</span> % (</span><br><span class="line">                self.conn.host, rdir</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d(%d failed) files, %d unknown type.'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numDownErr,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown, numDownErr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    <span class="keyword">import</span> traceback</span><br><span class="line">    <span class="keyword">from</span> pprint <span class="keyword">import</span> pprint <span class="keyword">as</span> pr</span><br><span class="line"></span><br><span class="line">    flog = open(<span class="string">'err.log'</span>, <span class="string">'wb'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(host)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            fd = FtpDownloader(</span><br><span class="line">                host=host,</span><br><span class="line">                user=<span class="string">'test'</span>,</span><br><span class="line">                passwd=<span class="string">'test'</span>,</span><br><span class="line">                port=<span class="number">21</span>,</span><br><span class="line">                timeout=<span class="number">10</span></span><br><span class="line">            )</span><br><span class="line">            numDir, numFile, numUnknown, numDownErr = fd.downloadDir(</span><br><span class="line">                rdir=<span class="string">'.'</span>,</span><br><span class="line">                ldir=<span class="string">'download'</span>,</span><br><span class="line">                tree=<span class="literal">None</span>,</span><br><span class="line">                errHandleFunc=<span class="literal">None</span>,</span><br><span class="line">                verbose=<span class="literal">True</span></span><br><span class="line">            )</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nok\n'</span></span><br><span class="line">                <span class="string">'%d directories, %d(%d failed) files, %d unknown type\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    numDir,</span><br><span class="line">                    numFile,</span><br><span class="line">                    numDownErr,</span><br><span class="line">                    numUnknown</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            traceback.print_exc()</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nerror\n%s\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    traceback.format_exc()</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">    pr(run(sys.argv[<span class="number">1</span>]))</span><br><span class="line">    flog.close()</span><br></pre></td></tr></table></figure>
+<p>也可移步至<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2Z0cGRvd24=">github<i class="fa fa-external-link-alt"></i></span>获取代码，欢迎完善。</p>
+<p>这里仅抛砖引玉，实现了下载单个FTP的整个目录的核心功能，可以基于该代码继续实现并发下载多个FTP服务器上的指定文件夹的功能。</p>
+<p>值得一提的是，这里针对单个FTP服务器上的多个文件下载还是串行的，如想要实现并发下载单个FTP服务器上的多个文件，则可以先通过tree函数得到FTP服务器的目录树，然后再并发下载相应的文件。但并发下载时若多个下载线程共用一个ftplib.FTP类的实例，并调用该实例的retrbinary函数进行下载，则不同线程之间可能会相互影响，具体可以参考ftplib的源码。</p>
+<p>当然，要解决这个问题，可以为每个下载线程创建一个独有的ftplib.FTP类的实例，但这样就加大了FTP服务器处理的并发连接数，最大连接数及下载性能还是会受限于FTP服务器，存在不确定性。</p>
+<p>我们将实现的程序与Filezilia进行了对比测试，发现它对多个文件的下载过程也是串行了，而最终下载文件的总数及速度二者相近。</p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>FTP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Django REST Framework 学习笔记（一）：RESTful API 初探</title>
     <url>/tech/drf-learning-notes-1-hello-restful-api/</url>
     <content><![CDATA[<ul>
@@ -352,11 +437,11 @@
 </ul>
 <hr />
 <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>前后端分离是大势所趋</p>
+<i class="fa fa-quote-left"></i>
+<p>前后端分离是大势所趋</p>
 
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
+<i class="fa fa-quote-right"></i>
+</blockquote>
 <h1 id="按">按</h1>
 <p>最近在学习Django Rest Framework，<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy90dXRvcmlhbC9xdWlja3N0YXJ0Lw==">官方教程<i class="fa fa-external-link-alt"></i></span>较短，看完感觉并没有学习到最佳实践，对DRF的了解还是不成体系。<span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVxdWVzdHMv">官方API文档<i class="fa fa-external-link-alt"></i></span>虽然详细一些，但内容多且零散更适合查阅，对于系统性学习来说还是差了一点。</p>
 <p>于是找到了<span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMW5FNDExSjdoeA==">一套不错的DRF源码分析视频<i class="fa fa-external-link-alt"></i></span>来学习，并且在这里记下学习笔记。</p>
@@ -469,9 +554,14 @@
 <p>注意：不能直接返回的资源(子资源、图片、视频等资源)，而是返回该资源的url链接</p>
 <h1 id="基于restful规范的原生django接口">基于restful规范的原生Django接口</h1>
 <p>测试代码及数据请参见 <a href="https://github.com/dog-2/hello_drf/tree/master/no1_my_restapi" target="_blank" rel="noopener">demo项目 <code>no1_my_restapi</code></a></p>
-<div class="note warning">
-            <p>原生接口对<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dhbmdqdW41MTU5L2FydGljbGUvZGV0YWlscy80Nzc4MTQ0Mw==">各种格式的POST数据<i class="fa fa-external-link-alt"></i></span>的支持情况如下：</p><ul><li>[x] form-data</li><li>[x] x-www-form-urlencoded</li><li>[ ] <del>raw：包括 常见的json、xml等</del></li></ul><p>也就是说 <strong>原生接口并不支持对POST请求中json数据的自动解析，后端只能拿到整个json字符串</strong></p>
-          </div>
+<div class="note warning"><p>原生接口对<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dhbmdqdW41MTU5L2FydGljbGUvZGV0YWlscy80Nzc4MTQ0Mw==">各种格式的POST数据<i class="fa fa-external-link-alt"></i></span>的支持情况如下：</p>
+<ul>
+<li>[x] form-data</li>
+<li>[x] x-www-form-urlencoded</li>
+<li>[ ] <del>raw：包括 常见的json、xml等</del></li>
+</ul>
+<p>也就是说 <strong>原生接口并不支持对POST请求中json数据的自动解析，后端只能拿到整个json字符串</strong></p>
+</div>
 <h1 id="drf---django-rest-framework">DRF - Django REST Framework</h1>
 <p>DRF有如下主要模块：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView, ...                      <span class="comment"># 视图模块 - 对django原生视图类的封装</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response, ...                  <span class="comment"># 响应模块 - 对django原生响应类的封装</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.request <span class="keyword">import</span> Request, ...                    <span class="comment"># 请求模块 - 对django原生请求类的封装</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.serializers <span class="keyword">import</span> Serializer, ...             <span class="comment"># 序列化与反序列化模块</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.settings <span class="keyword">import</span> APISettings                    <span class="comment"># DRF的配置文件</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.filters <span class="keyword">import</span> SearchFilter, ...               <span class="comment"># RESTful API 基础功能 - 过滤</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.pagination <span class="keyword">import</span> PageNumberPagination, ...    <span class="comment"># RESTful API 基础功能 - 分页</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.authentication <span class="keyword">import</span> TokenAuthentication, ... <span class="comment"># RESTful API 基础功能 - 认证</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> IsAuthenticated, ...        <span class="comment"># RESTful API 基础功能 - 权限（是否登录）</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.throttling <span class="keyword">import</span> SimpleRateThrottle           <span class="comment"># RESTful API 基础功能 - 频率</span></span><br></pre></td></tr></table></figure>
@@ -495,73 +585,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python实现下载FTP服务器的整个目录（文件夹）</title>
-    <url>/tech/downloading-ftp-directory-recursively-with-python/</url>
-    <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Downloading FTP Directory Recursively with Python</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<h3 id="需求">需求</h3>
-<ul>
-<li>快速批量下载多个FTP服务器的上的目录（指定目录或整个目录）。</li>
-</ul>
-<a id="more"></a>
-<h3 id="分析">分析</h3>
-<ul>
-<li>核心问题：针对一个FTP Server，要能够下载其指定目录。即递归遍历所有目录，针对每个目录中的子目录，创建本地相应目录；针对每个目录中的文件，下载到本地相应目录。</li>
-<li>下载所有文件的过程最好也是可并发的，以加快整个下载过程。</li>
-</ul>
-<h3 id="前车之轮">前车之轮</h3>
-<p>需求及实现思路已经清楚，剩下的就是编码测试了。</p>
-<p>按照惯例，为避免重复造轮子，在开工前有必要上谷歌百度一下，确定前人是否已经造出了好用的轮子。 找到如下几个：</p>
-<ol type="1">
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5qYjUxLm5ldC9hcnRpY2xlLzMzOTg2Lmh0bQ==">通过python下载FTP上的文件夹的实现代码<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cDovL2Nhbmx5bmV0Lml0ZXllLmNvbS9ibG9nLzgzNjk5Ng==">python实现的ftp自动上传下载程序（支持目录递归操作）<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cDovL3d3dy5qYjUxLm5ldC9hcnRpY2xlLzY3MTk2Lmh0bQ==">python实现支持目录FTP上传下载文件的方法<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9weXBpLnB5dGhvbi5vcmcvcHlwaS9mdHB1dGlsLzMuMg==">python第三方库 ftputil<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9weXBpLnB5dGhvbi5vcmcvcHlwaS9weWZ0cHN5bmMvMS4wLjM=">python第三方库 pyftpsync<i class="fa fa-external-link-alt"></i></span></li>
-</ol>
-<p>逐一测试，都不太好用。</p>
-<p>1在现实时使用os.chdir切换本地下载目录，批量下载（多线程并发下载多个服务器目录）时会产生目录混乱。</p>
-<p>3在下载每个文件都需要执行ls函数确认其存在于远程目录，性能很低。</p>
-<p>使用2 4 5没有成功下载过，可能是用法不对，粗略扫了下文档和源码，也没找到正确用法。如果你知道正确用法，还请指点。</p>
-<h3 id="实现">实现</h3>
-<p>既然前人的轮子都不太好用，只好再造一个。相对其他协议而言，FTP协议还是比较复杂的，因此最好基于已有的FTP库来实现，python的自带FTP库是ftplib，这里就选用它。</p>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L2Z0cGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi9mdHBsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>大概实现思路及流程已在0x01中指出，这里可能需要用到ftplib中的两个函数</p>
-<ul>
-<li><strong>ftplib.FTP.dir()</strong> : 用于列举目录信息，其内部实现调用的是FTP协议中的LIST请求，输出格式类似linux下的命令_<strong>ls -alh</strong>_。这里需要注意，默认情况下，该函数是不返回目录信息的字符串的，它在内部实现中调用了ftplib.FTP.retrlines()函数得到返回数据的每一行，并默认使用println函数处理每行数据，即打印至标准输出。当然，处理每行数据的函数是可以被替换的，在dir()函数的参数中指出即可。尽管如此还是难以将目录信息存入到一个字符串并返回，以供我们后续调用。在0x02中提到的3是通过是给dir函数传入自定义类的实例函数，并将目录信息存储在自定义类的实例变量中来得到这个值的。当然，也可以通过自定义函数结合全局变量的方式来得到这个值。这种实现略显蹩脚，因此在这里，我们参照原有dir函数的实现方式，在自定义类中实现一个新的dir函数，它不用再传入处理每行数据的函数，且能够返回目录信息。</li>
-<li><strong>ftplib.FTP.retrbinary()</strong> : 用于指定并发送某种FTP请求，并以二进制数据接收响应。这里使用它来执行FTP协议中的RETR命令，以下载FTP服务器上指定路径的文件。</li>
-</ul>
-<h3 id="代码">代码</h3>
-<p>实现代码如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> ftplib</span><br><span class="line"><span class="keyword">import</span> traceback</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FtpDownloader</span><span class="params">(object)</span>:</span></span><br><span class="line">    PATH_TYPE_UNKNOWN = <span class="number">-1</span></span><br><span class="line">    PATH_TYPE_FILE = <span class="number">0</span></span><br><span class="line">    PATH_TYPE_DIR = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, user=None, passwd=None, port=<span class="number">21</span>, timeout=<span class="number">10</span>)</span>:</span></span><br><span class="line">        self.conn = ftplib.FTP(</span><br><span class="line">            host=host,</span><br><span class="line">            user=user,</span><br><span class="line">            passwd=passwd,</span><br><span class="line">            timeout=timeout</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dir</span><span class="params">(self, *args)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        by defualt, ftplib.FTP.dir() does not return any value.</span></span><br><span class="line"><span class="string">        Instead, it prints the dir info to the stdout.</span></span><br><span class="line"><span class="string">        So we re-implement it in FtpDownloader, which is able to return the dir info.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        info = []</span><br><span class="line">        cmd = <span class="string">'LIST'</span></span><br><span class="line">        <span class="keyword">for</span> arg <span class="keyword">in</span> args:</span><br><span class="line">            <span class="keyword">if</span> arg:</span><br><span class="line">                cmd = cmd + (<span class="string">' '</span> + arg)</span><br><span class="line">        self.conn.retrlines(cmd, <span class="keyword">lambda</span> x: info.append(x.strip().split()))</span><br><span class="line">        <span class="keyword">return</span> info</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tree</span><span class="params">(self, rdir=None, init=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        recursively get the tree structure of a directory on FTP Server.</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">            rdir - remote direcotry path of the FTP Server.</span></span><br><span class="line"><span class="string">            init - flag showing whether in a recursion.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> init <span class="keyword">and</span> rdir <span class="keyword">in</span> (<span class="string">'.'</span>, <span class="literal">None</span>):</span><br><span class="line">            rdir = self.conn.pwd()</span><br><span class="line">        tree = []</span><br><span class="line">        tree.append((rdir, self.PATH_TYPE_DIR))</span><br><span class="line"></span><br><span class="line">        dir_info = self.dir(rdir)</span><br><span class="line">        <span class="keyword">for</span> info <span class="keyword">in</span> dir_info:</span><br><span class="line">            attr = info[<span class="number">0</span>]  <span class="comment"># attribute</span></span><br><span class="line">            name = info[<span class="number">-1</span>]</span><br><span class="line">            path = os.path.join(rdir, name)</span><br><span class="line">            <span class="keyword">if</span> attr.startswith(<span class="string">'-'</span>):</span><br><span class="line">                tree.append((path, self.PATH_TYPE_FILE))</span><br><span class="line">            <span class="keyword">elif</span> attr.startswith(<span class="string">'d'</span>):</span><br><span class="line">                <span class="keyword">if</span> (name == <span class="string">'.'</span> <span class="keyword">or</span> name == <span class="string">'..'</span>):  <span class="comment"># skip . and ..</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                tree.extend(self.tree(rdir=path,init=<span class="literal">False</span>))  <span class="comment"># recurse</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tree.append(path, self.PATH_TYPE_UNKNOWN)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tree</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadFile</span><span class="params">(self, rfile, lfile)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        download a file with path %rfile on a FTP Server and save it to locate</span></span><br><span class="line"><span class="string">        path %lfile.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        ldir = os.path.dirname(lfile)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        f = open(lfile, <span class="string">'wb'</span>)</span><br><span class="line">        self.conn.retrbinary(<span class="string">'RETR %s'</span> % rfile, f.write)</span><br><span class="line">        f.close()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">treeStat</span><span class="params">(self, tree)</span>:</span></span><br><span class="line">        numDir = <span class="number">0</span></span><br><span class="line">        numFile = <span class="number">0</span></span><br><span class="line">        numUnknown = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> path, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                numDir += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                numFile += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                numUnknown += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downloadDir</span><span class="params">(self, rdir=<span class="string">'.'</span>, ldir=<span class="string">'.'</span>, tree=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    errHandleFunc=None, verbose=True)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        download a direcotry with path %rdir on a FTP Server and save it to</span></span><br><span class="line"><span class="string">        locate path %ldir.</span></span><br><span class="line"><span class="string">        args:</span></span><br><span class="line"><span class="string">            tree - the tree structure return by function FtpDownloader.tree()</span></span><br><span class="line"><span class="string">            errHandleFunc - error handling function when error happens in</span></span><br><span class="line"><span class="string">                downloading one file, such as a function that writes a log.</span></span><br><span class="line"><span class="string">                By default, the error is print to the stdout.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree:</span><br><span class="line">            tree = self.tree(rdir=rdir, init=<span class="literal">True</span>)</span><br><span class="line">        numDir, numFile, numUnknown = self.treeStat(tree)</span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s tree statistic:'</span> % self.conn.host</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d files, %d unknown type'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ldir):</span><br><span class="line">            os.makedirs(ldir)</span><br><span class="line">        ldir = os.path.abspath(ldir)</span><br><span class="line"></span><br><span class="line">        numDownOk = <span class="number">0</span></span><br><span class="line">        numDownErr = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> rpath, pathType <span class="keyword">in</span> tree:</span><br><span class="line">            lpath = os.path.join(ldir, rpath.strip(<span class="string">'/'</span>).strip(<span class="string">'\\'</span>))</span><br><span class="line">            <span class="keyword">if</span> pathType == self.PATH_TYPE_DIR:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(lpath):</span><br><span class="line">                    os.makedirs(lpath)</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_FILE:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    self.downloadFile(rpath, lpath)</span><br><span class="line">                    numDownOk += <span class="number">1</span></span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                    numDownErr += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> errHandleFunc:</span><br><span class="line">                        errHandleFunc(err, rpath, lpath)</span><br><span class="line">                    <span class="keyword">elif</span> verbose:</span><br><span class="line">                        <span class="keyword">print</span> <span class="string">'An Error occurred when downloading '</span>\</span><br><span class="line">                              <span class="string">'remote file %s'</span> % rpath</span><br><span class="line">                        traceback.print_exc()</span><br><span class="line">                        <span class="keyword">print</span></span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Host %s: %d/%d/%d(ok/err/total) files downloaded'</span> % (</span><br><span class="line">                        self.conn.host,</span><br><span class="line">                        numDownOk,</span><br><span class="line">                        numDownErr,</span><br><span class="line">                        numFile</span><br><span class="line">                    )</span><br><span class="line">            <span class="keyword">elif</span> pathType == self.PATH_TYPE_UNKNOWN:</span><br><span class="line">                <span class="keyword">if</span> verbose:</span><br><span class="line">                    <span class="keyword">print</span> <span class="string">'Unknown type romote path got: %s'</span> % rpath</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> verbose:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'Host %s directory %s download finished:'</span> % (</span><br><span class="line">                self.conn.host, rdir</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">print</span> <span class="string">'%d directories, %d(%d failed) files, %d unknown type.'</span> % (</span><br><span class="line">                numDir,</span><br><span class="line">                numFile,</span><br><span class="line">                numDownErr,</span><br><span class="line">                numUnknown</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">return</span> numDir, numFile, numUnknown, numDownErr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    <span class="keyword">import</span> traceback</span><br><span class="line">    <span class="keyword">from</span> pprint <span class="keyword">import</span> pprint <span class="keyword">as</span> pr</span><br><span class="line"></span><br><span class="line">    flog = open(<span class="string">'err.log'</span>, <span class="string">'wb'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(host)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            fd = FtpDownloader(</span><br><span class="line">                host=host,</span><br><span class="line">                user=<span class="string">'test'</span>,</span><br><span class="line">                passwd=<span class="string">'test'</span>,</span><br><span class="line">                port=<span class="number">21</span>,</span><br><span class="line">                timeout=<span class="number">10</span></span><br><span class="line">            )</span><br><span class="line">            numDir, numFile, numUnknown, numDownErr = fd.downloadDir(</span><br><span class="line">                rdir=<span class="string">'.'</span>,</span><br><span class="line">                ldir=<span class="string">'download'</span>,</span><br><span class="line">                tree=<span class="literal">None</span>,</span><br><span class="line">                errHandleFunc=<span class="literal">None</span>,</span><br><span class="line">                verbose=<span class="literal">True</span></span><br><span class="line">            )</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nok\n'</span></span><br><span class="line">                <span class="string">'%d directories, %d(%d failed) files, %d unknown type\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    numDir,</span><br><span class="line">                    numFile,</span><br><span class="line">                    numDownErr,</span><br><span class="line">                    numUnknown</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            traceback.print_exc()</span><br><span class="line">            flog.write(</span><br><span class="line">                <span class="string">'%s\nerror\n%s\n\n\n'</span> % (</span><br><span class="line">                    host,</span><br><span class="line">                    traceback.format_exc()</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">    pr(run(sys.argv[<span class="number">1</span>]))</span><br><span class="line">    flog.close()</span><br></pre></td></tr></table></figure>
-<p>也可移步至<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2Z0cGRvd24=">github<i class="fa fa-external-link-alt"></i></span>获取代码，欢迎完善。</p>
-<p>这里仅抛砖引玉，实现了下载单个FTP的整个目录的核心功能，可以基于该代码继续实现并发下载多个FTP服务器上的指定文件夹的功能。</p>
-<p>值得一提的是，这里针对单个FTP服务器上的多个文件下载还是串行的，如想要实现并发下载单个FTP服务器上的多个文件，则可以先通过tree函数得到FTP服务器的目录树，然后再并发下载相应的文件。但并发下载时若多个下载线程共用一个ftplib.FTP类的实例，并调用该实例的retrbinary函数进行下载，则不同线程之间可能会相互影响，具体可以参考ftplib的源码。</p>
-<p>当然，要解决这个问题，可以为每个下载线程创建一个独有的ftplib.FTP类的实例，但这样就加大了FTP服务器处理的并发连接数，最大连接数及下载性能还是会受限于FTP服务器，存在不确定性。</p>
-<p>我们将实现的程序与Filezilia进行了对比测试，发现它对多个文件的下载过程也是串行了，而最终下载文件的总数及速度二者相近。</p>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>FTP</tag>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -831,13 +861,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -893,9 +923,8 @@
 <h2 id="rest_framework.request.request._authenticate">rest_framework.request.Request._authenticate()</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 做认证</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_authenticate</span><span class="params">(self)</span>:</span>  <span class="comment">#这里的self就是request</span></span><br><span class="line">    <span class="comment"># 遍历拿到一个个认证器，进行认证</span></span><br><span class="line">    <span class="comment"># self.authenticators配置的一堆认证类产生的认证类对象组成的 list</span></span><br><span class="line">　　　　 <span class="comment"># 即：[auth() for auth in self.authentication_classes]</span></span><br><span class="line">    <span class="keyword">for</span> authenticator <span class="keyword">in</span> self.authenticators:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 认证器(对象)调用认证方法authenticate(认证类对象self, request请求对象)</span></span><br><span class="line">            <span class="comment"># 返回值：登陆的用户与认证的信息组成的 tuple</span></span><br><span class="line">            <span class="comment"># 该方法被try包裹，代表该方法会抛异常，抛异常就代表认证失败</span></span><br><span class="line">            user_auth_tuple = authenticator.authenticate(self)</span><br><span class="line">        <span class="keyword">except</span> exceptions.APIException:</span><br><span class="line">            self._not_authenticated()</span><br><span class="line">            <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 返回值的处理</span></span><br><span class="line">        <span class="keyword">if</span> user_auth_tuple <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self._authenticator = authenticator</span><br><span class="line">            <span class="comment"># 如何有返回值，就将 登陆用户 与 登陆认证 分别保存到 request.user、request.auth</span></span><br><span class="line">            self.user, self.auth = user_auth_tuple</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="comment"># 如果返回值user_auth_tuple为空，代表认证通过，但是没有 登陆用户 与 登陆认证信息，代表游客</span></span><br><span class="line">    self._not_authenticated()</span><br></pre></td></tr></table></figure>
 <h1 id="自定义认证类">自定义认证类</h1>
-<div class="note warning">
-            <p>认证组件一般都是自定义的，不会使用原始的</p>
-          </div>
+<div class="note warning"><p>认证组件一般都是自定义的，不会使用原始的</p>
+</div>
 <h2 id="方法">方法</h2>
 <p>从源码的<code>settings</code>文件可以看出，认证类需要继承<code>BasicAuthentication</code>(在authentication.py文件)</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DEFAULT_AUTHENTICATION_CLASSES<span class="string">': [</span></span><br><span class="line"><span class="string">    '</span>rest_framework.authentication.SessionAuthentication<span class="string">',  #会重新开启CSRF认证</span></span><br><span class="line"><span class="string">    '</span>rest_framework.authentication.BasicAuthentication<span class="string">'</span></span><br><span class="line"><span class="string">]</span></span><br></pre></td></tr></table></figure>
@@ -966,34 +995,30 @@
 <h2 id="drf插件-django-rest-framework-jwt">DRF插件 django-rest-framework-jwt</h2>
 <p>示例代码如下</p>
 <h3 id="settings.py-1">settings.py</h3>
-<div class="note warning">
-            <p>此处设置的是全局配置</p>
-          </div>
+<div class="note warning"><p>此处设置的是全局配置</p>
+</div>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 认证类配置</span></span><br><span class="line">    <span class="string">'DEFAULT_AUTHENTICATION_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'utils.authentications.MyAuthentication'</span>,</span><br><span class="line">        <span class="string">'rest_framework_jwt.authentication.JSONWebTokenAuthentication'</span>, <span class="comment"># jwt全局配置</span></span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="models.py-1">models.py</h3>
 <p>代码同上</p>
 <h3 id="views.py-1">views.py</h3>
-<div class="note warning">
-            <p>此处设置的是局部配置</p>
-          </div>
+<div class="note warning"><p>此处设置的是局部配置</p>
+</div>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> utils.response <span class="keyword">import</span> APIResponse</span><br><span class="line"><span class="comment"># 必须登录后才能访问 - 通过了认证权限组件</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> IsAuthenticated</span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.authentication <span class="keyword">import</span> JSONWebTokenAuthentication</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDetail</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    authentication_classes = [JSONWebTokenAuthentication]  <span class="comment"># 局部配置jwt-token校验request.user</span></span><br><span class="line">    permission_classes = [IsAuthenticated]  <span class="comment"># 结合权限组件筛选掉游客</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=&#123;<span class="string">'username'</span>: request.user.username&#125;)</span><br></pre></td></tr></table></figure>
 <h3 id="url.py">url.py</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ObtainJSONWebToken视图类就是通过username和password得到user对象然后签发token（生成token）</span></span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.views <span class="keyword">import</span> ObtainJSONWebToken, obtain_jwt_token</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'jwt/'</span>, obtain_jwt_token),</span><br><span class="line">    path(<span class="string">'user/detail/'</span>, views.UserDetail.as_view()),</span><br></pre></td></tr></table></figure>
 <h2 id="drf插件-django-rest-framework-simplejwt">DRF插件 django-rest-framework-simplejwt</h2>
 <p>示例代码如下</p>
 <h3 id="settings.py-2">settings.py</h3>
-<div class="note warning">
-            <p>此处设置的是全局配置</p>
-          </div>
+<div class="note warning"><p>此处设置的是全局配置</p>
+</div>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 认证类配置</span></span><br><span class="line">    <span class="string">'DEFAULT_AUTHENTICATION_CLASSES'</span>: [</span><br><span class="line">        <span class="string">'utils.authentications.MyAuthentication'</span>,</span><br><span class="line">        <span class="string">'rest_framework_simplejwt.authentication.JWTAuthentication'</span>, <span class="comment"># 全局配置</span></span><br><span class="line">    ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>此外，还有simplejwt的一些细节配置：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Reference :</span></span><br><span class="line"><span class="comment"># 1. https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html</span></span><br><span class="line"><span class="comment"># 2. https://juejin.im/post/5d23f43df265da1bcc196749#heading-15</span></span><br><span class="line">SIMPLE_JWT = &#123;</span><br><span class="line">    <span class="string">'ACCESS_TOKEN_LIFETIME'</span>: timedelta(minutes=<span class="number">5</span>),</span><br><span class="line">    <span class="string">'REFRESH_TOKEN_LIFETIME'</span>: timedelta(days=<span class="number">1</span>),</span><br><span class="line">    <span class="string">'ROTATE_REFRESH_TOKENS'</span>: <span class="literal">False</span>,</span><br><span class="line">    <span class="string">'BLACKLIST_AFTER_ROTATION'</span>: <span class="literal">True</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'ALGORITHM'</span>: <span class="string">'HS256'</span>,</span><br><span class="line">    <span class="string">'SIGNING_KEY'</span>: SECRET_KEY,</span><br><span class="line">    <span class="string">'VERIFYING_KEY'</span>: <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'AUTH_HEADER_TYPES'</span>: (<span class="string">'Bearer'</span>,),</span><br><span class="line">    <span class="string">'USER_ID_FIELD'</span>: <span class="string">'id'</span>,</span><br><span class="line">    <span class="string">'USER_ID_CLAIM'</span>: <span class="string">'user_id'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'AUTH_TOKEN_CLASSES'</span>: (<span class="string">'rest_framework_simplejwt.tokens.AccessToken'</span>,),</span><br><span class="line">    <span class="string">'TOKEN_TYPE_CLAIM'</span>: <span class="string">'token_type'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JTI_CLAIM'</span>: <span class="string">'jti'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'SLIDING_TOKEN_REFRESH_EXP_CLAIM'</span>: <span class="string">'refresh_exp'</span>,</span><br><span class="line">    <span class="string">'SLIDING_TOKEN_LIFETIME'</span>: timedelta(minutes=<span class="number">5</span>),</span><br><span class="line">    <span class="string">'SLIDING_TOKEN_REFRESH_LIFETIME'</span>: timedelta(days=<span class="number">1</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="models.py-2">models.py</h3>
 <p>代码同上</p>
 <h3 id="views.py-2">views.py</h3>
-<div class="note warning">
-            <p>此处设置的是局部配置</p>
-          </div>
+<div class="note warning"><p>此处设置的是局部配置</p>
+</div>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> utils.response <span class="keyword">import</span> APIResponse</span><br><span class="line"><span class="comment"># 必须登录后才能访问 - 通过了认证权限组件</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.permissions <span class="keyword">import</span> IsAuthenticated</span><br><span class="line"><span class="keyword">from</span> rest_framework_simplejwt.authentication <span class="keyword">import</span> JWTAuthentication</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDetail2</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    authentication_classes = [JWTAuthentication]  <span class="comment"># 局部配置simplejwt-token校验request.user</span></span><br><span class="line">    permission_classes = [IsAuthenticated]  <span class="comment"># 结合权限组件筛选掉游客</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> APIResponse(results=&#123;<span class="string">'username'</span>: request.user.username&#125;)</span><br></pre></td></tr></table></figure>
 <h3 id="url.py-1">url.py</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ObtainJSONWebToken视图类就是通过username和password得到user对象然后签发token（生成token）</span></span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.views <span class="keyword">import</span> ObtainJSONWebToken, obtain_jwt_token</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'simple_jwt/'</span>, TokenObtainPairView.as_view(), name=<span class="string">'token_obtain_pair'</span>),</span><br><span class="line">    path(<span class="string">'simple_jwt/refresh/'</span>, TokenRefreshView.as_view(), name=<span class="string">'token_refresh'</span>),</span><br><span class="line">    path(<span class="string">'user/detail2/'</span>, views.UserDetail2.as_view()),</span><br></pre></td></tr></table></figure>
@@ -1004,13 +1029,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1129,13 +1154,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1227,13 +1252,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1289,13 +1314,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1334,13 +1359,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1391,13 +1416,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1443,13 +1468,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1495,13 +1520,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1582,13 +1607,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1618,13 +1643,168 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Django REST Framework 学习笔记（七）：序列化模块 serialziers 之 Serialzier类</title>
+    <url>/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (7): the Serialzier class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/serializers.py" target="_blank" rel="noopener"><code>rest_framework.response</code></a></li>
+<li>官方文档
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzdfZHJmX1NlcmlhbGl6ZXI=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.Serializer</code></p>
+<a id="more"></a>
+<h1 id="源码分析">源码分析</h1>
+<p>根据基类<code>rest_framework.serialziers.BaseSerializer</code>构造函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, instance=None, data=empty, **kwargs)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>定义好Serialzier类后，就可以创建Serializer对象了。Serializer的构造方法为</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Serializer(instance=<span class="literal">None</span>,data=empty,**kwargs)</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>用于序列化时，将模型类对象传入<code>instance</code>参数</li>
+<li>用于反序列化时，将要被反序列化的数据传入<code>data</code>参数</li>
+<li>除了<code>instance</code>和<code>data</code>参数外，在构造S<code>erializer</code>对象时，还可以通过<code>context</code>参数额外添加数据。通过<code>context</code>参数附加的数据，可以通过<code>Serializer</code>对象的<code>context</code>属性获取。 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializer = AccountSerializer(account, context=&#123;<span class="string">'request'</span>:request&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="用法">用法</h1>
+<p>序列化器的使用分两个阶段：</p>
+<ol type="1">
+<li><p>在客户端请求时，使用序列化器可以完成对数据的反序列化（就是前段往后端传递数据，反序列化之后保存数据）</p></li>
+<li><p>在服务器响应时，使用序列化器可以完成对数据的序列化（服务器取出数据，序列化之后往前段发送展示）</p></li>
+</ol>
+<h2 id="序列化">序列化</h2>
+<p>序列化是将数据返回给前台。DRF的序列化使用流程如下：</p>
+<ol type="1">
+<li>查询出一个用户对象</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> user</span><br><span class="line">user = User.object.get(id=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>构造序列化器对象</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> user.serializers <span class="keyword">import</span> UserSerializer</span><br><span class="line">user_obj = Userserializer(user)  <span class="comment">#放入查询出的user对象</span></span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>获取序列化对象，通过data属性可以获取序列化后的数据</li>
+</ol>
+<p>上面查出来的user_ser是一个serializer对象，需要取出具体的数据传给前端，所有要用到 user_ser.data取出具体数据</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_ser = Userserializer(user).data</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>如果要被序列化的数据是包含多条数据的（也可以说被[ ]嵌套的，<code>queryset</code>类型数据，不管是多条还是单条）,需要添加<code>many=True</code>参数</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user = models.User.objects.all()</span><br><span class="line">user_ser =  Userserialzier(user,many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<ol start="5" type="1">
+<li>自定义序列化属性</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializers.SerializerMethodField()</span><br></pre></td></tr></table></figure>
+<h2 id="反序列化使用流程">反序列化使用流程</h2>
+<p>反序列化是将前天传来的数据数据存入数据库。DRF的反序列化使用流程如下：</p>
+<h3 id="数据验证">数据验证</h3>
+<ol type="1">
+<li><p>使用序列化器进行反序列化时，需要对数据进行验证后，才能获取验证成功的数据或保存成模型类对象。</p></li>
+<li><p>在获取反序列化的数据前，必须调用<code>is_valid()</code>方法进行验证，验证成功返回<code>True</code>，否则返回<code>False</code>。</p></li>
+<li><p>验证失败，可以通过序列化对象的<code>errors</code>属性获取错误信息，返回字典，包含了字段和字段的错误。</p></li>
+<li><p>验证通过，可以通过序列化器对象的<code>validated_data</code>属性获取数据</p></li>
+</ol>
+<h3 id="保存数据">保存数据</h3>
+<p>序列化类中必须重写<code>create</code>方法用于新增，重写<code>update</code>方法用于修改。视图中使用<code>create</code>和<code>save</code>方法。</p>
+<p>从源码可知<code>save</code>方法内部调用的是序列化类中的<code>create</code>方法，所以新增必须要在序列化类中重写<code>create</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="用法示例">用法示例</h2>
+<h3 id="序列化-1">序列化</h3>
+<h4 id="模型层-models.py">模型层 <code>models.py</code></h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    SEX_CHOICES = [</span><br><span class="line">        [<span class="number">0</span>,<span class="string">'男'</span>],</span><br><span class="line">        [<span class="number">1</span>,<span class="string">'女'</span>],</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    pwd = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    phone = models.CharField(max_length=<span class="number">11</span>,null=<span class="literal">True</span>,default=<span class="literal">None</span>)</span><br><span class="line">    sex = models.IntegerField(choices=SEX_CHOICES,default=<span class="number">0</span>)</span><br><span class="line">    icon = models.ImageField(upload_to=<span class="string">'icon'</span>,default=<span class="string">'icon/default.jpg'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table=<span class="string">'old_boy_user'</span></span><br><span class="line">        verbose_name=<span class="string">'用户'</span></span><br><span class="line">        verbose_name_plural=verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s'</span> %self.name</span><br></pre></td></tr></table></figure>
+<h4 id="配置层-settings.py">配置层 <code>settings.py</code></h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 注册rest_framework</span></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="string">'rest_framework'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># media资源</span></span><br><span class="line">MEDIA_URL = <span class="string">'/media/'</span>  <span class="comment"># 后期高级序列化类与视图类，会使用该配置</span></span><br><span class="line">MEDIA_ROOT = os.path.join(BASE_DIR, <span class="string">'media'</span>)  <span class="comment"># media资源路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 国际化配置</span></span><br><span class="line">LANGUAGE_CODE = <span class="string">'zh-hans'</span></span><br><span class="line">TIME_ZONE = <span class="string">'Asia/Shanghai'</span></span><br><span class="line">USE_I18N = <span class="literal">True</span></span><br><span class="line">USE_L10N = <span class="literal">True</span></span><br><span class="line">USE_TZ = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h4 id="序列化层-apiserializers.py">序列化层 <code>api/serializers.py</code></h4>
+<ol type="1">
+<li><code>api</code>应用下创建<code>serializers.py</code>文件</li>
+<li>设置需要返回给前台数据样式 那些<code>model</code>类有对应的字段，不需要返回的就不用设置了</li>
+<li>设置方法字段，字段名可以随意，字段值由 <code>get_字段名</code> 提供，来完成一些需要处理在返回的数据，类似于<code>forms</code>组件</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers, exceptions</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSerializer</span><span class="params">(serializers.Serializer)</span>:</span>   <span class="comment">#创建一个序列化类</span></span><br><span class="line">    name = serializers.CharField()      </span><br><span class="line">    phone = serializers.CharField()</span><br><span class="line">    <span class="comment"># 序列化提供给前台的字段个数由后台决定，可以少提供，但是提供的数据库对应的字段，名字一定要与数据库字段相同</span></span><br><span class="line">    <span class="comment"># sex = serializers.IntegerField()</span></span><br><span class="line">    <span class="comment"># icon = serializers.ImageField()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义序列化属性</span></span><br><span class="line">    <span class="comment"># 属性名随意，值由固定的命名规范方法提供:</span></span><br><span class="line">    <span class="comment">#       get_属性名(self, 参与序列化的model对象)</span></span><br><span class="line">    <span class="comment">#       返回值就是自定义序列化属性的值</span></span><br><span class="line">    gender = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_gender</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># choice类型的解释型值 get_字段_display() 来访问</span></span><br><span class="line">        <span class="keyword">return</span> obj.get_sex_display()</span><br><span class="line"></span><br><span class="line">　　 <span class="comment">#自定义序列化属性icon</span></span><br><span class="line">    icon = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_icon</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># settings.MEDIA_URL: 自己配置的 /media/，给后面高级序列化与视图类准备的</span></span><br><span class="line">        <span class="comment"># obj.icon不能直接作为数据返回，因为内容虽然是字符串，但是类型是ImageFieldFile类型</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s%s%s'</span> % (<span class="string">r'http://127.0.0.1:8000'</span>, settings.MEDIA_URL, str(obj.icon))</span><br></pre></td></tr></table></figure>
+<h4 id="视图层-views.py">视图层 <code>views.py</code></h4>
+<ol type="1">
+<li>从数据库中将要序列化给前台的<code>model</code>对象，或是多个<code>model</code>对象查询出来</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj = models.User.objects.get(pk=pk)</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj_list = models.User.objects.all()</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>序列化: <code>对象.data</code> 就是可以返回给前台的序列化数据</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> Response(&#123;</span><br><span class="line">    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'results'</span>: user_ser.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>完整代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="keyword">if</span> pk:  <span class="comment">#单查</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 用户对象不能直接作为数据返回给前台</span></span><br><span class="line">                user_obj = models.User.objects.get(pk=pk)</span><br><span class="line">                <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">                user_ser = serializers.UserSerializer(user_obj)</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'results'</span>: user_ser.data   <span class="comment">#如果你在序列化的时候没有.data,那么在传给前端的时候必须要.data</span></span><br><span class="line">                &#125;)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">2</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'用户不存在'</span>,</span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment">#群查</span></span><br><span class="line">            <span class="comment"># 用户对象列表(queryset)不能直接作为数据返回给前台</span></span><br><span class="line">            user_obj_list = models.User.objects.all()</span><br><span class="line">            <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">            user_ser_data = serializers.UserSerializer(user_obj_list, many=<span class="literal">True</span>).data</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'results'</span>: user_ser_data</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="反序列化">反序列化</h3>
+<h4 id="反序列层-apiserializers.py">反序列层 <code>api/serializers.py</code></h4>
+<ol type="1">
+<li>设置必填与选填序列化字段，设置校验规则</li>
+<li>为需要额外校验的字段提供局部钩子函数，如果该字段不入库，且不参与全局钩子校验，可以将值取出校验 <code>pop</code></li>
+<li>为有联合关系的字段们提供全局钩子函数，如果某些字段不入库，可以将值取出校验</li>
+<li><strong>必须重写<code>create</code>方法，完成校验通过的数据入库工作，得到新增的对象</strong></li>
+</ol>
+<p>完整代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDeserializer</span><span class="params">(serializers.Serializer)</span>:</span></span><br><span class="line">    <span class="comment"># 1) 哪些字段必须反序列化</span></span><br><span class="line">    <span class="comment"># 2) 字段都有哪些安全校验</span></span><br><span class="line">    <span class="comment"># 3) 哪些字段需要额外提供校验  钩子函数</span></span><br><span class="line">    <span class="comment"># 4) 哪些字段间存在联合校验</span></span><br><span class="line">    <span class="comment"># 注：反序列化字段都是用来入库的，不会出现自定义方法属性，会出现可以设置校验规则的自定义属性,不入数据库的</span></span><br><span class="line">    name = serializers.CharField(</span><br><span class="line">        max_length=<span class="number">64</span>,</span><br><span class="line">        min_length=<span class="number">3</span>,</span><br><span class="line">        error_messages=&#123;</span><br><span class="line">            <span class="string">'max_length'</span>: <span class="string">'太长'</span>,</span><br><span class="line">            <span class="string">'min_length'</span>: <span class="string">'太短'</span></span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    pwd = serializers.CharField()</span><br><span class="line">    phone = serializers.CharField(required=<span class="literal">False</span>)</span><br><span class="line">    sex = serializers.IntegerField(required=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义有校验规则的反序列化字段,例如确认密码字段re_pwd</span></span><br><span class="line">    re_pwd = serializers.CharField(required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 小结：</span></span><br><span class="line">    <span class="comment"># name，pwd，re_pwd为必填字段</span></span><br><span class="line">    <span class="comment"># phone，sex为选填字段</span></span><br><span class="line">    <span class="comment"># 五个字段都必须提供完成的校验规则</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 局部钩子：validate_要校验的字段名(self, 当前要校验字段的值)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():  <span class="comment"># 名字中不能出现g</span></span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(<span class="string">'名字非法，是个鸡贼！'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 全局钩子：validate(self, 通过系统与局部钩子校验之后的所有数据)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span>    <span class="comment">#attrs是字典格式</span></span><br><span class="line">        pwd = attrs.get(<span class="string">'pwd'</span>)</span><br><span class="line">        re_pwd = attrs.pop(<span class="string">'re_pwd'</span>)     <span class="comment">#因为re_pwd不需要入数据库，所以在全局钩子校验中删除掉这个字段</span></span><br><span class="line">        <span class="keyword">if</span> pwd != re_pwd:</span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(&#123;<span class="string">'pwd&amp;re_pwd'</span>: <span class="string">'两次密码不一致'</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span> attrs</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 要完成新增，必须自己重写 create 方法，validated_data是校验的数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">        <span class="comment"># 尽量在所有校验规则完毕之后，数据可以直接入库</span></span><br><span class="line">        <span class="keyword">return</span> models.User.objects.create(**validated_data)</span><br></pre></td></tr></table></figure>
+<h4 id="视图层-views.py-1">视图层 views.py</h4>
+<ol type="1">
+<li>反序列化数据必须赋值<code>data</code>，结果就是得到一个<code>serializer</code>对象</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser = serializers.UserDeserializer(data=request_data)</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>把数据放到自定义<code>serializer</code>中校验，数据校验成功返回<code>True</code>,失败返回<code>False</code></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser.is_valid()</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>不通过返回 <code>book_ser.errors</code> 给前台，通过 <code>book_ser.save()</code> 得到新增的对象，再正常返回</li>
+</ol>
+<p>完整代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="comment"># 只考虑单增</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 请求数据</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        <span class="comment"># 数据是否合法（增加对象需要一个字典数据）</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(request_data, dict) <span class="keyword">or</span> request_data == &#123;&#125;:</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'数据有误'</span>,</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment"># 数据类型合法，但数据内容不一定合法，需要校验数据，校验(参与反序列化)的数据需要赋值给data</span></span><br><span class="line">        book_ser = serializers.UserDeserializer(data=request_data)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 序列化对象调用is_valid()完成校验，校验失败的失败信息都会被存储在 序列化对象.errors</span></span><br><span class="line">        <span class="keyword">if</span> book_ser.is_valid():</span><br><span class="line">            <span class="comment"># 校验通过，完成新增</span></span><br><span class="line">            book_obj = book_ser.save()</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">                <span class="string">'results'</span>: serializers.UserSerializer(book_obj).data</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 校验失败</span></span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: book_ser.errors,</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="总结">总结</h1>
+<ol type="1">
+<li>使用序列化器的时候一定要注意，序列化器声明了以后，不会自动执行，需要我们在视图中进行调用才可以</li>
+<li>序列化器无法直接接收数据，需要我们在视图中创建序列化器对象时把使用的数据传递过来。（<code>data</code>, <code>instance</code>传参）
+<ul>
+<li>序列化：是数据对象从数据库中查出，通过instance传入序列化器中，必须通过data属性才能将序列化后的数据传给前端，不能直接传序列化对象</li>
+<li>反序列化：是数据是通过request.data从前端获取到数据，通过data传入序列化器中进行校验，保存到数据库中</li>
+</ul></li>
+<li>序列化器的字段声明类似于我们前面使用过的表单系统</li>
+<li>开发restful api时，序列化器会帮我们把模型数据转换成字典</li>
+<li>drf提供的视图会帮我们把字典转换成json，或者把客户端发过来的数据转换成字典</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Learning Notes</tag>
+        <tag>Tech</tag>
         <tag>Dev</tag>
+        <tag>Backend</tag>
+        <tag>Django</tag>
+        <tag>Django REST Framework</tag>
+        <tag>DRF</tag>
       </tags>
   </entry>
   <entry>
@@ -1702,9 +1882,12 @@
 <li>图书表中的 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">publish = models.ForeignKey(</span><br><span class="line">    to=<span class="string">'Publish'</span>,</span><br><span class="line">    related_name=<span class="string">'books'</span>,</span><br><span class="line">    db_constraint=<span class="literal">False</span>,</span><br><span class="line">    on_delete=models.DO_NOTHING,</span><br><span class="line">)</span><br><span class="line">authors = models.ManyToManyField(</span><br><span class="line">    to=<span class="string">'Author'</span></span><br><span class="line">    related_name=<span class="string">'books'</span>,</span><br><span class="line">    db_constraint=<span class="literal">False</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
 </ol></li>
 </ol>
-<div class="note warning">
-            <p>注意：</p><ul><li><code>ManyToManyField</code>不能设置<code>on_delete</code></li><li><code>OneToOneField</code>、<code>ForeignKey</code>必须设置<code>on_delete</code>（django1.x系统默认级联，但是django2.x必须手动明确）</li></ul>
-          </div>
+<div class="note warning"><p>注意：</p>
+<ul>
+<li><code>ManyToManyField</code>不能设置<code>on_delete</code></li>
+<li><code>OneToOneField</code>、<code>ForeignKey</code>必须设置<code>on_delete</code>（django1.x系统默认级联，但是django2.x必须手动明确）</li>
+</ul>
+</div>
 <h3 id="各表代码">各表代码</h3>
 <details>
 <p><summary> models.py </summary></p>
@@ -1741,26 +1924,55 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        book_ser = serializers.BookModelDeserializer(data=request_data)</span><br><span class="line">        <span class="comment"># raise_exception=True：当校验失败，马上终止当前视图方法，抛异常返回给前台</span></span><br><span class="line">        book_ser.is_valid(raise_exception=<span class="literal">True</span>)</span><br><span class="line">        book_obj = book_ser.save()</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: serializers.BookModelSerializer(book_obj).data</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
 <h4 id="子路由层-apiurls.py-1">子路由层 <code>api/urls.py</code></h4>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v1/books/'</span>, views.Book.as_view()),</span><br><span class="line">    path(<span class="string">'v1/books/&lt;pk&gt;/'</span>, views.Book.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<div class="note warning">
-            <h4 id="注意点">注意点</h4><ol type="1"><li>反序列化层：<ul><li>在设置<code>fields</code>，没有默认值的字段都必须设置反序列化保存到数据库中</li><li>使用<code>extra_kwargs</code> 来设置系统校验规则</li><li>设置局部钩子和全局钩子</li><li><code>ModelSerializer</code>类已经帮我们实现了 <code>create</code> 与 <code>update</code> 方法，不需要再写</li></ul></li><li>视图层：<ul><li>POST请求通过<code>request.data</code>拿到数据包</li><li>传给反序列化 ,通过<code>data=request_data</code>传入需要反序列化的数据</li><li><code>is_valid</code>判断校验是否合格 ，<code>raise_exception=True</code>必须要写的</li><li>通过<code>.save()</code>保存到数据库中</li></ul></li></ol>
-          </div>
+<div class="note warning"><h4 id="注意点">注意点</h4>
+<ol type="1">
+<li>反序列化层：
+<ul>
+<li>在设置<code>fields</code>，没有默认值的字段都必须设置反序列化保存到数据库中</li>
+<li>使用<code>extra_kwargs</code> 来设置系统校验规则</li>
+<li>设置局部钩子和全局钩子</li>
+<li><code>ModelSerializer</code>类已经帮我们实现了 <code>create</code> 与 <code>update</code> 方法，不需要再写</li>
+</ul></li>
+<li>视图层：
+<ul>
+<li>POST请求通过<code>request.data</code>拿到数据包</li>
+<li>传给反序列化 ,通过<code>data=request_data</code>传入需要反序列化的数据</li>
+<li><code>is_valid</code>判断校验是否合格 ，<code>raise_exception=True</code>必须要写的</li>
+<li>通过<code>.save()</code>保存到数据库中</li>
+</ul></li>
+</ol>
+</div>
 <h3 id="序列化与反序列化整合">序列化与反序列化整合</h3>
 <h4 id="序列化层-apiserializers.py-2">序列化层 <code>api/serializers.py</code></h4>
 <details>
 <p><summary> <b><i>Source Code</i></b> </summary></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V2BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="comment"># 一些只参与反序列化的字段，但是不是与数据库关联的，自定义不入库的反序列化的字段</span></span><br><span class="line">    re_name = CharField(read_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = models.Book</span><br><span class="line">        fields = (<span class="string">'name'</span>, <span class="string">'price'</span>, <span class="string">'img'</span>, <span class="string">'author_list'</span>,</span><br><span class="line">                  <span class="string">'publish_name'</span>, <span class="string">'publish'</span>, <span class="string">'authors'</span>, <span class="string">'re_name'</span>)</span><br><span class="line">        extra_kwargs = &#123;</span><br><span class="line">            <span class="string">'name'</span>: &#123;</span><br><span class="line">                <span class="string">'required'</span>: <span class="literal">True</span>,</span><br><span class="line">                <span class="string">'min_length'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'error_messages'</span>: &#123;</span><br><span class="line">                    <span class="string">'required'</span>: <span class="string">'必填项'</span>,</span><br><span class="line">                    <span class="string">'min_length'</span>: <span class="string">'太短'</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'publish'</span>: &#123;</span><br><span class="line">                <span class="string">'write_only'</span>: <span class="literal">True</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'authors'</span>: &#123;</span><br><span class="line">                <span class="string">'write_only'</span>: <span class="literal">True</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'img'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'author_list'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'publish_name'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="comment"># 书名不能包含 g 字符</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">'该g书不能出版'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span></span><br><span class="line">        publish = attrs.get(<span class="string">'publish'</span>)</span><br><span class="line">        name = attrs.get(<span class="string">'name'</span>)</span><br><span class="line">        <span class="comment"># 视频里使用这种验证方式，实际是不合理的，因为会导致针对价格修改的PUT请求失败(name&amp;publish已存在)</span></span><br><span class="line">        <span class="comment"># 因此在这里将其注释掉 ，正确的方式是在models.Book中对这两个字段的共同唯一性作约束</span></span><br><span class="line">        <span class="comment"># 而本函数通常作为对不同attr的对比验证，如两次输入密码是否一致等</span></span><br><span class="line">        <span class="comment"># if models.Book.objects.filter(name=name, publish=publish):</span></span><br><span class="line">        <span class="comment">#     raise ValidationError(&#123;'book': '该书已存在'&#125;)</span></span><br><span class="line">        <span class="keyword">return</span> attrs</span><br></pre></td></tr></table></figure>
 </details>
-<div class="note warning">
-            <h5 id="注意点">注意点</h5><ol type="1"><li><code>fields</code>中设置所有序列化与反序列化字段</li><li><code>extra_kwargs</code>划分只序列化或只反序列化字段（一般我们把需要存入到数据库中的使用<code>write_only</code>（反序列化）,只需要展示的就read_only(序列化)，看需求设计）<ul><li><code>write_only</code>：只反序列化</li><li><code>read_only</code>：只序列化</li><li>自定义字段默认只序列化(<code>read_only</code>)</li><li>如果字段没设置<code>write_only</code>或者<code>read_only</code>，那么该字段可以序列化和反序列化</li></ul></li><li>设置反序列化所需的 系统、局部钩子、全局钩子 等校验规则</li></ol>
-          </div>
+<div class="note warning"><h5 id="注意点">注意点</h5>
+<ol type="1">
+<li><code>fields</code>中设置所有序列化与反序列化字段</li>
+<li><code>extra_kwargs</code>划分只序列化或只反序列化字段（一般我们把需要存入到数据库中的使用<code>write_only</code>（反序列化）,只需要展示的就read_only(序列化)，看需求设计）
+<ul>
+<li><code>write_only</code>：只反序列化</li>
+<li><code>read_only</code>：只序列化</li>
+<li>自定义字段默认只序列化(<code>read_only</code>)</li>
+<li>如果字段没设置<code>write_only</code>或者<code>read_only</code>，那么该字段可以序列化和反序列化</li>
+</ul></li>
+<li>设置反序列化所需的 系统、局部钩子、全局钩子 等校验规则</li>
+</ol>
+</div>
 <h4 id="视图层-views.py-2">视图层 <code>views.py</code></h4>
 <details>
 <p><summary> <b><i>Source Code</i></b> </summary></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V2Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="comment"># 单查</span></span><br><span class="line">        <span class="keyword">if</span> pk:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                book_obj = models.Book.objects.get(pk=pk, is_delete=<span class="literal">False</span>)</span><br><span class="line">                book_data = serializers.V2BookModelSerializer(</span><br><span class="line">                    book_obj).data  <span class="comment"># 序列化</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'参数有误'</span></span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="comment"># 群查</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            book_query = models.Book.objects.filter(is_delete=<span class="literal">False</span>).all()</span><br><span class="line">            book_data = serializers.V2BookModelSerializer(</span><br><span class="line">                book_query, many=<span class="literal">True</span>).data  <span class="comment"># 序列化</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: book_data</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 单增:传的数据是与model对应的一个字典</span></span><br><span class="line">        <span class="comment"># 群增：设计传递的是多个model对应的字典列表,在postman中通过列表嵌套字典传值</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        <span class="keyword">if</span> isinstance(request_data, dict):  <span class="comment"># 判断获取的数据是否是dict</span></span><br><span class="line">            many = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">elif</span> isinstance(request_data, list):  <span class="comment"># 判断获取的数据是否是list</span></span><br><span class="line">            many = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'数据错误'</span></span><br><span class="line">            &#125;)</span><br><span class="line">        book_ser = serializers.V2BookModelSerializer(</span><br><span class="line">            data=request_data, many=many)  <span class="comment"># 反序列化</span></span><br><span class="line">        book_ser.is_valid(raise_exception=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># book_result是对象&lt;class 'app01.models.Book'&gt;，群增就是列表套一个个对象</span></span><br><span class="line">        book_result = book_ser.save()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: serializers.V2BookModelSerializer(book_result, many=many).data</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 单删: 有pk   #在postman中通过路径传参</span></span><br><span class="line">    <span class="comment"># 群删：有pks   &#123;"pks": [1, 2, 3]&#125;   #通过json传参</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="keyword">if</span> pk:</span><br><span class="line">            pks = [pk]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pks = request.data.get(<span class="string">'pks'</span>)</span><br><span class="line">        <span class="keyword">if</span> models.Book.objects.filter(pk__in=pks, is_delete=<span class="literal">False</span>).update(is_delete=<span class="literal">True</span>):</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'删除成功'</span></span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'删除失败'</span></span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
 </details>
-<div class="note warning">
-            <h5 id="注意点">注意点</h5><ol type="1"><li>序列化数据最后必须要<code>.data</code> （因为要传给前端）</li><li>反序列化通过<code>data</code>传参，序列化通过<code>instance</code>传参（当你只传一个参数时，默认是<code>instance</code>的参数）</li><li>反序列化与序列化都能使用<code>many=True</code>，序列化和反序列化数据只要被[]嵌套都要写<code>many=True</code></li></ol>
-          </div>
+<div class="note warning"><h5 id="注意点">注意点</h5>
+<ol type="1">
+<li>序列化数据最后必须要<code>.data</code> （因为要传给前端）</li>
+<li>反序列化通过<code>data</code>传参，序列化通过<code>instance</code>传参（当你只传一个参数时，默认是<code>instance</code>的参数）</li>
+<li>反序列化与序列化都能使用<code>many=True</code>，序列化和反序列化数据只要被[]嵌套都要写<code>many=True</code></li>
+</ol>
+</div>
 <h4 id="子路由层-apiurls.py-2">子路由层 <code>api/urls.py</code></h4>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v2/books/'</span>, views.V2Book.as_view()),</span><br><span class="line">    path(<span class="string">'v2/books/&lt;pk&gt;/'</span>, views.V2Book.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h1 id="使用场景总结">使用场景总结</h1>
@@ -1818,13 +2030,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1891,13 +2103,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Learning Notes</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -2292,9 +2504,12 @@
 <li>{blog_dir}/themes/next/languages/en.yml</li>
 <li>next配置文件中的配置</li>
 </ul>
-<div class="note warning">
-            <p>这里需要注意的是next有两种配置文件的形式，请确认自己是哪一种。 新Next的配置文件，有2种设置方式，请参考官方文档：</p><ul><li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></li></ul>
-          </div>
+<div class="note warning"><p>这里需要注意的是next有两种配置文件的形式，请确认自己是哪一种。 新Next的配置文件，有2种设置方式，请参考官方文档：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+</div>
 <h3 id="定制vendors加入darkmode.js">3. 定制vendors加入darkmode.js</h3>
 <ol type="1">
 <li>修改 <code>{blog_dir}/themes/next/layout/_scripts/vendors.swig</code></li>
@@ -2313,9 +2528,9 @@
       </categories>
       <tags>
         <tag>Tech</tag>
+        <tag>Blog</tag>
         <tag>Hexo</tag>
         <tag>Hexo Next</tag>
-        <tag>Blog</tag>
       </tags>
   </entry>
   <entry>
@@ -2347,9 +2562,34 @@
 <li>更新hexo及所有插件 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure></li>
 <li>确认hexo版本号是否已更新 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo version</span><br></pre></td></tr></table></figure></li>
 </ul>
-<div class="note warning">
-            <h3 id="潜在错误">潜在错误</h3>此时运行 hexo generate 命令，若出现了如下错误：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>通过重新安装 <code>hexo-cli</code> 可以解决<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-          </div>
+<div class="note warning"><h3 id="潜在错误">潜在错误</h3>
+此时运行 hexo generate 命令，若出现了如下错误：
+<figure class="highlight bash">
+<table>
+<tr>
+<td class="gutter">
+<pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+</td>
+<td class="code">
+<pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre>
+</td>
+</tr>
+</table>
+</figure>
+通过重新安装 <code>hexo-cli</code> 可以解决
+<figure class="highlight bash">
+<table>
+<tr>
+<td class="gutter">
+<pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+</td>
+<td class="code">
+<pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre>
+</td>
+</tr>
+</table>
+</figure>
+</div>
 <h2 id="更新-next-主题">更新 Next 主题</h2>
 <h3 id="备份可选">备份（可选）</h3>
 <p>我备份了如下旧配置文件：</p>
@@ -2398,9 +2638,9 @@
         <category>Tech</category>
       </categories>
       <tags>
+        <tag>Blog</tag>
         <tag>Hexo</tag>
         <tag>Hexo Next</tag>
-        <tag>Blog</tag>
       </tags>
   </entry>
   <entry>
@@ -2456,28 +2696,121 @@
       </tags>
   </entry>
   <entry>
-    <title>Python 3.8+里的asyncio和asyncio.Semaphore</title>
-    <url>/tech/asyncio-and-asyncio-semaphore-in-python-3-8/</url>
+    <title>让Hexo Next (v8.0.0) 支持LaTeX数学公式</title>
+    <url>/tech/making-hexo-next-theme-latex-math-equation-supported/</url>
     <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>asyncio and asyncio.Semaphore in Python 3.8+</strong></em></li>
+<li>Title(EN): <em><strong>Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported</strong></em></li>
 <li>Author: dog2</li>
 </ul>
 <hr />
-<p>以前的程序放在Python 3.8里跑出错了，原来是由于Python升级3.8后协程库<code>asyncio</code>又双叒叕更新了。 新版本里<code>asyncio.Semaphore</code>的用法改变了，本文简单记录一下新写法。</p>
+<h1 id="按">按</h1>
+<ul>
+<li>环境
+<ul>
+<li>OS：Max OS 10.15</li>
+<li>node: 13.7.0</li>
+<li>hexo：4.2.1</li>
+<li>hexo-cli: 3.1.0</li>
+<li>hexo-theme-next: v8.0.0-rc.2</li>
+</ul></li>
+<li>需求：让hexo的next主题支持渲染LaTeX语法的数学公式。</li>
+<li>参考链接：
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL3RoaXJkLXBhcnR5LXNlcnZpY2VzL21hdGgtZXF1YXRpb25zLmh0bWw=">官方文档<i class="fa fa-external-link-alt"></i></span></li>
+</ul></li>
+</ul>
 <a id="more"></a>
-<p>代码说明：用<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy9hc3luYy8=">支持异步<i class="fa fa-external-link-alt"></i></span>的http库<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy8=">httpx<i class="fa fa-external-link-alt"></i></span>简单爬数据，用<code>asyncio.Semaphore</code>控制并发数，而<code>asyncio.Semaphore</code>在Python 3.8中需要配合上下文管理器<code>contextvars.ContextVar</code>使用。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> httpx</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> contextvars <span class="keyword">import</span> ContextVar</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crawl</span><span class="params">(concurrency=<span class="number">3</span>)</span>:</span></span><br><span class="line">    context = ContextVar(<span class="string">"concurrent"</span>)  <span class="comment"># 定义全局上下文管理器</span></span><br><span class="line">    URL_BASE = <span class="string">'https://github.com/topics?page='</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_one</span><span class="params">(i)</span>:</span></span><br><span class="line">        sem = context.get()  <span class="comment"># 获取上下文关键字</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> sem:</span><br><span class="line">            <span class="keyword">async</span> <span class="keyword">with</span> httpx.AsyncClient() <span class="keyword">as</span> client:</span><br><span class="line">                r = <span class="keyword">await</span> client.get(<span class="string">f"<span class="subst">&#123;URL_BASE&#125;</span><span class="subst">&#123;i&#125;</span>"</span>)</span><br><span class="line">                <span class="keyword">return</span> len(r.text)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_all</span><span class="params">()</span>:</span></span><br><span class="line">        context.set(asyncio.Semaphore(concurrency)) <span class="comment">#上下文管理器赋值，concurrency控制并发数</span></span><br><span class="line">        tasks = [asyncio.create_task(crawl_one(i)) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">30</span>)] <span class="comment"># 将协程封装成任务共30个</span></span><br><span class="line">        done, pending = <span class="keyword">await</span> asyncio.wait(tasks) <span class="comment"># 执行所有任务</span></span><br><span class="line">        <span class="keyword">return</span> done</span><br><span class="line"></span><br><span class="line">    tasks_done = asyncio.run(crawl_all())</span><br><span class="line">    <span class="keyword">return</span> [t.result() <span class="keyword">for</span> t <span class="keyword">in</span> tasks_done]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> crawl(concurrency=<span class="number">1</span>):</span><br><span class="line">        print(r)</span><br></pre></td></tr></table></figure>
-<p>参考链接： - <span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYy14LWEvcC8xMDg2ODQ5Ny5odG1s">Python 协程模块 asyncio 使用指南<i class="fa fa-external-link-alt"></i></span></p>
+<h1 id="步骤">步骤</h1>
+<p>根据官方文档，让Next主题支持公式有有两种方式（无法正常渲染请刷新页面）：</p>
+<pre class="mermaid" style="text-align: center;">
+graph LR
+H[Hexo] ==> |主题| T(NexT)
+T ==> |公式渲染引擎1| MJ{MathJax}
+T -.-> |公式渲染引擎2| KT{KaTeX}
+style KT text-decoration:line-through
+
+MJ ==> |markdown渲染引擎1| PD(hexo-renderer-pandoc)
+MJ -.-> |markdown渲染引擎2| KR(hexo-renderer-kramed)
+MJ -.-> |化学公式插件| MC((mhchem))
+
+KT -.-> |markdown渲染引擎1| MDIP(hexo-renderer-markdown-it-plus)
+KT -.-> |markdown渲染引擎2| MDI(hexo-renderer-markdown-it)
+KT -.-> |公式复制插件| CPTEX((Copy-tex))
+KT -.-> |bug| KTBUG>解析$有Bug需手动修复]
+
+</pre>
+<p>我的测试中只有上图中的实体粗线的方式成功，这里就记录一下这种方式的步骤，即</p>
+<ul>
+<li>NexT =&gt; MathJax =&gt; hexo-renderer-pandoc</li>
+</ul>
+<ol type="1">
+<li><p>安装<span class="exturl" data-url="aHR0cHM6Ly9wYW5kb2Mub3JnL2luc3RhbGxpbmcuaHRtbA==">pandoc<i class="fa fa-external-link-alt"></i></span></p>
+<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install pandoc</span><br></pre></td></tr></table></figure></p></li>
+<li><p>将默认的markdown渲染引擎<code>hexo-renderer-marked</code>替换为<code>hexo-renderer-pandoc</code></p>
+<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm un hexo-renderer-marked</span><br><span class="line">npm i hexo-renderer-pandoc</span><br></pre></td></tr></table></figure></p></li>
+<li><p>修改next主题配置</p>
+<p><div class="note warning"><p>Next的配置文件，有2种形式，请参考<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方文档<i class="fa fa-external-link-alt"></i></span></p>
+</div></p>
+<p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Math Formulas Render Support</span></span><br><span class="line"><span class="attr">math:</span></span><br><span class="line"><span class="comment"># Default (true) will load mathjax / katex script on demand.</span></span><br><span class="line"><span class="comment"># That is it only render those page which has `mathjax: true` in Front-matter.</span></span><br><span class="line"><span class="comment"># If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span></span><br><span class="line"><span class="attr">mathjax:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># See: https://mhchem.github.io/MathJax-mhchem/</span></span><br><span class="line">    <span class="attr">mhchem:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-markdown-it-plus (or hexo-renderer-markdown-it with markdown-it-katex plugin) required for full Katex support.</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment"># See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex</span></span><br><span class="line">    <span class="attr">copy_tex:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">vendors:</span></span><br><span class="line">  <span class="comment"># MathJax</span></span><br><span class="line">  <span class="attr">mathjax:</span> <span class="string">//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js</span></span><br></pre></td></tr></table></figure></p>
+<p><code>per_page</code>按需设置，具体可参考注释和官网说明。其他选项需要跟上述设置保持一致。</p></li>
+</ol>
+<h1 id="测试数学公式">测试数学公式</h1>
+<p>代码来自NexT官网，Mathjax渲染的公式已经内置了丰富的右键菜单，可以复制公式代码。</p>
+<h2 id="简单公式">简单公式</h2>
+<p>带label的公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq1&#125;</span></span></span></span><br><span class="line"><span class="formula">e=mc^2</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{equation} \label{eq1}
+e=mc^2
+\end{equation}\]</span></p>
+<p>根据label引用上述公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq1&#125;</span></span>$</span> proposed by Einstein...</span><br></pre></td></tr></table></figure>
+<p>The famous matter-energy equation <span class="math inline">\(\eqref{eq1}\)</span> proposed by Einstein...</p>
+<h2 id="多行公式">多行公式</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq2&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">begin</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= d + e + f + g <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= h + i</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{equation} \label{eq2}
+\begin{aligned}
+a &amp;= b + c \\
+  &amp;= d + e + f + g \\
+  &amp;= h + i
+\end{aligned}
+\end{equation}\]</span></p>
+<p>引用上述多行公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq2&#125;</span></span>$</span> is a multi-line equation.</span><br></pre></td></tr></table></figure>
+<p>Equation <span class="math inline">\(\eqref{eq2}\)</span> is a multi-line equation.</p>
+<h2 id="多行多编号公式">多行多编号公式</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">label</span><span class="string">&#123;eq3&#125;</span></span> <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">x &amp;= yz <span class="tag">\<span class="name">label</span><span class="string">&#123;eq4&#125;</span></span><span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">l &amp;= m - n <span class="tag">\<span class="name">label</span><span class="string">&#123;eq5&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{align}
+a &amp;= b + c \label{eq3} \\
+x &amp;= yz \label{eq4}\\
+l &amp;= m - n \label{eq5}
+\end{align}\]</span></p>
+<p>引用上述多行公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">There are three aligned equations: equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq3&#125;</span></span>$</span>, equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq4&#125;</span></span>$</span> and equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq5&#125;</span></span>$</span>.</span><br></pre></td></tr></table></figure>
+<p>There are three aligned equations: equation <span class="math inline">\(\eqref{eq3}\)</span>, equation <span class="math inline">\(\eqref{eq4}\)</span> and equation <span class="math inline">\(\eqref{eq5}\)</span>.</p>
+<h2 id="无编号公式">无编号公式</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">-4 + 5x &amp;= 2+y <span class="tag">\<span class="name">nonumber</span></span>  <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> w+2 &amp;= -1+w <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> ab &amp;= cb</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{align}
+-4 + 5x &amp;= 2+y \nonumber  \\
+ w+2 &amp;= -1+w \\
+ ab &amp;= cb
+\end{align}\]</span></p>
+<h2 id="用tag指定编号文字">用\tag指定编号文字</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$x+1<span class="tag">\<span class="name">over</span></span><span class="tag">\<span class="name">sqrt</span><span class="string">&#123;1-x^2&#125;</span></span> <span class="tag">\<span class="name">tag</span><span class="string">&#123;i&#125;</span></span><span class="tag">\<span class="name">label</span><span class="string">&#123;eq_tag&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}\]</span></p>
+<p>引用上述公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq_tag&#125;</span></span>$</span> use `<span class="tag">\<span class="name">tag</span><span class="string">&#123;&#125;</span></span>` instead of automatic numbering.</span><br></pre></td></tr></table></figure>
+<p>Equation <span class="math inline">\(\eqref{eq_tag}\)</span> use <code>\tag{}</code> instead of automatic numbering.</p>
 ]]></content>
       <categories>
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Dev</tag>
-        <tag>Python</tag>
-        <tag>Async</tag>
-        <tag>Coroutine</tag>
-        <tag>Semaphore</tag>
+        <tag>Tech</tag>
+        <tag>Blog</tag>
+        <tag>Hexo</tag>
+        <tag>Hexo Next</tag>
+        <tag>LaTeX</tag>
+        <tag>Math</tag>
       </tags>
   </entry>
   <entry>
@@ -2489,11 +2822,11 @@
 </ul>
 <hr />
 <blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>工欲善其事，必先利其器</p>
+<i class="fa fa-quote-left"></i>
+<p>工欲善其事，必先利其器</p>
 
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
+<i class="fa fa-quote-right"></i>
+</blockquote>
 <ol type="1">
 <li>常用必备软件（Chrome/QQ等）除外</li>
 <li>我使用的是Mac OS，因此列表中小部分软件可能没有windows版本</li>
@@ -3000,130 +3333,201 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Mac OS</tag>
         <tag>Tech</tag>
         <tag>Dev</tag>
+        <tag>Mac OS</tag>
         <tag>Tools</tag>
         <tag>Setup</tag>
       </tags>
   </entry>
   <entry>
-    <title>让Hexo Next (v8.0.0) 支持LaTeX数学公式</title>
-    <url>/tech/making-hexo-next-theme-latex-math-equation-supported/</url>
+    <title>run Kali Linux in Docker and install Desktop Environment &amp; VNC</title>
+    <url>/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/</url>
     <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported</strong></em></li>
+<li>Title(CN): <em><strong>在Docker中运行Kali Linux并安装桌面环境及VNC</strong></em></li>
+<li>Title(JP): <em><strong>Dockerを使ってKali Linux及びデスクトップ環境とVNC環境を構築</strong></em></li>
 <li>Author: dog2</li>
 </ul>
 <hr />
-<h1 id="按">按</h1>
+<h1 id="overview">Overview</h1>
 <ul>
-<li>环境
+<li>Environment：Mac OS（Windows）</li>
+<li>Needs ➡ HOWTO
 <ul>
-<li>OS：Max OS 10.15</li>
-<li>node: 13.7.0</li>
-<li>hexo：4.2.1</li>
-<li>hexo-cli: 3.1.0</li>
-<li>hexo-theme-next: v8.0.0-rc.2</li>
+<li>run Kali Linux in docker ➡ using <span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS91L2thbGlsaW51eA==">kali linux official docker image<i class="fa fa-external-link-alt"></i></span></li>
+<li>install Kali Desktop Environment and VNC service for kali so it can be accessed from the host machine
+<ul>
+<li>➡ choose one kali desktop env from e17/gnome/i3/kde/lxde/mate/xfce and install</li>
+<li>➡ installing vnc server <code>tightvncserver</code></li>
 </ul></li>
-<li>需求：让hexo的next主题支持渲染LaTeX语法的数学公式。</li>
-<li>参考链接：
+<li>it's better to access VNC without installing VNC client
 <ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL3RoaXJkLXBhcnR5LXNlcnZpY2VzL21hdGgtZXF1YXRpb25zLmh0bWw=">官方文档<i class="fa fa-external-link-alt"></i></span></li>
+<li>➡ on <code>Mac OS</code>, the pre-installed app <code>Screen Sharing</code> can be used as a VNC client</li>
+<li>➡ use <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25vdm5jL25vVk5D">novnc<i class="fa fa-external-link-alt"></i></span> so that we can <strong>use browser as an VNC client</strong></li>
+</ul></li>
 </ul></li>
 </ul>
 <a id="more"></a>
-<h1 id="步骤">步骤</h1>
-<p>根据官方文档，让Next主题支持公式有有两种方式（无法正常渲染请刷新页面）：</p>
-<pre class="mermaid" style="text-align: center;">
-            graph LR
-            H[Hexo] ==> |主题| T(NexT)
-T ==> |公式渲染引擎1| MJ{MathJax}
-T -.-> |公式渲染引擎2| KT{KaTeX}
-style KT text-decoration:line-through
-
-MJ ==> |markdown渲染引擎1| PD(hexo-renderer-pandoc)
-MJ -.-> |markdown渲染引擎2| KR(hexo-renderer-kramed)
-MJ -.-> |化学公式插件| MC((mhchem))
-
-KT -.-> |markdown渲染引擎1| MDIP(hexo-renderer-markdown-it-plus)
-KT -.-> |markdown渲染引擎2| MDI(hexo-renderer-markdown-it)
-KT -.-> |公式复制插件| CPTEX((Copy-tex))
-KT -.-> |bug| KTBUG>解析$有Bug需手动修复]
-
-          </pre>
-<p>我的测试中只有上图中的实体粗线的方式成功，这里就记录一下这种方式的步骤，即</p>
-<ul>
-<li>NexT =&gt; MathJax =&gt; hexo-renderer-pandoc</li>
-</ul>
+<h1 id="run-kali-linux-in-dokcer">run Kali Linux in dokcer</h1>
 <ol type="1">
-<li><p>安装<span class="exturl" data-url="aHR0cHM6Ly9wYW5kb2Mub3JnL2luc3RhbGxpbmcuaHRtbA==">pandoc<i class="fa fa-external-link-alt"></i></span></p>
-<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install pandoc</span><br></pre></td></tr></table></figure></p></li>
-<li><p>将默认的markdown渲染引擎<code>hexo-renderer-marked</code>替换为<code>hexo-renderer-pandoc</code></p>
-<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm un hexo-renderer-marked</span><br><span class="line">npm i hexo-renderer-pandoc</span><br></pre></td></tr></table></figure></p></li>
-<li><p>修改next主题配置</p>
-<p><div class="note warning">
-            <p>Next的配置文件，有2种形式，请参考<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方文档<i class="fa fa-external-link-alt"></i></span></p>
-          </div></p>
-<p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Math Formulas Render Support</span></span><br><span class="line"><span class="attr">math:</span></span><br><span class="line"><span class="comment"># Default (true) will load mathjax / katex script on demand.</span></span><br><span class="line"><span class="comment"># That is it only render those page which has `mathjax: true` in Front-matter.</span></span><br><span class="line"><span class="comment"># If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span></span><br><span class="line"><span class="attr">mathjax:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># See: https://mhchem.github.io/MathJax-mhchem/</span></span><br><span class="line">    <span class="attr">mhchem:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-markdown-it-plus (or hexo-renderer-markdown-it with markdown-it-katex plugin) required for full Katex support.</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment"># See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex</span></span><br><span class="line">    <span class="attr">copy_tex:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">vendors:</span></span><br><span class="line">  <span class="comment"># MathJax</span></span><br><span class="line">  <span class="attr">mathjax:</span> <span class="string">//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js</span></span><br></pre></td></tr></table></figure></p>
-<p><code>per_page</code>按需设置，具体可参考注释和官网说明。其他选项需要跟上述设置保持一致。</p></li>
+<li><p>pull docker image <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
+<li><p>run container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -t -d --name my-kali -p 25900:5900 -p 25901:5901 kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
+<li><p>go into container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it my-kali /bin/bash</span><br></pre></td></tr></table></figure></p></li>
+<li><p>update <figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">apt</span> <span class="string">update</span></span><br><span class="line"><span class="attr">apt</span> <span class="string">upgrade</span></span><br></pre></td></tr></table></figure></p></li>
 </ol>
-<h1 id="测试数学公式">测试数学公式</h1>
-<p>代码来自NexT官网，Mathjax渲染的公式已经内置了丰富的右键菜单，可以复制公式代码。</p>
-<h2 id="简单公式">简单公式</h2>
-<p>带label的公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq1&#125;</span></span></span></span><br><span class="line"><span class="formula">e=mc^2</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{equation} \label{eq1}
-e=mc^2
-\end{equation}\]</span></p>
-<p>根据label引用上述公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq1&#125;</span></span>$</span> proposed by Einstein...</span><br></pre></td></tr></table></figure>
-<p>The famous matter-energy equation <span class="math inline">\(\eqref{eq1}\)</span> proposed by Einstein...</p>
-<h2 id="多行公式">多行公式</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq2&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">begin</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= d + e + f + g <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= h + i</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{equation} \label{eq2}
-\begin{aligned}
-a &amp;= b + c \\
-  &amp;= d + e + f + g \\
-  &amp;= h + i
-\end{aligned}
-\end{equation}\]</span></p>
-<p>引用上述多行公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq2&#125;</span></span>$</span> is a multi-line equation.</span><br></pre></td></tr></table></figure>
-<p>Equation <span class="math inline">\(\eqref{eq2}\)</span> is a multi-line equation.</p>
-<h2 id="多行多编号公式">多行多编号公式</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">label</span><span class="string">&#123;eq3&#125;</span></span> <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">x &amp;= yz <span class="tag">\<span class="name">label</span><span class="string">&#123;eq4&#125;</span></span><span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">l &amp;= m - n <span class="tag">\<span class="name">label</span><span class="string">&#123;eq5&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{align}
-a &amp;= b + c \label{eq3} \\
-x &amp;= yz \label{eq4}\\
-l &amp;= m - n \label{eq5}
-\end{align}\]</span></p>
-<p>引用上述多行公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">There are three aligned equations: equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq3&#125;</span></span>$</span>, equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq4&#125;</span></span>$</span> and equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq5&#125;</span></span>$</span>.</span><br></pre></td></tr></table></figure>
-<p>There are three aligned equations: equation <span class="math inline">\(\eqref{eq3}\)</span>, equation <span class="math inline">\(\eqref{eq4}\)</span> and equation <span class="math inline">\(\eqref{eq5}\)</span>.</p>
-<h2 id="无编号公式">无编号公式</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">-4 + 5x &amp;= 2+y <span class="tag">\<span class="name">nonumber</span></span>  <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> w+2 &amp;= -1+w <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> ab &amp;= cb</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{align}
--4 + 5x &amp;= 2+y \nonumber  \\
- w+2 &amp;= -1+w \\
- ab &amp;= cb
-\end{align}\]</span></p>
-<h2 id="用tag指定编号文字">用\tag指定编号文字</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$x+1<span class="tag">\<span class="name">over</span></span><span class="tag">\<span class="name">sqrt</span><span class="string">&#123;1-x^2&#125;</span></span> <span class="tag">\<span class="name">tag</span><span class="string">&#123;i&#125;</span></span><span class="tag">\<span class="name">label</span><span class="string">&#123;eq_tag&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}\]</span></p>
-<p>引用上述公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq_tag&#125;</span></span>$</span> use `<span class="tag">\<span class="name">tag</span><span class="string">&#123;&#125;</span></span>` instead of automatic numbering.</span><br></pre></td></tr></table></figure>
-<p>Equation <span class="math inline">\(\eqref{eq_tag}\)</span> use <code>\tag{}</code> instead of automatic numbering.</p>
+<div class="note warning"><p><code>kalilinux/kali-bleeding-edge</code> is a small size image, so there is nothing in it but some essential linux components. You should install all the kali pentest tools by your self. As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available installations are（the <code>New</code> column）:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Old</th>
+<th>New</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kali-linux-full</td>
+<td>kali-linux-large</td>
+<td>Our previous default tools for AMD64/i386 images</td>
+</tr>
+<tr class="even">
+<td>kali-linux-all</td>
+<td>kali-linux-everything</td>
+<td>Every metapackage and tool listed here</td>
+</tr>
+<tr class="odd">
+<td>kali-linux-top10</td>
+<td>kali-tools-top10</td>
+<td>The most commonly used tools</td>
+</tr>
+<tr class="even">
+<td>kali-desktop-live</td>
+<td>kali-desktop-live (same)</td>
+<td>Used during a live session when booted from the image</td>
+</tr>
+</tbody>
+</table>
+<p>I chose <code>kali-linux-everything</code>:</p>
+<figure class="highlight bash">
+<table>
+<tr>
+<td class="gutter">
+<pre><span class="line">1</span><br></pre>
+</td>
+<td class="code">
+<pre><span class="line">apt install kali-linux-everything</span><br></pre>
+</td>
+</tr>
+</table>
+</figure>
+<p>and it took me 4 hours to finish it and the container size came out to be 15GB+ 😂</p>
+</div>
+<h1 id="install-desktop-environment">install Desktop Environment</h1>
+<p>As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available Desktop Environment are</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Old</th>
+<th>New</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kali-desktop-common</td>
+<td>kali-desktop-core</td>
+<td>Any key tools required for a GUI image</td>
+</tr>
+<tr class="even">
+<td>new</td>
+<td>kali-desktop-e17</td>
+<td>Enlightenment (WM)</td>
+</tr>
+<tr class="odd">
+<td>kali-desktop-gnome</td>
+<td>kali-desktop-gnome (same)</td>
+<td>GNOME (DE)</td>
+</tr>
+<tr class="even">
+<td>new</td>
+<td>kali-desktop-i3</td>
+<td>i3 (WM)</td>
+</tr>
+<tr class="odd">
+<td>kali-desktop-kde</td>
+<td>kali-desktop-kde (same)</td>
+<td>KDE (DE)</td>
+</tr>
+<tr class="even">
+<td>kali-desktop-lxde</td>
+<td>kali-desktop-lxde (same)</td>
+<td>LXDE (WM)</td>
+</tr>
+<tr class="odd">
+<td>new</td>
+<td>kali-desktop-mate</td>
+<td>MATE (DE)</td>
+</tr>
+<tr class="even">
+<td>kali-desktop-xfce</td>
+<td>kali-desktop-xfce (same)</td>
+<td>XFCE (WM)</td>
+</tr>
+</tbody>
+</table>
+<p>old version of offical kali image used <code>kali-desktop-gnome</code> as default desktop env, but the newests version has changed into <code>kali-desktop-xfce</code>, its has smaller size and is friendly to low-cost machines.</p>
+<p>so I ran</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install kali-desktop-xfce</span><br></pre></td></tr></table></figure>
+<h1 id="install-tightvncserver">install tightvncserver</h1>
+<p>old version of kali might use <code>vnc4server</code> as vncserver but it has gone in the new kali, now through apt install we have no choice but <code>tightvncserver</code> .</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install tightvncserver</span><br></pre></td></tr></table></figure>
+<p>run <code>vncpasswd</code> for the first time to initiate your VNC password</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vncpasswd</span><br></pre></td></tr></table></figure>
+<p>then run the vncserver, before it you need to set bash environment variable</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> USER=root</span><br><span class="line">tightvncserver :0 -geometry 1280x800 -depth 16 -pixelformat rgb565</span><br></pre></td></tr></table></figure>
+<p>the default port of vnc server is <code>5900</code>, note that my mac is host machine so that the port is <code>25900</code>, which was mapped when ran <code>docker run</code> command at the beginning. The password was the one you set when running <code>vncpasswd</code>.</p>
+<p>so now I can access it from my mac through <code>Screen Sharing</code>, you can try with your VNC client to connect to <code>127.0.0.1:25900</code>, you will got it</p>
+<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/1.gif" class="" title="access through VNC client">
+<h1 id="install-novnc">install novnc</h1>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install net-tools</span><br><span class="line">apt install novnc</span><br></pre></td></tr></table></figure>
+<p>tunnel vncserver on port <code>5900</code> into WebSockets vpc server on port <code>5901</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/novnc/utils/launch.sh --listen 5901 --vnc localhost:5900</span><br></pre></td></tr></table></figure>
+<p>then access http://127.0.0.1:25901/vnc.html through your browser and your will get into noVNC, and setting the WebSocket <code>Host</code> to <code>127.0.0.1</code> and <code>Port</code> to <code>25901</code> so that we can connect to VNC server. The password was the one you set when running <code>vncpasswd</code>.</p>
+<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/2.gif" class="" title="access through web broswer(noVNC WebSocket)">
+<h1 id="reference">reference</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cucG9mdHV0LmNvbS9ob3ctdG8taW5zdGFsbC1hbmQtYWNjZXNzLXRpZ2h0dm5jLXJlbW90ZS1kZXNrdG9wLWluLWxpbnV4Lw==">How To Install and Access TightVNC Remote Desktop In Linux<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">Major Metapackage Makeover<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvZG9jcy9nZW5lcmFsLXVzZS9ub3ZuYy1rYWxpLWluLWJyb3dzZXIv">Kali In The Browser (noVNC)<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cudGVjbWludC5jb20vc2V0LXVuc2V0LWVudmlyb25tZW50LXZhcmlhYmxlcy1pbi1saW51eC8=">当 Kali 遇见 Docker<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NkaWh2YWkvYXJ0aWNsZS9kZXRhaWxzLzEwMzgyMjQ5OCNWTkNfMTI=">【备忘录】树莓派安装Kali Linux并安装VNC<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9xaWl0YS5jb20vcm9jaW5hbnRlLWVpbi9pdGVtcy82ODBmMjBkMzdhN2U1MzZkMzA3Yg==">Dockerを使ってKali Linuxの環境を構築した時のメモ<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
 ]]></content>
       <categories>
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>LaTeX</tag>
-        <tag>Math</tag>
         <tag>Tech</tag>
-        <tag>Hexo</tag>
-        <tag>Hexo Next</tag>
-        <tag>Blog</tag>
+        <tag>Dev</tag>
+        <tag>Mac OS</tag>
+        <tag>Security</tag>
+        <tag>Tools</tag>
+        <tag>Setup</tag>
+        <tag>Docker</tag>
+        <tag>Kali</tag>
+        <tag>Pentest</tag>
+        <tag>VNC</tag>
       </tags>
   </entry>
   <entry>
@@ -3269,302 +3673,6 @@ l &amp;= m - n \label{eq5}
         <tag>PoC/Exp</tag>
         <tag>Vul</tag>
         <tag>SSH</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>run Kali Linux in Docker and install Desktop Environment &amp; VNC</title>
-    <url>/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/</url>
-    <content><![CDATA[<ul>
-<li>Title(CN): <em><strong>在Docker中运行Kali Linux并安装桌面环境及VNC</strong></em></li>
-<li>Title(JP): <em><strong>Dockerを使ってKali Linux及びデスクトップ環境とVNC環境を構築</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<h1 id="overview">Overview</h1>
-<ul>
-<li>Environment：Mac OS（Windows）</li>
-<li>Needs ➡ HOWTO
-<ul>
-<li>run Kali Linux in docker ➡ using <span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS91L2thbGlsaW51eA==">kali linux official docker image<i class="fa fa-external-link-alt"></i></span></li>
-<li>install Kali Desktop Environment and VNC service for kali so it can be accessed from the host machine
-<ul>
-<li>➡ choose one kali desktop env from e17/gnome/i3/kde/lxde/mate/xfce and install</li>
-<li>➡ installing vnc server <code>tightvncserver</code></li>
-</ul></li>
-<li>it's better to access VNC without installing VNC client
-<ul>
-<li>➡ on <code>Mac OS</code>, the pre-installed app <code>Screen Sharing</code> can be used as a VNC client</li>
-<li>➡ use <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25vdm5jL25vVk5D">novnc<i class="fa fa-external-link-alt"></i></span> so that we can <strong>use browser as an VNC client</strong></li>
-</ul></li>
-</ul></li>
-</ul>
-<a id="more"></a>
-<h1 id="run-kali-linux-in-dokcer">run Kali Linux in dokcer</h1>
-<ol type="1">
-<li><p>pull docker image <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
-<li><p>run container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -t -d --name my-kali -p 25900:5900 -p 25901:5901 kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
-<li><p>go into container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it my-kali /bin/bash</span><br></pre></td></tr></table></figure></p></li>
-<li><p>update <figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">apt</span> <span class="string">update</span></span><br><span class="line"><span class="attr">apt</span> <span class="string">upgrade</span></span><br></pre></td></tr></table></figure></p></li>
-</ol>
-<div class="note warning">
-            <p><code>kalilinux/kali-bleeding-edge</code> is a small size image, so there is nothing in it but some essential linux components. You should install all the kali pentest tools by your self. As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available installations are（the <code>New</code> column）:</p><table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Old</th><th>New</th><th>Notes</th></tr></thead><tbody><tr class="odd"><td>kali-linux-full</td><td>kali-linux-large</td><td>Our previous default tools for AMD64/i386 images</td></tr><tr class="even"><td>kali-linux-all</td><td>kali-linux-everything</td><td>Every metapackage and tool listed here</td></tr><tr class="odd"><td>kali-linux-top10</td><td>kali-tools-top10</td><td>The most commonly used tools</td></tr><tr class="even"><td>kali-desktop-live</td><td>kali-desktop-live (same)</td><td>Used during a live session when booted from the image</td></tr></tbody></table><p>I chose <code>kali-linux-everything</code>:</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install kali-linux-everything</span><br></pre></td></tr></table></figure><p>and it took me 4 hours to finish it and the container size came out to be 15GB+ 😂</p>
-          </div>
-<h1 id="install-desktop-environment">install Desktop Environment</h1>
-<p>As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available Desktop Environment are</p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Old</th>
-<th>New</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>kali-desktop-common</td>
-<td>kali-desktop-core</td>
-<td>Any key tools required for a GUI image</td>
-</tr>
-<tr class="even">
-<td>new</td>
-<td>kali-desktop-e17</td>
-<td>Enlightenment (WM)</td>
-</tr>
-<tr class="odd">
-<td>kali-desktop-gnome</td>
-<td>kali-desktop-gnome (same)</td>
-<td>GNOME (DE)</td>
-</tr>
-<tr class="even">
-<td>new</td>
-<td>kali-desktop-i3</td>
-<td>i3 (WM)</td>
-</tr>
-<tr class="odd">
-<td>kali-desktop-kde</td>
-<td>kali-desktop-kde (same)</td>
-<td>KDE (DE)</td>
-</tr>
-<tr class="even">
-<td>kali-desktop-lxde</td>
-<td>kali-desktop-lxde (same)</td>
-<td>LXDE (WM)</td>
-</tr>
-<tr class="odd">
-<td>new</td>
-<td>kali-desktop-mate</td>
-<td>MATE (DE)</td>
-</tr>
-<tr class="even">
-<td>kali-desktop-xfce</td>
-<td>kali-desktop-xfce (same)</td>
-<td>XFCE (WM)</td>
-</tr>
-</tbody>
-</table>
-<p>old version of offical kali image used <code>kali-desktop-gnome</code> as default desktop env, but the newests version has changed into <code>kali-desktop-xfce</code>, its has smaller size and is friendly to low-cost machines.</p>
-<p>so I ran</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install kali-desktop-xfce</span><br></pre></td></tr></table></figure>
-<h1 id="install-tightvncserver">install tightvncserver</h1>
-<p>old version of kali might use <code>vnc4server</code> as vncserver but it has gone in the new kali, now through apt install we have no choice but <code>tightvncserver</code> .</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install tightvncserver</span><br></pre></td></tr></table></figure>
-<p>run <code>vncpasswd</code> for the first time to initiate your VNC password</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vncpasswd</span><br></pre></td></tr></table></figure>
-<p>then run the vncserver, before it you need to set bash environment variable</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> USER=root</span><br><span class="line">tightvncserver :0 -geometry 1280x800 -depth 16 -pixelformat rgb565</span><br></pre></td></tr></table></figure>
-<p>the default port of vnc server is <code>5900</code>, note that my mac is host machine so that the port is <code>25900</code>, which was mapped when ran <code>docker run</code> command at the beginning. The password was the one you set when running <code>vncpasswd</code>.</p>
-<p>so now I can access it from my mac through <code>Screen Sharing</code>, you can try with your VNC client to connect to <code>127.0.0.1:25900</code>, you will got it</p>
-<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/1.gif" class="" title="access through VNC client">
-<h1 id="install-novnc">install novnc</h1>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install net-tools</span><br><span class="line">apt install novnc</span><br></pre></td></tr></table></figure>
-<p>tunnel vncserver on port <code>5900</code> into WebSockets vpc server on port <code>5901</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/novnc/utils/launch.sh --listen 5901 --vnc localhost:5900</span><br></pre></td></tr></table></figure>
-<p>then access http://127.0.0.1:25901/vnc.html through your browser and your will get into noVNC, and setting the WebSocket <code>Host</code> to <code>127.0.0.1</code> and <code>Port</code> to <code>25901</code> so that we can connect to VNC server. The password was the one you set when running <code>vncpasswd</code>.</p>
-<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/2.gif" class="" title="access through web broswer(noVNC WebSocket)">
-<h1 id="reference">reference</h1>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cucG9mdHV0LmNvbS9ob3ctdG8taW5zdGFsbC1hbmQtYWNjZXNzLXRpZ2h0dm5jLXJlbW90ZS1kZXNrdG9wLWluLWxpbnV4Lw==">How To Install and Access TightVNC Remote Desktop In Linux<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">Major Metapackage Makeover<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvZG9jcy9nZW5lcmFsLXVzZS9ub3ZuYy1rYWxpLWluLWJyb3dzZXIv">Kali In The Browser (noVNC)<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cudGVjbWludC5jb20vc2V0LXVuc2V0LWVudmlyb25tZW50LXZhcmlhYmxlcy1pbi1saW51eC8=">当 Kali 遇见 Docker<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NkaWh2YWkvYXJ0aWNsZS9kZXRhaWxzLzEwMzgyMjQ5OCNWTkNfMTI=">【备忘录】树莓派安装Kali Linux并安装VNC<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9xaWl0YS5jb20vcm9jaW5hbnRlLWVpbi9pdGVtcy82ODBmMjBkMzdhN2U1MzZkMzA3Yg==">Dockerを使ってKali Linuxの環境を構築した時のメモ<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>Mac OS</tag>
-        <tag>Tech</tag>
-        <tag>Dev</tag>
-        <tag>Security</tag>
-        <tag>Tools</tag>
-        <tag>Setup</tag>
-        <tag>Docker</tag>
-        <tag>Kali</tag>
-        <tag>Pentest</tag>
-        <tag>VNC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Django REST Framework 学习笔记（七）：序列化模块 serialziers 之 Serialzier类</title>
-    <url>/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/</url>
-    <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Django REST Framework Learning Notes (7): the Serialzier class in serialziers module</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<h1 id="基本信息">基本信息</h1>
-<ul>
-<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/serializers.py" target="_blank" rel="noopener"><code>rest_framework.response</code></a></li>
-<li>官方文档
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
-</ul></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzdfZHJmX1NlcmlhbGl6ZXI=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>DRF常用序列化类主要有</p>
-<ul>
-<li><code>rest_framework.serialziers.Serializer</code></li>
-<li><code>rest_framework.serialziers.ModelSerializer</code></li>
-<li><code>rest_framework.serialziers.ListSerializer</code></li>
-</ul>
-<p>本篇介绍<code>rest_framework.serialziers.Serializer</code></p>
-<a id="more"></a>
-<h1 id="源码分析">源码分析</h1>
-<p>根据基类<code>rest_framework.serialziers.BaseSerializer</code>构造函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, instance=None, data=empty, **kwargs)</span>:</span></span><br></pre></td></tr></table></figure>
-<p>定义好Serialzier类后，就可以创建Serializer对象了。Serializer的构造方法为</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Serializer(instance=<span class="literal">None</span>,data=empty,**kwargs)</span><br></pre></td></tr></table></figure>
-<ol type="1">
-<li>用于序列化时，将模型类对象传入<code>instance</code>参数</li>
-<li>用于反序列化时，将要被反序列化的数据传入<code>data</code>参数</li>
-<li>除了<code>instance</code>和<code>data</code>参数外，在构造S<code>erializer</code>对象时，还可以通过<code>context</code>参数额外添加数据。通过<code>context</code>参数附加的数据，可以通过<code>Serializer</code>对象的<code>context</code>属性获取。 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializer = AccountSerializer(account, context=&#123;<span class="string">'request'</span>:request&#125;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="用法">用法</h1>
-<p>序列化器的使用分两个阶段：</p>
-<ol type="1">
-<li><p>在客户端请求时，使用序列化器可以完成对数据的反序列化（就是前段往后端传递数据，反序列化之后保存数据）</p></li>
-<li><p>在服务器响应时，使用序列化器可以完成对数据的序列化（服务器取出数据，序列化之后往前段发送展示）</p></li>
-</ol>
-<h2 id="序列化">序列化</h2>
-<p>序列化是将数据返回给前台。DRF的序列化使用流程如下：</p>
-<ol type="1">
-<li>查询出一个用户对象</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> user</span><br><span class="line">user = User.object.get(id=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>构造序列化器对象</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> user.serializers <span class="keyword">import</span> UserSerializer</span><br><span class="line">user_obj = Userserializer(user)  <span class="comment">#放入查询出的user对象</span></span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>获取序列化对象，通过data属性可以获取序列化后的数据</li>
-</ol>
-<p>上面查出来的user_ser是一个serializer对象，需要取出具体的数据传给前端，所有要用到 user_ser.data取出具体数据</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_ser = Userserializer(user).data</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>如果要被序列化的数据是包含多条数据的（也可以说被[ ]嵌套的，<code>queryset</code>类型数据，不管是多条还是单条）,需要添加<code>many=True</code>参数</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user = models.User.objects.all()</span><br><span class="line">user_ser =  Userserialzier(user,many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<ol start="5" type="1">
-<li>自定义序列化属性</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializers.SerializerMethodField()</span><br></pre></td></tr></table></figure>
-<h2 id="反序列化使用流程">反序列化使用流程</h2>
-<p>反序列化是将前天传来的数据数据存入数据库。DRF的反序列化使用流程如下：</p>
-<h3 id="数据验证">数据验证</h3>
-<ol type="1">
-<li><p>使用序列化器进行反序列化时，需要对数据进行验证后，才能获取验证成功的数据或保存成模型类对象。</p></li>
-<li><p>在获取反序列化的数据前，必须调用<code>is_valid()</code>方法进行验证，验证成功返回<code>True</code>，否则返回<code>False</code>。</p></li>
-<li><p>验证失败，可以通过序列化对象的<code>errors</code>属性获取错误信息，返回字典，包含了字段和字段的错误。</p></li>
-<li><p>验证通过，可以通过序列化器对象的<code>validated_data</code>属性获取数据</p></li>
-</ol>
-<h3 id="保存数据">保存数据</h3>
-<p>序列化类中必须重写<code>create</code>方法用于新增，重写<code>update</code>方法用于修改。视图中使用<code>create</code>和<code>save</code>方法。</p>
-<p>从源码可知<code>save</code>方法内部调用的是序列化类中的<code>create</code>方法，所以新增必须要在序列化类中重写<code>create</code>方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="用法示例">用法示例</h2>
-<h3 id="序列化-1">序列化</h3>
-<h4 id="模型层-models.py">模型层 <code>models.py</code></h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    SEX_CHOICES = [</span><br><span class="line">        [<span class="number">0</span>,<span class="string">'男'</span>],</span><br><span class="line">        [<span class="number">1</span>,<span class="string">'女'</span>],</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    pwd = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    phone = models.CharField(max_length=<span class="number">11</span>,null=<span class="literal">True</span>,default=<span class="literal">None</span>)</span><br><span class="line">    sex = models.IntegerField(choices=SEX_CHOICES,default=<span class="number">0</span>)</span><br><span class="line">    icon = models.ImageField(upload_to=<span class="string">'icon'</span>,default=<span class="string">'icon/default.jpg'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table=<span class="string">'old_boy_user'</span></span><br><span class="line">        verbose_name=<span class="string">'用户'</span></span><br><span class="line">        verbose_name_plural=verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s'</span> %self.name</span><br></pre></td></tr></table></figure>
-<h4 id="配置层-settings.py">配置层 <code>settings.py</code></h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 注册rest_framework</span></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="string">'rest_framework'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># media资源</span></span><br><span class="line">MEDIA_URL = <span class="string">'/media/'</span>  <span class="comment"># 后期高级序列化类与视图类，会使用该配置</span></span><br><span class="line">MEDIA_ROOT = os.path.join(BASE_DIR, <span class="string">'media'</span>)  <span class="comment"># media资源路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 国际化配置</span></span><br><span class="line">LANGUAGE_CODE = <span class="string">'zh-hans'</span></span><br><span class="line">TIME_ZONE = <span class="string">'Asia/Shanghai'</span></span><br><span class="line">USE_I18N = <span class="literal">True</span></span><br><span class="line">USE_L10N = <span class="literal">True</span></span><br><span class="line">USE_TZ = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<h4 id="序列化层-apiserializers.py">序列化层 <code>api/serializers.py</code></h4>
-<ol type="1">
-<li><code>api</code>应用下创建<code>serializers.py</code>文件</li>
-<li>设置需要返回给前台数据样式 那些<code>model</code>类有对应的字段，不需要返回的就不用设置了</li>
-<li>设置方法字段，字段名可以随意，字段值由 <code>get_字段名</code> 提供，来完成一些需要处理在返回的数据，类似于<code>forms</code>组件</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers, exceptions</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSerializer</span><span class="params">(serializers.Serializer)</span>:</span>   <span class="comment">#创建一个序列化类</span></span><br><span class="line">    name = serializers.CharField()      </span><br><span class="line">    phone = serializers.CharField()</span><br><span class="line">    <span class="comment"># 序列化提供给前台的字段个数由后台决定，可以少提供，但是提供的数据库对应的字段，名字一定要与数据库字段相同</span></span><br><span class="line">    <span class="comment"># sex = serializers.IntegerField()</span></span><br><span class="line">    <span class="comment"># icon = serializers.ImageField()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义序列化属性</span></span><br><span class="line">    <span class="comment"># 属性名随意，值由固定的命名规范方法提供:</span></span><br><span class="line">    <span class="comment">#       get_属性名(self, 参与序列化的model对象)</span></span><br><span class="line">    <span class="comment">#       返回值就是自定义序列化属性的值</span></span><br><span class="line">    gender = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_gender</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># choice类型的解释型值 get_字段_display() 来访问</span></span><br><span class="line">        <span class="keyword">return</span> obj.get_sex_display()</span><br><span class="line"></span><br><span class="line">　　 <span class="comment">#自定义序列化属性icon</span></span><br><span class="line">    icon = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_icon</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># settings.MEDIA_URL: 自己配置的 /media/，给后面高级序列化与视图类准备的</span></span><br><span class="line">        <span class="comment"># obj.icon不能直接作为数据返回，因为内容虽然是字符串，但是类型是ImageFieldFile类型</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s%s%s'</span> % (<span class="string">r'http://127.0.0.1:8000'</span>, settings.MEDIA_URL, str(obj.icon))</span><br></pre></td></tr></table></figure>
-<h4 id="视图层-views.py">视图层 <code>views.py</code></h4>
-<ol type="1">
-<li>从数据库中将要序列化给前台的<code>model</code>对象，或是多个<code>model</code>对象查询出来</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj = models.User.objects.get(pk=pk)</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj_list = models.User.objects.all()</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>序列化: <code>对象.data</code> 就是可以返回给前台的序列化数据</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> Response(&#123;</span><br><span class="line">    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'results'</span>: user_ser.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>完整代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="keyword">if</span> pk:  <span class="comment">#单查</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 用户对象不能直接作为数据返回给前台</span></span><br><span class="line">                user_obj = models.User.objects.get(pk=pk)</span><br><span class="line">                <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">                user_ser = serializers.UserSerializer(user_obj)</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'results'</span>: user_ser.data   <span class="comment">#如果你在序列化的时候没有.data,那么在传给前端的时候必须要.data</span></span><br><span class="line">                &#125;)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">2</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'用户不存在'</span>,</span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment">#群查</span></span><br><span class="line">            <span class="comment"># 用户对象列表(queryset)不能直接作为数据返回给前台</span></span><br><span class="line">            user_obj_list = models.User.objects.all()</span><br><span class="line">            <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">            user_ser_data = serializers.UserSerializer(user_obj_list, many=<span class="literal">True</span>).data</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'results'</span>: user_ser_data</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="反序列化">反序列化</h3>
-<h4 id="反序列层-apiserializers.py">反序列层 <code>api/serializers.py</code></h4>
-<ol type="1">
-<li>设置必填与选填序列化字段，设置校验规则</li>
-<li>为需要额外校验的字段提供局部钩子函数，如果该字段不入库，且不参与全局钩子校验，可以将值取出校验 <code>pop</code></li>
-<li>为有联合关系的字段们提供全局钩子函数，如果某些字段不入库，可以将值取出校验</li>
-<li><strong>必须重写<code>create</code>方法，完成校验通过的数据入库工作，得到新增的对象</strong></li>
-</ol>
-<p>完整代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDeserializer</span><span class="params">(serializers.Serializer)</span>:</span></span><br><span class="line">    <span class="comment"># 1) 哪些字段必须反序列化</span></span><br><span class="line">    <span class="comment"># 2) 字段都有哪些安全校验</span></span><br><span class="line">    <span class="comment"># 3) 哪些字段需要额外提供校验  钩子函数</span></span><br><span class="line">    <span class="comment"># 4) 哪些字段间存在联合校验</span></span><br><span class="line">    <span class="comment"># 注：反序列化字段都是用来入库的，不会出现自定义方法属性，会出现可以设置校验规则的自定义属性,不入数据库的</span></span><br><span class="line">    name = serializers.CharField(</span><br><span class="line">        max_length=<span class="number">64</span>,</span><br><span class="line">        min_length=<span class="number">3</span>,</span><br><span class="line">        error_messages=&#123;</span><br><span class="line">            <span class="string">'max_length'</span>: <span class="string">'太长'</span>,</span><br><span class="line">            <span class="string">'min_length'</span>: <span class="string">'太短'</span></span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    pwd = serializers.CharField()</span><br><span class="line">    phone = serializers.CharField(required=<span class="literal">False</span>)</span><br><span class="line">    sex = serializers.IntegerField(required=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义有校验规则的反序列化字段,例如确认密码字段re_pwd</span></span><br><span class="line">    re_pwd = serializers.CharField(required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 小结：</span></span><br><span class="line">    <span class="comment"># name，pwd，re_pwd为必填字段</span></span><br><span class="line">    <span class="comment"># phone，sex为选填字段</span></span><br><span class="line">    <span class="comment"># 五个字段都必须提供完成的校验规则</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 局部钩子：validate_要校验的字段名(self, 当前要校验字段的值)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():  <span class="comment"># 名字中不能出现g</span></span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(<span class="string">'名字非法，是个鸡贼！'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 全局钩子：validate(self, 通过系统与局部钩子校验之后的所有数据)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span>    <span class="comment">#attrs是字典格式</span></span><br><span class="line">        pwd = attrs.get(<span class="string">'pwd'</span>)</span><br><span class="line">        re_pwd = attrs.pop(<span class="string">'re_pwd'</span>)     <span class="comment">#因为re_pwd不需要入数据库，所以在全局钩子校验中删除掉这个字段</span></span><br><span class="line">        <span class="keyword">if</span> pwd != re_pwd:</span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(&#123;<span class="string">'pwd&amp;re_pwd'</span>: <span class="string">'两次密码不一致'</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span> attrs</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 要完成新增，必须自己重写 create 方法，validated_data是校验的数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">        <span class="comment"># 尽量在所有校验规则完毕之后，数据可以直接入库</span></span><br><span class="line">        <span class="keyword">return</span> models.User.objects.create(**validated_data)</span><br></pre></td></tr></table></figure>
-<h4 id="视图层-views.py-1">视图层 views.py</h4>
-<ol type="1">
-<li>反序列化数据必须赋值<code>data</code>，结果就是得到一个<code>serializer</code>对象</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser = serializers.UserDeserializer(data=request_data)</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>把数据放到自定义<code>serializer</code>中校验，数据校验成功返回<code>True</code>,失败返回<code>False</code></li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser.is_valid()</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>不通过返回 <code>book_ser.errors</code> 给前台，通过 <code>book_ser.save()</code> 得到新增的对象，再正常返回</li>
-</ol>
-<p>完整代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="comment"># 只考虑单增</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 请求数据</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        <span class="comment"># 数据是否合法（增加对象需要一个字典数据）</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(request_data, dict) <span class="keyword">or</span> request_data == &#123;&#125;:</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'数据有误'</span>,</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment"># 数据类型合法，但数据内容不一定合法，需要校验数据，校验(参与反序列化)的数据需要赋值给data</span></span><br><span class="line">        book_ser = serializers.UserDeserializer(data=request_data)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 序列化对象调用is_valid()完成校验，校验失败的失败信息都会被存储在 序列化对象.errors</span></span><br><span class="line">        <span class="keyword">if</span> book_ser.is_valid():</span><br><span class="line">            <span class="comment"># 校验通过，完成新增</span></span><br><span class="line">            book_obj = book_ser.save()</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">                <span class="string">'results'</span>: serializers.UserSerializer(book_obj).data</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 校验失败</span></span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: book_ser.errors,</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
-<h1 id="总结">总结</h1>
-<ol type="1">
-<li>使用序列化器的时候一定要注意，序列化器声明了以后，不会自动执行，需要我们在视图中进行调用才可以</li>
-<li>序列化器无法直接接收数据，需要我们在视图中创建序列化器对象时把使用的数据传递过来。（<code>data</code>, <code>instance</code>传参）
-<ul>
-<li>序列化：是数据对象从数据库中查出，通过instance传入序列化器中，必须通过data属性才能将序列化后的数据传给前端，不能直接传序列化对象</li>
-<li>反序列化：是数据是通过request.data从前端获取到数据，通过data传入序列化器中进行校验，保存到数据库中</li>
-</ul></li>
-<li>序列化器的字段声明类似于我们前面使用过的表单系统</li>
-<li>开发restful api时，序列化器会帮我们把模型数据转换成字典</li>
-<li>drf提供的视图会帮我们把字典转换成json，或者把客户端发过来的数据转换成字典</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>Tech</tag>
-        <tag>Learning Notes</tag>
-        <tag>Backend</tag>
-        <tag>Django</tag>
-        <tag>Django REST Framework</tag>
-        <tag>DRF</tag>
-        <tag>Dev</tag>
       </tags>
   </entry>
 </search>

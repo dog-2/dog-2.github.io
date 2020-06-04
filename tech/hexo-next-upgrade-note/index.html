@@ -22,7 +22,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.3","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Title(EN): Hexo &amp; Next Upgrade Note Author: dog2   几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。 由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下： 目的  node: v6.17.1 &#x3D;&gt; v13.7.0 hexo: v3.2.x &#x3D;&gt; v4.2.0 next: v4.x &#x3D;&amp;gt">
@@ -35,9 +35,9 @@
 <meta property="article:published_time" content="2020-05-01T01:24:00.000Z">
 <meta property="article:modified_time" content="2020-05-01T13:22:22.000Z">
 <meta property="article:author" content="dog2">
+<meta property="article:tag" content="Blog">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="Hexo Next">
-<meta property="article:tag" content="Blog">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://dog.wtf/tech/hexo-next-upgrade-note/">
@@ -321,9 +321,34 @@
 <li>更新hexo及所有插件 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure></li>
 <li>确认hexo版本号是否已更新 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo version</span><br></pre></td></tr></table></figure></li>
 </ul>
-<div class="note warning">
-            <h3 id="潜在错误">潜在错误</h3>此时运行 hexo generate 命令，若出现了如下错误：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>通过重新安装 <code>hexo-cli</code> 可以解决<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-          </div>
+<div class="note warning"><h3 id="潜在错误">潜在错误</h3>
+此时运行 hexo generate 命令，若出现了如下错误：
+<figure class="highlight bash">
+<table>
+<tr>
+<td class="gutter">
+<pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+</td>
+<td class="code">
+<pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre>
+</td>
+</tr>
+</table>
+</figure>
+通过重新安装 <code>hexo-cli</code> 可以解决
+<figure class="highlight bash">
+<table>
+<tr>
+<td class="gutter">
+<pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+</td>
+<td class="code">
+<pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre>
+</td>
+</tr>
+</table>
+</figure>
+</div>
 <h2 id="更新-next-主题">更新 Next 主题</h2>
 <h3 id="备份可选">备份（可选）</h3>
 <p>我备份了如下旧配置文件：</p>
@@ -376,9 +401,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/blog/" rel="tag"># Blog</a>
               <a href="/tags/hexo/" rel="tag"># Hexo</a>
               <a href="/tags/hexo-next/" rel="tag"># Hexo Next</a>
-              <a href="/tags/blog/" rel="tag"># Blog</a>
           </div>
 
         
@@ -406,13 +431,26 @@
 
           </div>
           
-    
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-disqus">Load Disqus</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane disqus" id="comment-disqus">
+              
   <div class="comments">
     <div id="disqus_thread">
       <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
     </div>
   </div>
   
+            </div>
+        </div>
+      </div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -803,6 +841,26 @@ if (document.querySelectorAll('pre.mermaid').length) {
       (d.head || d.body).appendChild(s);
     }
   });
+</script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '0a6abf1ddcb44aded17b',
+      clientSecret: '39a0069a3560f03a62f9ab33632e71a07975f81d',
+      repo        : 'blog_gitalk',
+      owner       : 'dog-2',
+      admin       : ['dog-2'],
+      id          : '97421a5c25778c3e365a6a2f8c812c73',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
 </script>
 
 </body>

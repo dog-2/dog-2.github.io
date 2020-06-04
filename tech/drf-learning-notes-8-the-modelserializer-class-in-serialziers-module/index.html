@@ -22,7 +22,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.2","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dog.wtf","root":"/","scheme":"Muse","version":"8.0.0-rc.3","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1},"gitalk":{"order":-2}},"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Title(EN): Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module Author: dog2   基本信息  源码：rest_framework.serializers 官方文档  API Guild - Serializers API Guild - Seria">
@@ -35,13 +35,13 @@
 <meta property="article:published_time" content="2020-05-03T16:11:11.000Z">
 <meta property="article:modified_time" content="2020-05-03T16:11:11.000Z">
 <meta property="article:author" content="dog2">
-<meta property="article:tag" content="Tech">
 <meta property="article:tag" content="Learning Notes">
+<meta property="article:tag" content="Tech">
+<meta property="article:tag" content="Dev">
 <meta property="article:tag" content="Backend">
 <meta property="article:tag" content="Django">
 <meta property="article:tag" content="Django REST Framework">
 <meta property="article:tag" content="DRF">
-<meta property="article:tag" content="Dev">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-8-the-modelserializer-class-in-serialziers-module/">
@@ -370,9 +370,12 @@
 <li>图书表中的 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">publish = models.ForeignKey(</span><br><span class="line">    to=<span class="string">'Publish'</span>,</span><br><span class="line">    related_name=<span class="string">'books'</span>,</span><br><span class="line">    db_constraint=<span class="literal">False</span>,</span><br><span class="line">    on_delete=models.DO_NOTHING,</span><br><span class="line">)</span><br><span class="line">authors = models.ManyToManyField(</span><br><span class="line">    to=<span class="string">'Author'</span></span><br><span class="line">    related_name=<span class="string">'books'</span>,</span><br><span class="line">    db_constraint=<span class="literal">False</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
 </ol></li>
 </ol>
-<div class="note warning">
-            <p>注意：</p><ul><li><code>ManyToManyField</code>不能设置<code>on_delete</code></li><li><code>OneToOneField</code>、<code>ForeignKey</code>必须设置<code>on_delete</code>（django1.x系统默认级联，但是django2.x必须手动明确）</li></ul>
-          </div>
+<div class="note warning"><p>注意：</p>
+<ul>
+<li><code>ManyToManyField</code>不能设置<code>on_delete</code></li>
+<li><code>OneToOneField</code>、<code>ForeignKey</code>必须设置<code>on_delete</code>（django1.x系统默认级联，但是django2.x必须手动明确）</li>
+</ul>
+</div>
 <h3 id="各表代码">各表代码</h3>
 <details>
 <p><summary> models.py </summary></p>
@@ -409,26 +412,55 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        book_ser = serializers.BookModelDeserializer(data=request_data)</span><br><span class="line">        <span class="comment"># raise_exception=True：当校验失败，马上终止当前视图方法，抛异常返回给前台</span></span><br><span class="line">        book_ser.is_valid(raise_exception=<span class="literal">True</span>)</span><br><span class="line">        book_obj = book_ser.save()</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: serializers.BookModelSerializer(book_obj).data</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
 <h4 id="子路由层-apiurls.py-1">子路由层 <code>api/urls.py</code></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v1/books/'</span>, views.Book.as_view()),</span><br><span class="line">    path(<span class="string">'v1/books/&lt;pk&gt;/'</span>, views.Book.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<div class="note warning">
-            <h4 id="注意点">注意点</h4><ol type="1"><li>反序列化层：<ul><li>在设置<code>fields</code>，没有默认值的字段都必须设置反序列化保存到数据库中</li><li>使用<code>extra_kwargs</code> 来设置系统校验规则</li><li>设置局部钩子和全局钩子</li><li><code>ModelSerializer</code>类已经帮我们实现了 <code>create</code> 与 <code>update</code> 方法，不需要再写</li></ul></li><li>视图层：<ul><li>POST请求通过<code>request.data</code>拿到数据包</li><li>传给反序列化 ,通过<code>data=request_data</code>传入需要反序列化的数据</li><li><code>is_valid</code>判断校验是否合格 ，<code>raise_exception=True</code>必须要写的</li><li>通过<code>.save()</code>保存到数据库中</li></ul></li></ol>
-          </div>
+<div class="note warning"><h4 id="注意点">注意点</h4>
+<ol type="1">
+<li>反序列化层：
+<ul>
+<li>在设置<code>fields</code>，没有默认值的字段都必须设置反序列化保存到数据库中</li>
+<li>使用<code>extra_kwargs</code> 来设置系统校验规则</li>
+<li>设置局部钩子和全局钩子</li>
+<li><code>ModelSerializer</code>类已经帮我们实现了 <code>create</code> 与 <code>update</code> 方法，不需要再写</li>
+</ul></li>
+<li>视图层：
+<ul>
+<li>POST请求通过<code>request.data</code>拿到数据包</li>
+<li>传给反序列化 ,通过<code>data=request_data</code>传入需要反序列化的数据</li>
+<li><code>is_valid</code>判断校验是否合格 ，<code>raise_exception=True</code>必须要写的</li>
+<li>通过<code>.save()</code>保存到数据库中</li>
+</ul></li>
+</ol>
+</div>
 <h3 id="序列化与反序列化整合">序列化与反序列化整合</h3>
 <h4 id="序列化层-apiserializers.py-2">序列化层 <code>api/serializers.py</code></h4>
 <details>
 <p><summary> <b><i>Source Code</i></b> </summary></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V2BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="comment"># 一些只参与反序列化的字段，但是不是与数据库关联的，自定义不入库的反序列化的字段</span></span><br><span class="line">    re_name = CharField(read_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = models.Book</span><br><span class="line">        fields = (<span class="string">'name'</span>, <span class="string">'price'</span>, <span class="string">'img'</span>, <span class="string">'author_list'</span>,</span><br><span class="line">                  <span class="string">'publish_name'</span>, <span class="string">'publish'</span>, <span class="string">'authors'</span>, <span class="string">'re_name'</span>)</span><br><span class="line">        extra_kwargs = &#123;</span><br><span class="line">            <span class="string">'name'</span>: &#123;</span><br><span class="line">                <span class="string">'required'</span>: <span class="literal">True</span>,</span><br><span class="line">                <span class="string">'min_length'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'error_messages'</span>: &#123;</span><br><span class="line">                    <span class="string">'required'</span>: <span class="string">'必填项'</span>,</span><br><span class="line">                    <span class="string">'min_length'</span>: <span class="string">'太短'</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'publish'</span>: &#123;</span><br><span class="line">                <span class="string">'write_only'</span>: <span class="literal">True</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'authors'</span>: &#123;</span><br><span class="line">                <span class="string">'write_only'</span>: <span class="literal">True</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'img'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'author_list'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'publish_name'</span>: &#123;</span><br><span class="line">                <span class="string">'read_only'</span>: <span class="literal">True</span>,</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="comment"># 书名不能包含 g 字符</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():</span><br><span class="line">            <span class="keyword">raise</span> ValidationError(<span class="string">'该g书不能出版'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span></span><br><span class="line">        publish = attrs.get(<span class="string">'publish'</span>)</span><br><span class="line">        name = attrs.get(<span class="string">'name'</span>)</span><br><span class="line">        <span class="comment"># 视频里使用这种验证方式，实际是不合理的，因为会导致针对价格修改的PUT请求失败(name&amp;publish已存在)</span></span><br><span class="line">        <span class="comment"># 因此在这里将其注释掉 ，正确的方式是在models.Book中对这两个字段的共同唯一性作约束</span></span><br><span class="line">        <span class="comment"># 而本函数通常作为对不同attr的对比验证，如两次输入密码是否一致等</span></span><br><span class="line">        <span class="comment"># if models.Book.objects.filter(name=name, publish=publish):</span></span><br><span class="line">        <span class="comment">#     raise ValidationError(&#123;'book': '该书已存在'&#125;)</span></span><br><span class="line">        <span class="keyword">return</span> attrs</span><br></pre></td></tr></table></figure>
 </details>
-<div class="note warning">
-            <h5 id="注意点">注意点</h5><ol type="1"><li><code>fields</code>中设置所有序列化与反序列化字段</li><li><code>extra_kwargs</code>划分只序列化或只反序列化字段（一般我们把需要存入到数据库中的使用<code>write_only</code>（反序列化）,只需要展示的就read_only(序列化)，看需求设计）<ul><li><code>write_only</code>：只反序列化</li><li><code>read_only</code>：只序列化</li><li>自定义字段默认只序列化(<code>read_only</code>)</li><li>如果字段没设置<code>write_only</code>或者<code>read_only</code>，那么该字段可以序列化和反序列化</li></ul></li><li>设置反序列化所需的 系统、局部钩子、全局钩子 等校验规则</li></ol>
-          </div>
+<div class="note warning"><h5 id="注意点">注意点</h5>
+<ol type="1">
+<li><code>fields</code>中设置所有序列化与反序列化字段</li>
+<li><code>extra_kwargs</code>划分只序列化或只反序列化字段（一般我们把需要存入到数据库中的使用<code>write_only</code>（反序列化）,只需要展示的就read_only(序列化)，看需求设计）
+<ul>
+<li><code>write_only</code>：只反序列化</li>
+<li><code>read_only</code>：只序列化</li>
+<li>自定义字段默认只序列化(<code>read_only</code>)</li>
+<li>如果字段没设置<code>write_only</code>或者<code>read_only</code>，那么该字段可以序列化和反序列化</li>
+</ul></li>
+<li>设置反序列化所需的 系统、局部钩子、全局钩子 等校验规则</li>
+</ol>
+</div>
 <h4 id="视图层-views.py-2">视图层 <code>views.py</code></h4>
 <details>
 <p><summary> <b><i>Source Code</i></b> </summary></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V2Book</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="comment"># 单查</span></span><br><span class="line">        <span class="keyword">if</span> pk:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                book_obj = models.Book.objects.get(pk=pk, is_delete=<span class="literal">False</span>)</span><br><span class="line">                book_data = serializers.V2BookModelSerializer(</span><br><span class="line">                    book_obj).data  <span class="comment"># 序列化</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'参数有误'</span></span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="comment"># 群查</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            book_query = models.Book.objects.filter(is_delete=<span class="literal">False</span>).all()</span><br><span class="line">            book_data = serializers.V2BookModelSerializer(</span><br><span class="line">                book_query, many=<span class="literal">True</span>).data  <span class="comment"># 序列化</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: book_data</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 单增:传的数据是与model对应的一个字典</span></span><br><span class="line">        <span class="comment"># 群增：设计传递的是多个model对应的字典列表,在postman中通过列表嵌套字典传值</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        <span class="keyword">if</span> isinstance(request_data, dict):  <span class="comment"># 判断获取的数据是否是dict</span></span><br><span class="line">            many = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">elif</span> isinstance(request_data, list):  <span class="comment"># 判断获取的数据是否是list</span></span><br><span class="line">            many = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'数据错误'</span></span><br><span class="line">            &#125;)</span><br><span class="line">        book_ser = serializers.V2BookModelSerializer(</span><br><span class="line">            data=request_data, many=many)  <span class="comment"># 反序列化</span></span><br><span class="line">        book_ser.is_valid(raise_exception=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># book_result是对象&lt;class 'app01.models.Book'&gt;，群增就是列表套一个个对象</span></span><br><span class="line">        book_result = book_ser.save()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">            <span class="string">'results'</span>: serializers.V2BookModelSerializer(book_result, many=many).data</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 单删: 有pk   #在postman中通过路径传参</span></span><br><span class="line">    <span class="comment"># 群删：有pks   &#123;"pks": [1, 2, 3]&#125;   #通过json传参</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="keyword">if</span> pk:</span><br><span class="line">            pks = [pk]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pks = request.data.get(<span class="string">'pks'</span>)</span><br><span class="line">        <span class="keyword">if</span> models.Book.objects.filter(pk__in=pks, is_delete=<span class="literal">False</span>).update(is_delete=<span class="literal">True</span>):</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'删除成功'</span></span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;</span><br><span class="line">            <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">'msg'</span>: <span class="string">'删除失败'</span></span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
 </details>
-<div class="note warning">
-            <h5 id="注意点">注意点</h5><ol type="1"><li>序列化数据最后必须要<code>.data</code> （因为要传给前端）</li><li>反序列化通过<code>data</code>传参，序列化通过<code>instance</code>传参（当你只传一个参数时，默认是<code>instance</code>的参数）</li><li>反序列化与序列化都能使用<code>many=True</code>，序列化和反序列化数据只要被[]嵌套都要写<code>many=True</code></li></ol>
-          </div>
+<div class="note warning"><h5 id="注意点">注意点</h5>
+<ol type="1">
+<li>序列化数据最后必须要<code>.data</code> （因为要传给前端）</li>
+<li>反序列化通过<code>data</code>传参，序列化通过<code>instance</code>传参（当你只传一个参数时，默认是<code>instance</code>的参数）</li>
+<li>反序列化与序列化都能使用<code>many=True</code>，序列化和反序列化数据只要被[]嵌套都要写<code>many=True</code></li>
+</ol>
+</div>
 <h4 id="子路由层-apiurls.py-2">子路由层 <code>api/urls.py</code></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'v2/books/'</span>, views.V2Book.as_view()),</span><br><span class="line">    path(<span class="string">'v2/books/&lt;pk&gt;/'</span>, views.V2Book.as_view()),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h1 id="使用场景总结">使用场景总结</h1>
@@ -490,13 +522,13 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/tech/" rel="tag"># Tech</a>
               <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
+              <a href="/tags/tech/" rel="tag"># Tech</a>
+              <a href="/tags/dev/" rel="tag"># Dev</a>
               <a href="/tags/backend/" rel="tag"># Backend</a>
               <a href="/tags/django/" rel="tag"># Django</a>
               <a href="/tags/django-rest-framework/" rel="tag"># Django REST Framework</a>
               <a href="/tags/drf/" rel="tag"># DRF</a>
-              <a href="/tags/dev/" rel="tag"># Dev</a>
           </div>
 
         
@@ -524,13 +556,26 @@
 
           </div>
           
-    
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-disqus">Load Disqus</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane disqus" id="comment-disqus">
+              
   <div class="comments">
     <div id="disqus_thread">
       <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
     </div>
   </div>
   
+            </div>
+        </div>
+      </div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -921,6 +966,26 @@ if (document.querySelectorAll('pre.mermaid').length) {
       (d.head || d.body).appendChild(s);
     }
   });
+</script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '0a6abf1ddcb44aded17b',
+      clientSecret: '39a0069a3560f03a62f9ab33632e71a07975f81d',
+      repo        : 'blog_gitalk',
+      owner       : 'dog-2',
+      admin       : ['dog-2'],
+      id          : '493db575f4e39ebd5be922bce2d9e1c1',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
 </script>
 
 </body>

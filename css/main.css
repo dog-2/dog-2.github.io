@@ -663,53 +663,53 @@ pre code {
   grid-gap: 1.5rem 1.5rem;
   grid-template-columns: 1fr 1fr;
   padding: 1.5rem;
-  user-select: none;
 }
 @media (max-width: 767px) {
   .post-body .link-grid {
     grid-template-columns: 1fr;
   }
 }
-.post-body .link-grid div {
+.post-body .link-grid .link-grid-container {
   border: solid #ddd;
   box-shadow: 1rem 1rem 0.5rem #808080;
   height: 5rem;
-  transition: background 0.3s;
   padding: 0.5rem;
   position: relative;
+  transition: background 0.3s;
 }
-.post-body .link-grid div:hover {
+.post-body .link-grid .link-grid-container:hover {
   animation: shake 0.5s;
   background: rgba(230,244,250,0.5);
 }
-.post-body .link-grid div:active {
+.post-body .link-grid .link-grid-container:active {
   box-shadow: 0.5rem 0.5rem 0.25rem #808080;
   transform: translate(0.2rem, 0.2rem);
 }
-.post-body .link-grid div img {
+.post-body .link-grid .link-grid-container .link-grid-image {
+  background-clip: content-box;
+  background-origin: content-box;
+  background-size: cover;
   border: 1px solid #ddd;
   border-radius: 50%;
   box-sizing: border-box;
   height: 5rem;
-  left: 0.5rem;
   padding: 3px;
   position: absolute;
-  top: 0.5rem;
   width: 5rem;
 }
-.post-body .link-grid div p {
+.post-body .link-grid .link-grid-container p {
   margin: 0 1rem 0 6rem;
 }
-.post-body .link-grid div p:first-of-type {
+.post-body .link-grid .link-grid-container p:first-of-type {
   font-size: 1.2em;
 }
-.post-body .link-grid div p:last-of-type {
+.post-body .link-grid .link-grid-container p:last-of-type {
   font-size: 0.8em;
   line-height: 1.3rem;
   opacity: 0.7;
 }
-.post-body .link-grid div a {
-  border: none;
+.post-body .link-grid .link-grid-container a {
+  border: 0;
   height: 100%;
   left: 0;
   position: absolute;
@@ -1009,7 +1009,7 @@ pre code {
 }
 .post-body .note:not(.no-icon)::before {
   font-size: 1.5em;
-  left: 0.4em;
+  left: 0.3em;
   position: absolute;
   top: calc(50% - 1em);
   font-family: 'Font Awesome 5 Free';
@@ -1116,9 +1116,7 @@ pre code {
 .pagination .space {
   display: inline-block;
   margin: 0 10px;
-  padding: 0 11px;
-  position: relative;
-  top: -1px;
+  padding: 0 10px;
 }
 @media (max-width: 767px) {
   .pagination .prev,
@@ -1148,24 +1146,9 @@ pre code {
 .pagination .page-number:hover {
   border-top-color: var(--link-hover-color);
 }
-.pagination .space {
-  margin: 0;
-  padding: 0;
-}
-.pagination .prev {
-  margin-left: 0;
-}
-.pagination .next {
-  margin-right: 0;
-}
-.pagination .page-number.current {
-  background: #ccc;
-  border-top-color: #ccc;
-  color: var(--content-bg-color);
-}
 @media (max-width: 767px) {
   .pagination {
-    border-top: none;
+    border-top: 0;
   }
   .pagination .prev,
   .pagination .next,
@@ -1173,13 +1156,21 @@ pre code {
     border-bottom: 1px solid #eee;
     border-top: 0;
     margin-bottom: 10px;
-    padding: 0 10px;
   }
   .pagination .prev:hover,
   .pagination .next:hover,
   .pagination .page-number:hover {
     border-bottom-color: var(--link-hover-color);
   }
+}
+.pagination .space {
+  margin: 0;
+  padding: 0;
+}
+.pagination .page-number.current {
+  background: #ccc;
+  border-top-color: #ccc;
+  color: var(--content-bg-color);
 }
 .comments {
   margin-top: 60px;
@@ -1495,7 +1486,7 @@ pre code {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #8e36ff;
+  background: #26ba59;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2498,6 +2489,14 @@ ul.breadcrumb li + li:last-child {
 .tag-cloud-10 {
   border-bottom-color: #111;
   color: #111;
+}
+.gt-header a,
+.gt-comments a,
+.gt-popup a {
+  border-bottom: none;
+}
+.gt-container .gt-popup .gt-action.is--active::before {
+  top: 0.7em;
 }
 .search-pop-overlay {
   background: rgba(0,0,0,0);
