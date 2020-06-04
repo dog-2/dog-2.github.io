@@ -35,13 +35,13 @@
 <meta property="article:published_time" content="2020-05-06T13:22:22.000Z">
 <meta property="article:modified_time" content="2020-05-06T13:22:22.000Z">
 <meta property="article:author" content="dog2">
-<meta property="article:tag" content="Learning Notes">
 <meta property="article:tag" content="Tech">
-<meta property="article:tag" content="Dev">
+<meta property="article:tag" content="Learning Notes">
 <meta property="article:tag" content="Backend">
 <meta property="article:tag" content="Django">
 <meta property="article:tag" content="Django REST Framework">
 <meta property="article:tag" content="DRF">
+<meta property="article:tag" content="Dev">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://dog.wtf/tech/drf-learning-notes-12-permissions/">
@@ -312,7 +312,28 @@
 <a id="more"></a>
 <h1 id="源码分析">源码分析</h1>
 <h2 id="入口">入口</h2>
-<p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证 - 认证组件 <code>self.perform_authentication(request)</code> - 校验用户：游客、合法用户、非法用户 - 游客：代表校验通过，直接进入下一步校验（权限校验） - 合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验） - 非法用户：代表校验失败，抛出异常，返回403权限异常结果 - 权限组件 <code>self.check_permissions(request)</code> - 校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色 - 认证通过：可以进入下一步校验（频率认证） - 认证失败：抛出异常，返回403权限异常结果 - 频率组件 <code>self.check_throttles(request)</code> - 限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s） - 没有达到限次：正常访问接口 - 达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</p>
+<p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证</p>
+<ul>
+<li>认证组件 <code>self.perform_authentication(request)</code>
+<ul>
+<li>校验用户：游客、合法用户、非法用户</li>
+<li>游客：代表校验通过，直接进入下一步校验（权限校验）</li>
+<li>合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验）</li>
+<li>非法用户：代表校验失败，抛出异常，返回403权限异常结果</li>
+</ul></li>
+<li>权限组件 <code>self.check_permissions(request)</code>
+<ul>
+<li>校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色</li>
+<li>认证通过：可以进入下一步校验（频率认证）</li>
+<li>认证失败：抛出异常，返回403权限异常结果</li>
+</ul></li>
+<li>频率组件 <code>self.check_throttles(request)</code>
+<ul>
+<li>限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s）</li>
+<li>没有达到限次：正常访问接口</li>
+<li>达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</li>
+</ul></li>
+</ul>
 <p>本文介权限组件。</p>
 <h2 id="rest_framework.views.apiview.initial">rest_framework.views.APIView.initial()</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Runs anything that needs to occur prior to calling the method handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.format_kwarg = self.get_format_suffix(**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Perform content negotiation and store the accepted info on the request</span></span><br><span class="line">        neg = self.perform_content_negotiation(request)</span><br><span class="line">        request.accepted_renderer, request.accepted_media_type = neg</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Determine the API version, if versioning is in use.</span></span><br><span class="line">        version, scheme = self.determine_version(request, *args, **kwargs)</span><br><span class="line">        request.version, request.versioning_scheme = version, scheme</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Ensure that the incoming request is permitted</span></span><br><span class="line">        self.perform_authentication(request) </span><br><span class="line">        self.check_permissions(request)  <span class="comment"># 权限</span></span><br><span class="line">        self.check_throttles(request)</span><br></pre></td></tr></table></figure>
@@ -394,13 +415,13 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
               <a href="/tags/tech/" rel="tag"># Tech</a>
-              <a href="/tags/dev/" rel="tag"># Dev</a>
+              <a href="/tags/learning-notes/" rel="tag"># Learning Notes</a>
               <a href="/tags/backend/" rel="tag"># Backend</a>
               <a href="/tags/django/" rel="tag"># Django</a>
               <a href="/tags/django-rest-framework/" rel="tag"># Django REST Framework</a>
               <a href="/tags/drf/" rel="tag"># DRF</a>
+              <a href="/tags/dev/" rel="tag"># Dev</a>
           </div>
 
         
@@ -510,7 +531,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

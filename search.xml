@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Python 3.8+里的asyncio和asyncio.Semaphore</title>
-    <url>/tech/asyncio-and-asyncio-semaphore-in-python-3-8/</url>
-    <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>asyncio and asyncio.Semaphore in Python 3.8+</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<p>以前的程序放在Python 3.8里跑出错了，原来是由于Python升级3.8后协程库<code>asyncio</code>又双叒叕更新了。 新版本里<code>asyncio.Semaphore</code>的用法改变了，本文简单记录一下新写法。</p>
-<a id="more"></a>
-<p>代码说明：用<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy9hc3luYy8=">支持异步<i class="fa fa-external-link-alt"></i></span>的http库<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy8=">httpx<i class="fa fa-external-link-alt"></i></span>简单爬数据，用<code>asyncio.Semaphore</code>控制并发数，而<code>asyncio.Semaphore</code>在Python 3.8中需要配合上下文管理器<code>contextvars.ContextVar</code>使用。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> httpx</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> contextvars <span class="keyword">import</span> ContextVar</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crawl</span><span class="params">(concurrency=<span class="number">3</span>)</span>:</span></span><br><span class="line">    context = ContextVar(<span class="string">"concurrent"</span>)  <span class="comment"># 定义全局上下文管理器</span></span><br><span class="line">    URL_BASE = <span class="string">'https://github.com/topics?page='</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_one</span><span class="params">(i)</span>:</span></span><br><span class="line">        sem = context.get()  <span class="comment"># 获取上下文关键字</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> sem:</span><br><span class="line">            <span class="keyword">async</span> <span class="keyword">with</span> httpx.AsyncClient() <span class="keyword">as</span> client:</span><br><span class="line">                r = <span class="keyword">await</span> client.get(<span class="string">f"<span class="subst">&#123;URL_BASE&#125;</span><span class="subst">&#123;i&#125;</span>"</span>)</span><br><span class="line">                <span class="keyword">return</span> len(r.text)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_all</span><span class="params">()</span>:</span></span><br><span class="line">        context.set(asyncio.Semaphore(concurrency)) <span class="comment">#上下文管理器赋值，concurrency控制并发数</span></span><br><span class="line">        tasks = [asyncio.create_task(crawl_one(i)) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">30</span>)] <span class="comment"># 将协程封装成任务共30个</span></span><br><span class="line">        done, pending = <span class="keyword">await</span> asyncio.wait(tasks) <span class="comment"># 执行所有任务</span></span><br><span class="line">        <span class="keyword">return</span> done</span><br><span class="line"></span><br><span class="line">    tasks_done = asyncio.run(crawl_all())</span><br><span class="line">    <span class="keyword">return</span> [t.result() <span class="keyword">for</span> t <span class="keyword">in</span> tasks_done]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> crawl(concurrency=<span class="number">1</span>):</span><br><span class="line">        print(r)</span><br></pre></td></tr></table></figure>
-<p>参考链接： - <span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYy14LWEvcC8xMDg2ODQ5Ny5odG1s">Python 协程模块 asyncio 使用指南<i class="fa fa-external-link-alt"></i></span></p>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>Async</tag>
-        <tag>Coroutine</tag>
-        <tag>Dev</tag>
-        <tag>Python</tag>
-        <tag>Semaphore</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>用BasicTeX及TeXworks构建轻量LaTex写作环境</title>
     <url>/tech/building-a-lightweight-latex-environment-with-basictex-and-texworks/</url>
     <content><![CDATA[<ul>
@@ -92,10 +67,10 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>LaTeX</tag>
         <tag>Mac OS</tag>
         <tag>Math</tag>
+        <tag>Tech</tag>
         <tag>TeX</tag>
       </tags>
   </entry>
@@ -115,9 +90,10 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
         <tag>AI</tag>
+        <tag>Learning Notes</tag>
+        <tag>Machine Learning</tag>
         <tag>Neural Network</tag>
       </tags>
   </entry>
@@ -519,13 +495,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -584,8 +560,8 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>FTP</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -855,13 +831,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -885,7 +861,28 @@
 <a id="more"></a>
 <h1 id="源码分析">源码分析</h1>
 <h2 id="入口">入口</h2>
-<p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手 ，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证 - 认证组件 <code>self.perform_authentication(request)</code> - 校验用户：游客、合法用户、非法用户 - 游客：代表校验通过，直接进入下一步校验（权限校验） - 合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验） - 非法用户：代表校验失败，抛出异常，返回403权限异常结果 - 权限组件 <code>self.check_permissions(request)</code> - 校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色 - 认证通过：可以进入下一步校验（频率认证） - 认证失败：抛出异常，返回403权限异常结果 - 频率组件 <code>self.check_throttles(request)</code> - 限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s） - 没有达到限次：正常访问接口 - 达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</p>
+<p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手 ，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证</p>
+<ul>
+<li>认证组件 <code>self.perform_authentication(request)</code>
+<ul>
+<li>校验用户：游客、合法用户、非法用户</li>
+<li>游客：代表校验通过，直接进入下一步校验（权限校验）</li>
+<li>合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验）</li>
+<li>非法用户：代表校验失败，抛出异常，返回403权限异常结果</li>
+</ul></li>
+<li>权限组件 <code>self.check_permissions(request)</code>
+<ul>
+<li>校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色</li>
+<li>认证通过：可以进入下一步校验（频率认证）</li>
+<li>认证失败：抛出异常，返回403权限异常结果</li>
+</ul></li>
+<li>频率组件 <code>self.check_throttles(request)</code>
+<ul>
+<li>限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s）</li>
+<li>没有达到限次：正常访问接口</li>
+<li>达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</li>
+</ul></li>
+</ul>
 <p>本文介绍认证组件。</p>
 <h2 id="rest_framework.views.apiview.initial">rest_framework.views.APIView.initial()</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Runs anything that needs to occur prior to calling the method handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.format_kwarg = self.get_format_suffix(**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Perform content negotiation and store the accepted info on the request</span></span><br><span class="line">        neg = self.perform_content_negotiation(request)</span><br><span class="line">        request.accepted_renderer, request.accepted_media_type = neg</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Determine the API version, if versioning is in use.</span></span><br><span class="line">        version, scheme = self.determine_version(request, *args, **kwargs)</span><br><span class="line">        request.version, request.versioning_scheme = version, scheme</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Ensure that the incoming request is permitted</span></span><br><span class="line">        self.perform_authentication(request)  <span class="comment">#认证</span></span><br><span class="line">        self.check_permissions(request)  <span class="comment">#权限</span></span><br><span class="line">        self.check_throttles(request)  <span class="comment">#频率</span></span><br></pre></td></tr></table></figure>
@@ -1007,13 +1004,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1033,7 +1030,28 @@
 <a id="more"></a>
 <h1 id="源码分析">源码分析</h1>
 <h2 id="入口">入口</h2>
-<p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证 - 认证组件 <code>self.perform_authentication(request)</code> - 校验用户：游客、合法用户、非法用户 - 游客：代表校验通过，直接进入下一步校验（权限校验） - 合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验） - 非法用户：代表校验失败，抛出异常，返回403权限异常结果 - 权限组件 <code>self.check_permissions(request)</code> - 校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色 - 认证通过：可以进入下一步校验（频率认证） - 认证失败：抛出异常，返回403权限异常结果 - 频率组件 <code>self.check_throttles(request)</code> - 限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s） - 没有达到限次：正常访问接口 - 达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</p>
+<p>从<code>rest_framework.views.APIView</code>的<code>dispath(self, request, *args, **kwargs)</code>下手，<code>dispath</code>方法内 <code>self.initial(request, *args, **kwargs)</code> 进入三大认证</p>
+<ul>
+<li>认证组件 <code>self.perform_authentication(request)</code>
+<ul>
+<li>校验用户：游客、合法用户、非法用户</li>
+<li>游客：代表校验通过，直接进入下一步校验（权限校验）</li>
+<li>合法用户：代表校验通过，将用户存储在<code>request.user</code>中，再进入下一步校验（权限校验）</li>
+<li>非法用户：代表校验失败，抛出异常，返回403权限异常结果</li>
+</ul></li>
+<li>权限组件 <code>self.check_permissions(request)</code>
+<ul>
+<li>校验用户权限：必须登录、所有用户、登录之后读写，游客只读、自定义用户角色</li>
+<li>认证通过：可以进入下一步校验（频率认证）</li>
+<li>认证失败：抛出异常，返回403权限异常结果</li>
+</ul></li>
+<li>频率组件 <code>self.check_throttles(request)</code>
+<ul>
+<li>限制视图接口被访问的频率次数 - 限制的条件(IP、id、唯一键)、频率周期时间(s、m、h)、频率的次数（3/s）</li>
+<li>没有达到限次：正常访问接口</li>
+<li>达到限次：限制时间内不能访问，限制时间达到后，可以重新访问</li>
+</ul></li>
+</ul>
 <p>本文介权限组件。</p>
 <h2 id="rest_framework.views.apiview.initial">rest_framework.views.APIView.initial()</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Runs anything that needs to occur prior to calling the method handler.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.format_kwarg = self.get_format_suffix(**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Perform content negotiation and store the accepted info on the request</span></span><br><span class="line">        neg = self.perform_content_negotiation(request)</span><br><span class="line">        request.accepted_renderer, request.accepted_media_type = neg</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Determine the API version, if versioning is in use.</span></span><br><span class="line">        version, scheme = self.determine_version(request, *args, **kwargs)</span><br><span class="line">        request.version, request.versioning_scheme = version, scheme</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Ensure that the incoming request is permitted</span></span><br><span class="line">        self.perform_authentication(request) </span><br><span class="line">        self.check_permissions(request)  <span class="comment"># 权限</span></span><br><span class="line">        self.check_throttles(request)</span><br></pre></td></tr></table></figure>
@@ -1111,13 +1129,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1209,13 +1227,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1271,13 +1289,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1316,13 +1334,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1373,13 +1391,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1425,13 +1443,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1477,13 +1495,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1546,19 +1564,31 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.views.decorators.csrf <span class="keyword">import</span> csrf_exempt</span><br><span class="line"><span class="keyword">from</span> django.utils.decorators <span class="keyword">import</span> method_decorator</span><br><span class="line"><span class="comment"># drf原生处理异常函数取别名 drf_exception_handler</span></span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> exception_handler <span class="keyword">as</span> drf_exception_handler</span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> status</span><br><span class="line"></span><br><span class="line"><span class="meta">@method_decorator(csrf_exempt, name='dispatch')</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalExceptionView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        print(request.query_params)</span><br><span class="line">        print(request.data)</span><br><span class="line">        print(request.not_exists) <span class="comment"># error code</span></span><br><span class="line">        <span class="keyword">return</span> Response(<span class="string">'post ok'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_exception_handler</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.exception_handler</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exception_handler</span><span class="params">(self, exc, context)</span>:</span></span><br><span class="line">        <span class="comment"># drf的exception_handler做基础处理</span></span><br><span class="line">        response = drf_exception_handler(exc, context)</span><br><span class="line">        <span class="comment"># 为空，就是drf框架处理不了的异常</span></span><br><span class="line">        <span class="keyword">if</span> response <span class="keyword">is</span> <span class="literal">None</span>: <span class="comment">#处理之后为空，再进行自定义的二次处理</span></span><br><span class="line">            <span class="comment"># print(exc)    #错误原因   还可以做更详细的原因，通过判断exc信息类型</span></span><br><span class="line">            <span class="comment"># print(context)  #错误信息</span></span><br><span class="line">            print(<span class="string">'%s - %s - %s'</span> % (context[<span class="string">'view'</span>], context[<span class="string">'request'</span>].method, exc))</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'detail'</span>: <span class="string">'local customized exception: internal server error'</span> <span class="comment"># 局部定制异常：服务器错误</span></span><br><span class="line">            &#125;, status=status.HTTP_500_INTERNAL_SERVER_ERROR, exception=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> response     <span class="comment">#处理之后有值，就直接返回结果</span></span><br></pre></td></tr></table></figure>
 <h2 id="测试demo">测试demo</h2>
 <p>测试代码在这里：<a href="">no5_drf_exception</a></p>
-<p>其中包含： - django项目 - 全局定制异常 - 局部定制异常 - postman测试数据包 - 全局定制异常测试 - 局部定制异常测试</p>
+<p>其中包含：</p>
+<ul>
+<li>django项目
+<ul>
+<li>全局定制异常</li>
+<li>局部定制异常</li>
+</ul></li>
+<li>postman测试数据包
+<ul>
+<li>全局定制异常测试</li>
+<li>局部定制异常测试</li>
+</ul></li>
+</ul>
 ]]></content>
       <categories>
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -1588,241 +1618,13 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Django REST Framework 学习笔记（七）：序列化模块 serialziers 之 Serialzier类</title>
-    <url>/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/</url>
-    <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Django REST Framework Learning Notes (7): the Serialzier class in serialziers module</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<h1 id="基本信息">基本信息</h1>
-<ul>
-<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/serializers.py" target="_blank" rel="noopener"><code>rest_framework.response</code></a></li>
-<li>官方文档
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
-</ul></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzdfZHJmX1NlcmlhbGl6ZXI=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>DRF常用序列化类主要有</p>
-<ul>
-<li><code>rest_framework.serialziers.Serializer</code></li>
-<li><code>rest_framework.serialziers.ModelSerializer</code></li>
-<li><code>rest_framework.serialziers.ListSerializer</code></li>
-</ul>
-<p>本篇介绍<code>rest_framework.serialziers.Serializer</code></p>
-<a id="more"></a>
-<h1 id="源码分析">源码分析</h1>
-<p>根据基类<code>rest_framework.serialziers.BaseSerializer</code>构造函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, instance=None, data=empty, **kwargs)</span>:</span></span><br></pre></td></tr></table></figure>
-<p>定义好Serialzier类后，就可以创建Serializer对象了。Serializer的构造方法为</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Serializer(instance=<span class="literal">None</span>,data=empty,**kwargs)</span><br></pre></td></tr></table></figure>
-<ol type="1">
-<li>用于序列化时，将模型类对象传入<code>instance</code>参数</li>
-<li>用于反序列化时，将要被反序列化的数据传入<code>data</code>参数</li>
-<li>除了<code>instance</code>和<code>data</code>参数外，在构造S<code>erializer</code>对象时，还可以通过<code>context</code>参数额外添加数据。通过<code>context</code>参数附加的数据，可以通过<code>Serializer</code>对象的<code>context</code>属性获取。 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializer = AccountSerializer(account, context=&#123;<span class="string">'request'</span>:request&#125;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="用法">用法</h1>
-<p>序列化器的使用分两个阶段：</p>
-<ol type="1">
-<li><p>在客户端请求时，使用序列化器可以完成对数据的反序列化（就是前段往后端传递数据，反序列化之后保存数据）</p></li>
-<li><p>在服务器响应时，使用序列化器可以完成对数据的序列化（服务器取出数据，序列化之后往前段发送展示）</p></li>
-</ol>
-<h2 id="序列化">序列化</h2>
-<p>序列化是将数据返回给前台。DRF的序列化使用流程如下：</p>
-<ol type="1">
-<li>查询出一个用户对象</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> user</span><br><span class="line">user = User.object.get(id=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>构造序列化器对象</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> user.serializers <span class="keyword">import</span> UserSerializer</span><br><span class="line">user_obj = Userserializer(user)  <span class="comment">#放入查询出的user对象</span></span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>获取序列化对象，通过data属性可以获取序列化后的数据</li>
-</ol>
-<p>上面查出来的user_ser是一个serializer对象，需要取出具体的数据传给前端，所有要用到 user_ser.data取出具体数据</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_ser = Userserializer(user).data</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>如果要被序列化的数据是包含多条数据的（也可以说被[ ]嵌套的，<code>queryset</code>类型数据，不管是多条还是单条）,需要添加<code>many=True</code>参数</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user = models.User.objects.all()</span><br><span class="line">user_ser =  Userserialzier(user,many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<ol start="5" type="1">
-<li>自定义序列化属性</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializers.SerializerMethodField()</span><br></pre></td></tr></table></figure>
-<h2 id="反序列化使用流程">反序列化使用流程</h2>
-<p>反序列化是将前天传来的数据数据存入数据库。DRF的反序列化使用流程如下：</p>
-<h3 id="数据验证">数据验证</h3>
-<ol type="1">
-<li><p>使用序列化器进行反序列化时，需要对数据进行验证后，才能获取验证成功的数据或保存成模型类对象。</p></li>
-<li><p>在获取反序列化的数据前，必须调用<code>is_valid()</code>方法进行验证，验证成功返回<code>True</code>，否则返回<code>False</code>。</p></li>
-<li><p>验证失败，可以通过序列化对象的<code>errors</code>属性获取错误信息，返回字典，包含了字段和字段的错误。</p></li>
-<li><p>验证通过，可以通过序列化器对象的<code>validated_data</code>属性获取数据</p></li>
-</ol>
-<h3 id="保存数据">保存数据</h3>
-<p>序列化类中必须重写<code>create</code>方法用于新增，重写<code>update</code>方法用于修改。视图中使用<code>create</code>和<code>save</code>方法。</p>
-<p>从源码可知<code>save</code>方法内部调用的是序列化类中的<code>create</code>方法，所以新增必须要在序列化类中重写<code>create</code>方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="用法示例">用法示例</h2>
-<h3 id="序列化-1">序列化</h3>
-<h4 id="模型层-models.py">模型层 <code>models.py</code></h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    SEX_CHOICES = [</span><br><span class="line">        [<span class="number">0</span>,<span class="string">'男'</span>],</span><br><span class="line">        [<span class="number">1</span>,<span class="string">'女'</span>],</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    pwd = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    phone = models.CharField(max_length=<span class="number">11</span>,null=<span class="literal">True</span>,default=<span class="literal">None</span>)</span><br><span class="line">    sex = models.IntegerField(choices=SEX_CHOICES,default=<span class="number">0</span>)</span><br><span class="line">    icon = models.ImageField(upload_to=<span class="string">'icon'</span>,default=<span class="string">'icon/default.jpg'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table=<span class="string">'old_boy_user'</span></span><br><span class="line">        verbose_name=<span class="string">'用户'</span></span><br><span class="line">        verbose_name_plural=verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s'</span> %self.name</span><br></pre></td></tr></table></figure>
-<h4 id="配置层-settings.py">配置层 <code>settings.py</code></h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 注册rest_framework</span></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="string">'rest_framework'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># media资源</span></span><br><span class="line">MEDIA_URL = <span class="string">'/media/'</span>  <span class="comment"># 后期高级序列化类与视图类，会使用该配置</span></span><br><span class="line">MEDIA_ROOT = os.path.join(BASE_DIR, <span class="string">'media'</span>)  <span class="comment"># media资源路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 国际化配置</span></span><br><span class="line">LANGUAGE_CODE = <span class="string">'zh-hans'</span></span><br><span class="line">TIME_ZONE = <span class="string">'Asia/Shanghai'</span></span><br><span class="line">USE_I18N = <span class="literal">True</span></span><br><span class="line">USE_L10N = <span class="literal">True</span></span><br><span class="line">USE_TZ = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-<h4 id="序列化层-apiserializers.py">序列化层 <code>api/serializers.py</code></h4>
-<ol type="1">
-<li><code>api</code>应用下创建<code>serializers.py</code>文件</li>
-<li>设置需要返回给前台数据样式 那些<code>model</code>类有对应的字段，不需要返回的就不用设置了</li>
-<li>设置方法字段，字段名可以随意，字段值由 <code>get_字段名</code> 提供，来完成一些需要处理在返回的数据，类似于<code>forms</code>组件</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers, exceptions</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSerializer</span><span class="params">(serializers.Serializer)</span>:</span>   <span class="comment">#创建一个序列化类</span></span><br><span class="line">    name = serializers.CharField()      </span><br><span class="line">    phone = serializers.CharField()</span><br><span class="line">    <span class="comment"># 序列化提供给前台的字段个数由后台决定，可以少提供，但是提供的数据库对应的字段，名字一定要与数据库字段相同</span></span><br><span class="line">    <span class="comment"># sex = serializers.IntegerField()</span></span><br><span class="line">    <span class="comment"># icon = serializers.ImageField()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义序列化属性</span></span><br><span class="line">    <span class="comment"># 属性名随意，值由固定的命名规范方法提供:</span></span><br><span class="line">    <span class="comment">#       get_属性名(self, 参与序列化的model对象)</span></span><br><span class="line">    <span class="comment">#       返回值就是自定义序列化属性的值</span></span><br><span class="line">    gender = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_gender</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># choice类型的解释型值 get_字段_display() 来访问</span></span><br><span class="line">        <span class="keyword">return</span> obj.get_sex_display()</span><br><span class="line"></span><br><span class="line">　　 <span class="comment">#自定义序列化属性icon</span></span><br><span class="line">    icon = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_icon</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># settings.MEDIA_URL: 自己配置的 /media/，给后面高级序列化与视图类准备的</span></span><br><span class="line">        <span class="comment"># obj.icon不能直接作为数据返回，因为内容虽然是字符串，但是类型是ImageFieldFile类型</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s%s%s'</span> % (<span class="string">r'http://127.0.0.1:8000'</span>, settings.MEDIA_URL, str(obj.icon))</span><br></pre></td></tr></table></figure>
-<h4 id="视图层-views.py">视图层 <code>views.py</code></h4>
-<ol type="1">
-<li>从数据库中将要序列化给前台的<code>model</code>对象，或是多个<code>model</code>对象查询出来</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj = models.User.objects.get(pk=pk)</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj_list = models.User.objects.all()</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>序列化: <code>对象.data</code> 就是可以返回给前台的序列化数据</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> Response(&#123;</span><br><span class="line">    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'results'</span>: user_ser.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>完整代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="keyword">if</span> pk:  <span class="comment">#单查</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 用户对象不能直接作为数据返回给前台</span></span><br><span class="line">                user_obj = models.User.objects.get(pk=pk)</span><br><span class="line">                <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">                user_ser = serializers.UserSerializer(user_obj)</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'results'</span>: user_ser.data   <span class="comment">#如果你在序列化的时候没有.data,那么在传给前端的时候必须要.data</span></span><br><span class="line">                &#125;)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">2</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'用户不存在'</span>,</span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment">#群查</span></span><br><span class="line">            <span class="comment"># 用户对象列表(queryset)不能直接作为数据返回给前台</span></span><br><span class="line">            user_obj_list = models.User.objects.all()</span><br><span class="line">            <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">            user_ser_data = serializers.UserSerializer(user_obj_list, many=<span class="literal">True</span>).data</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'results'</span>: user_ser_data</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="反序列化">反序列化</h3>
-<h4 id="反序列层-apiserializers.py">反序列层 <code>api/serializers.py</code></h4>
-<ol type="1">
-<li>设置必填与选填序列化字段，设置校验规则</li>
-<li>为需要额外校验的字段提供局部钩子函数，如果该字段不入库，且不参与全局钩子校验，可以将值取出校验 <code>pop</code></li>
-<li>为有联合关系的字段们提供全局钩子函数，如果某些字段不入库，可以将值取出校验</li>
-<li><strong>必须重写<code>create</code>方法，完成校验通过的数据入库工作，得到新增的对象</strong></li>
-</ol>
-<p>完整代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDeserializer</span><span class="params">(serializers.Serializer)</span>:</span></span><br><span class="line">    <span class="comment"># 1) 哪些字段必须反序列化</span></span><br><span class="line">    <span class="comment"># 2) 字段都有哪些安全校验</span></span><br><span class="line">    <span class="comment"># 3) 哪些字段需要额外提供校验  钩子函数</span></span><br><span class="line">    <span class="comment"># 4) 哪些字段间存在联合校验</span></span><br><span class="line">    <span class="comment"># 注：反序列化字段都是用来入库的，不会出现自定义方法属性，会出现可以设置校验规则的自定义属性,不入数据库的</span></span><br><span class="line">    name = serializers.CharField(</span><br><span class="line">        max_length=<span class="number">64</span>,</span><br><span class="line">        min_length=<span class="number">3</span>,</span><br><span class="line">        error_messages=&#123;</span><br><span class="line">            <span class="string">'max_length'</span>: <span class="string">'太长'</span>,</span><br><span class="line">            <span class="string">'min_length'</span>: <span class="string">'太短'</span></span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    pwd = serializers.CharField()</span><br><span class="line">    phone = serializers.CharField(required=<span class="literal">False</span>)</span><br><span class="line">    sex = serializers.IntegerField(required=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义有校验规则的反序列化字段,例如确认密码字段re_pwd</span></span><br><span class="line">    re_pwd = serializers.CharField(required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 小结：</span></span><br><span class="line">    <span class="comment"># name，pwd，re_pwd为必填字段</span></span><br><span class="line">    <span class="comment"># phone，sex为选填字段</span></span><br><span class="line">    <span class="comment"># 五个字段都必须提供完成的校验规则</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 局部钩子：validate_要校验的字段名(self, 当前要校验字段的值)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():  <span class="comment"># 名字中不能出现g</span></span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(<span class="string">'名字非法，是个鸡贼！'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 全局钩子：validate(self, 通过系统与局部钩子校验之后的所有数据)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span>    <span class="comment">#attrs是字典格式</span></span><br><span class="line">        pwd = attrs.get(<span class="string">'pwd'</span>)</span><br><span class="line">        re_pwd = attrs.pop(<span class="string">'re_pwd'</span>)     <span class="comment">#因为re_pwd不需要入数据库，所以在全局钩子校验中删除掉这个字段</span></span><br><span class="line">        <span class="keyword">if</span> pwd != re_pwd:</span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(&#123;<span class="string">'pwd&amp;re_pwd'</span>: <span class="string">'两次密码不一致'</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span> attrs</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 要完成新增，必须自己重写 create 方法，validated_data是校验的数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">        <span class="comment"># 尽量在所有校验规则完毕之后，数据可以直接入库</span></span><br><span class="line">        <span class="keyword">return</span> models.User.objects.create(**validated_data)</span><br></pre></td></tr></table></figure>
-<h4 id="视图层-views.py-1">视图层 views.py</h4>
-<ol type="1">
-<li>反序列化数据必须赋值<code>data</code>，结果就是得到一个<code>serializer</code>对象</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser = serializers.UserDeserializer(data=request_data)</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>把数据放到自定义<code>serializer</code>中校验，数据校验成功返回<code>True</code>,失败返回<code>False</code></li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser.is_valid()</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>不通过返回 <code>book_ser.errors</code> 给前台，通过 <code>book_ser.save()</code> 得到新增的对象，再正常返回</li>
-</ol>
-<p>完整代码：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="comment"># 只考虑单增</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 请求数据</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        <span class="comment"># 数据是否合法（增加对象需要一个字典数据）</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(request_data, dict) <span class="keyword">or</span> request_data == &#123;&#125;:</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'数据有误'</span>,</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment"># 数据类型合法，但数据内容不一定合法，需要校验数据，校验(参与反序列化)的数据需要赋值给data</span></span><br><span class="line">        book_ser = serializers.UserDeserializer(data=request_data)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 序列化对象调用is_valid()完成校验，校验失败的失败信息都会被存储在 序列化对象.errors</span></span><br><span class="line">        <span class="keyword">if</span> book_ser.is_valid():</span><br><span class="line">            <span class="comment"># 校验通过，完成新增</span></span><br><span class="line">            book_obj = book_ser.save()</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">                <span class="string">'results'</span>: serializers.UserSerializer(book_obj).data</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 校验失败</span></span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: book_ser.errors,</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
-<h1 id="总结">总结</h1>
-<ol type="1">
-<li>使用序列化器的时候一定要注意，序列化器声明了以后，不会自动执行，需要我们在视图中进行调用才可以</li>
-<li>序列化器无法直接接收数据，需要我们在视图中创建序列化器对象时把使用的数据传递过来。（<code>data</code>, <code>instance</code>传参）
-<ul>
-<li>序列化：是数据对象从数据库中查出，通过instance传入序列化器中，必须通过data属性才能将序列化后的数据传给前端，不能直接传序列化对象</li>
-<li>反序列化：是数据是通过request.data从前端获取到数据，通过data传入序列化器中进行校验，保存到数据库中</li>
-</ul></li>
-<li>序列化器的字段声明类似于我们前面使用过的表单系统</li>
-<li>开发restful api时，序列化器会帮我们把模型数据转换成字典</li>
-<li>drf提供的视图会帮我们把字典转换成json，或者把客户端发过来的数据转换成字典</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>Learning Notes</tag>
-        <tag>Tech</tag>
         <tag>Dev</tag>
-        <tag>Backend</tag>
-        <tag>Django</tag>
-        <tag>Django REST Framework</tag>
-        <tag>DRF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类</title>
-    <url>/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/</url>
-    <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<h1 id="基本信息">基本信息</h1>
-<ul>
-<li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
-<li>官方文档
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
-</ul></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzlfZHJmX0xpc3RTZXJpYWxpemVy">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>DRF常用序列化类主要有</p>
-<ul>
-<li><code>rest_framework.serialziers.Serializer</code></li>
-<li><code>rest_framework.serialziers.ModelSerializer</code></li>
-<li><code>rest_framework.serialziers.ListSerializer</code></li>
-</ul>
-<p>本篇介绍<code>rest_framework.serialziers.ListSerializer</code>，将继续以图书管理系统实例说明。</p>
-<a id="more"></a>
-<h1 id="使用场景之群改群增群改">使用场景之群改群增群改</h1>
-<p>当一个序列化器在带有<code>many=True</code>选项被序列化时，将创建一个<code>ListSerializer</code>实例，该序列化器类将成为<code>ListSerializer</code>类的子类。 当你需要自定义多个对象的行为时（比如群增，群改）,你需要手动定制<code>ListSerializer</code>类的一些行为。 可以通过在自定义序列化器的<code>Meta</code>类下面的<code>list_serializer_class</code>来绑定你需要的的<code>ListSerializer</code>类</p>
-<h1 id="示例代码">示例代码</h1>
-<p>群改需要设置<code>ListSerializer</code>，创建<code>BookListSerializer</code>继承<code>ListSerializer</code>，重写<code>update</code>方法</p>
-<h2 id="序列化层-serializer.py">序列化层 <code>serializer.py</code></h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 重点：ListSerializer与ModelSerializer建立关联的是： 在ModelSerializer的Meta类中设置   list_serializer_class</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookListSerializer</span><span class="params">(ListSerializer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, instance, validated_data)</span>:</span>  <span class="comment"># print(instance)  # 要更新的对象们</span></span><br><span class="line">        <span class="comment"># print(validated_data)  # 更新的对象对应的数据们</span></span><br><span class="line">        <span class="comment"># print(self.child)  # 服务的模型序列化类 - V3BookModelSerializer</span></span><br><span class="line">        <span class="keyword">for</span> index, obj <span class="keyword">in</span> enumerate(instance):</span><br><span class="line">            self.child.update(obj, validated_data[index])</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V3BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">            <span class="comment"># 群改，list_serializer_class是固定的key写法，直接转入BookListSerializer类的 update 方法</span></span><br><span class="line">            list_serializer_class = BookListSerializer</span><br></pre></td></tr></table></figure>
-<p>之所以需要实现<code>update</code>方法，群改时会走 <code>rest_framework.serializers.ListSerializer</code>中的<code>update</code>函数，而该函数并未被实现。</p>
-<p>而群增不需要重写<code>create</code>方法，因为源码中<code>rest_framework.serializers.ListSerializer</code>走的就是<code>ModelSerializer</code>的<code>create</code>方法:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [</span><br><span class="line">        self.child.create(attrs) <span class="keyword">for</span> attrs <span class="keyword">in</span> validated_data</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
-<h2 id="视图层-views.py">视图层 <code>views.py</code></h2>
-<p>在视图层将 单局部改和群局部改整合，思路如下：</p>
-<ol type="1">
-<li>单局部改：对 <code>v3/books/pk/</code> <code>pk</code>通过路由传参，修改数据选择传参，通过数据包json传递</li>
-<li>群局部修改：<code>v3/books/</code> 修改数据通过数据包传递，设置成列表格式 <code>[{pk:1,name:123},{pk:3,price:7},{pk:7,publish:2}]</code></li>
-<li>先将单改，群改的数据都格式化成 <code>pks=[要需要的对象主键标识]</code>， <code>request_data=[每个要修改的对象对应的修改数据]</code></li>
-<li><code>pks</code>与<code>request_data</code>数据筛选，将<code>pks</code>中的没有对应数据的<code>pk</code>与数据已删除的<code>pk</code>移除，<code>request_data</code>对应索引位上的数据也移除，将合理的<code>pks</code>转换为<code>objs</code></li>
-</ol>
-<details>
-<p><summary> <b><i>Source Code</i></b> </summary></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</details>
-<h1 id="listserializer使用要点小结"><code>ListSerializer</code>使用要点小结</h1>
-<p><code>views.py</code></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj = ModelSerializer(instance=model_obj,data=model_data,partial=<span class="literal">True</span>,many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<p><code>serializer.py</code></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 实现群改功能，反序列化情况下的create、update就不再调用ModelSerializer的</span></span><br><span class="line"><span class="comment"># 而是调用 ModelSerializer.Meta.list_serializer_class 指向的 ListSerializer 类的create、update</span></span><br><span class="line"><span class="comment"># ListSerializer默认只实现了群增的create，要实现群改，必须重写update</span></span><br><span class="line"></span><br><span class="line">　　<span class="comment">#自定义序列化类，重写update方法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyListSerializer</span><span class="params">(ListSerializer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, instance, validated_data)</span>:</span></span><br><span class="line">        <span class="comment"># print(instance)  # 要更新的对象们: [obj1, obj2, ...]</span></span><br><span class="line">        <span class="comment"># print(validated_data)  # 更新的对象对应的数据们: [&#123;&#125;, &#123;&#125;, ...]</span></span><br><span class="line">        <span class="comment"># print(self.child)  # 服务的模型序列化类 - V2BookModelSerializer</span></span><br><span class="line">        <span class="keyword">for</span> index, obj <span class="keyword">in</span> enumerate(instance):</span><br><span class="line">            self.child.update(obj, validated_data[index])</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">            list_serializer_class = MyListSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将两者类建立关联，在MyListSerializer中就可以用self.child拿到# MyModelSerializer，进而使用MyModelSerializer中封装好的方法</span></span><br><span class="line">    cls.Meta.list_serializer_class.child = cls</span><br></pre></td></tr></table></figure>
-<h1 id="源码补充分析">源码补充分析</h1>
-<p>分析一下修改为什么要用<code>instance</code>传参。</p>
-<p>修改之后数据使用<code>save()</code>保存，从视图的<code>save()</code>点击进去查看源码，下面是<code>BaseSerializer</code>类中的<code>save</code>，而该<code>save</code>未被实现。</p>
-<p>因此接着查看<code>save</code>方法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line">    validated_data = [</span><br><span class="line">        dict(list(attrs.items()) + list(kwargs.items()))</span><br><span class="line">        <span class="keyword">for</span> attrs <span class="keyword">in</span> self.validated_data</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        self.instance = self.update(self.instance, validated_data)</span><br><span class="line">        <span class="keyword">assert</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>, (</span><br><span class="line">            <span class="string">'`update()` did not return an object instance.'</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.instance = self.create(validated_data)</span><br><span class="line">        <span class="keyword">assert</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>, (</span><br><span class="line">            <span class="string">'`create()` did not return an object instance.'</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> self.instance</span><br></pre></td></tr></table></figure>
-<p><code>instance</code>存在就走<code>update</code>方法，修改数据(<code>PUT</code>/<code>PATCH</code>)时都应传入<code>instance</code>，所以单改群改都需要传入<code>data</code>（反序列化用）和<code>instance</code>（序列化用）参数。</p>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>Learning Notes</tag>
-        <tag>Tech</tag>
-        <tag>Dev</tag>
-        <tag>Backend</tag>
-        <tag>Django</tag>
-        <tag>Django REST Framework</tag>
-        <tag>DRF</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,13 +1818,86 @@
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Learning Notes</tag>
         <tag>Tech</tag>
-        <tag>Dev</tag>
+        <tag>Learning Notes</tag>
         <tag>Backend</tag>
         <tag>Django</tag>
         <tag>Django REST Framework</tag>
         <tag>DRF</tag>
+        <tag>Dev</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Django REST Framework 学习笔记（九）：序列化模块 serialziers 之 ListSerializer类</title>
+    <url>/tech/drf-learning-notes-9-the-listserializer-class-in-serialziers-module/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (8): the ModelSerializer class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
+<li>源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VuY29kZS9kamFuZ28tcmVzdC1mcmFtZXdvcmsvYmxvYi9tYXN0ZXIvcmVzdF9mcmFtZXdvcmsvc2VyaWFsaXplcnMucHk=">rest_framework.serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li>官方文档
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzlfZHJmX0xpc3RTZXJpYWxpemVy">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.ListSerializer</code>，将继续以图书管理系统实例说明。</p>
+<a id="more"></a>
+<h1 id="使用场景之群改群增群改">使用场景之群改群增群改</h1>
+<p>当一个序列化器在带有<code>many=True</code>选项被序列化时，将创建一个<code>ListSerializer</code>实例，该序列化器类将成为<code>ListSerializer</code>类的子类。 当你需要自定义多个对象的行为时（比如群增，群改）,你需要手动定制<code>ListSerializer</code>类的一些行为。 可以通过在自定义序列化器的<code>Meta</code>类下面的<code>list_serializer_class</code>来绑定你需要的的<code>ListSerializer</code>类</p>
+<h1 id="示例代码">示例代码</h1>
+<p>群改需要设置<code>ListSerializer</code>，创建<code>BookListSerializer</code>继承<code>ListSerializer</code>，重写<code>update</code>方法</p>
+<h2 id="序列化层-serializer.py">序列化层 <code>serializer.py</code></h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 重点：ListSerializer与ModelSerializer建立关联的是： 在ModelSerializer的Meta类中设置   list_serializer_class</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BookListSerializer</span><span class="params">(ListSerializer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, instance, validated_data)</span>:</span>  <span class="comment"># print(instance)  # 要更新的对象们</span></span><br><span class="line">        <span class="comment"># print(validated_data)  # 更新的对象对应的数据们</span></span><br><span class="line">        <span class="comment"># print(self.child)  # 服务的模型序列化类 - V3BookModelSerializer</span></span><br><span class="line">        <span class="keyword">for</span> index, obj <span class="keyword">in</span> enumerate(instance):</span><br><span class="line">            self.child.update(obj, validated_data[index])</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">V3BookModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">            <span class="comment"># 群改，list_serializer_class是固定的key写法，直接转入BookListSerializer类的 update 方法</span></span><br><span class="line">            list_serializer_class = BookListSerializer</span><br></pre></td></tr></table></figure>
+<p>之所以需要实现<code>update</code>方法，群改时会走 <code>rest_framework.serializers.ListSerializer</code>中的<code>update</code>函数，而该函数并未被实现。</p>
+<p>而群增不需要重写<code>create</code>方法，因为源码中<code>rest_framework.serializers.ListSerializer</code>走的就是<code>ModelSerializer</code>的<code>create</code>方法:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [</span><br><span class="line">        self.child.create(attrs) <span class="keyword">for</span> attrs <span class="keyword">in</span> validated_data</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+<h2 id="视图层-views.py">视图层 <code>views.py</code></h2>
+<p>在视图层将 单局部改和群局部改整合，思路如下：</p>
+<ol type="1">
+<li>单局部改：对 <code>v3/books/pk/</code> <code>pk</code>通过路由传参，修改数据选择传参，通过数据包json传递</li>
+<li>群局部修改：<code>v3/books/</code> 修改数据通过数据包传递，设置成列表格式 <code>[{pk:1,name:123},{pk:3,price:7},{pk:7,publish:2}]</code></li>
+<li>先将单改，群改的数据都格式化成 <code>pks=[要需要的对象主键标识]</code>， <code>request_data=[每个要修改的对象对应的修改数据]</code></li>
+<li><code>pks</code>与<code>request_data</code>数据筛选，将<code>pks</code>中的没有对应数据的<code>pk</code>与数据已删除的<code>pk</code>移除，<code>request_data</code>对应索引位上的数据也移除，将合理的<code>pks</code>转换为<code>objs</code></li>
+</ol>
+<details>
+<p><summary> <b><i>Source Code</i></b> </summary></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="listserializer使用要点小结"><code>ListSerializer</code>使用要点小结</h1>
+<p><code>views.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj = ModelSerializer(instance=model_obj,data=model_data,partial=<span class="literal">True</span>,many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p><code>serializer.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 实现群改功能，反序列化情况下的create、update就不再调用ModelSerializer的</span></span><br><span class="line"><span class="comment"># 而是调用 ModelSerializer.Meta.list_serializer_class 指向的 ListSerializer 类的create、update</span></span><br><span class="line"><span class="comment"># ListSerializer默认只实现了群增的create，要实现群改，必须重写update</span></span><br><span class="line"></span><br><span class="line">　　<span class="comment">#自定义序列化类，重写update方法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyListSerializer</span><span class="params">(ListSerializer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, instance, validated_data)</span>:</span></span><br><span class="line">        <span class="comment"># print(instance)  # 要更新的对象们: [obj1, obj2, ...]</span></span><br><span class="line">        <span class="comment"># print(validated_data)  # 更新的对象对应的数据们: [&#123;&#125;, &#123;&#125;, ...]</span></span><br><span class="line">        <span class="comment"># print(self.child)  # 服务的模型序列化类 - V2BookModelSerializer</span></span><br><span class="line">        <span class="keyword">for</span> index, obj <span class="keyword">in</span> enumerate(instance):</span><br><span class="line">            self.child.update(obj, validated_data[index])</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyModelSerializer</span><span class="params">(ModelSerializer)</span>:</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">            list_serializer_class = MyListSerializer</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将两者类建立关联，在MyListSerializer中就可以用self.child拿到# MyModelSerializer，进而使用MyModelSerializer中封装好的方法</span></span><br><span class="line">    cls.Meta.list_serializer_class.child = cls</span><br></pre></td></tr></table></figure>
+<h1 id="源码补充分析">源码补充分析</h1>
+<p>分析一下修改为什么要用<code>instance</code>传参。</p>
+<p>修改之后数据使用<code>save()</code>保存，从视图的<code>save()</code>点击进去查看源码，下面是<code>BaseSerializer</code>类中的<code>save</code>，而该<code>save</code>未被实现。</p>
+<p>因此接着查看<code>save</code>方法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line">    validated_data = [</span><br><span class="line">        dict(list(attrs.items()) + list(kwargs.items()))</span><br><span class="line">        <span class="keyword">for</span> attrs <span class="keyword">in</span> self.validated_data</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        self.instance = self.update(self.instance, validated_data)</span><br><span class="line">        <span class="keyword">assert</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>, (</span><br><span class="line">            <span class="string">'`update()` did not return an object instance.'</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.instance = self.create(validated_data)</span><br><span class="line">        <span class="keyword">assert</span> self.instance <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>, (</span><br><span class="line">            <span class="string">'`create()` did not return an object instance.'</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> self.instance</span><br></pre></td></tr></table></figure>
+<p><code>instance</code>存在就走<code>update</code>方法，修改数据(<code>PUT</code>/<code>PATCH</code>)时都应传入<code>instance</code>，所以单改群改都需要传入<code>data</code>（反序列化用）和<code>instance</code>（序列化用）参数。</p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Tech</tag>
+        <tag>Learning Notes</tag>
+        <tag>Backend</tag>
+        <tag>Django</tag>
+        <tag>Django REST Framework</tag>
+        <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
   <entry>
@@ -2209,182 +2084,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo（Next主题）实现可切换的Dark Mode(暗色背景/夜间模式)</title>
-    <url>/tech/hexo-dark-mode-note/</url>
-    <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Hexo Dark Mode Note</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<blockquote>
-<p>Dark Mode —— 中老年程序🐶的眼睛续命必备功能</p>
-</blockquote>
-<p>Mac、Win 纷纷推出了 Dark Mode，安卓也原生支持了随着夜幕降临自动调整屏幕亮度（蓝光）的功能，看来保护眼睛、关爱程序猿是大势所趋。</p>
-<p>这里，我们尝试了3种使Hexo Next主题切换为darkmode的方式。</p>
-<a id="more"></a>
-<h1 id="方案1官方最新版next">方案1：官方最新版Next</h1>
-<p>Next在最近的几个版本的更新中<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">加入了对darkmode的原生支持<i class="fa fa-external-link-alt"></i></span>，配置非常简单。</p>
-<ul>
-<li>配置方法：参见 <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9pbmRleC5odG1sI0RhcmstTW9kZQ==">官方文档<i class="fa fa-external-link-alt"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU1JThEJTg3JUU3JUJBJUE3LU1hYyVFOCVCRiU4MSVFNyVBNyVCQi5odG1sI0Rhcmttb2Rl">大佬们的文章<i class="fa fa-external-link-alt"></i></span></li>
-<li>优点：配置非常简单</li>
-<li>缺点：
-<ul>
-<li>根据自己的测试，Safari和Firefox 没有问题，但是Chrome无效</li>
-<li>不能进行切换，而是根据系统偏好（是否是夜间模式）来判断 是否启用</li>
-</ul></li>
-</ul>
-<h1 id="方案2hexo-next-nightmode插件">方案2：hexo-next-nightmode插件</h1>
-<ul>
-<li>配置方法：请参见<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzF2OS9oZXhvLW5leHQtbmlnaHRtb2Rl">官方说明<i class="fa fa-external-link-alt"></i></span></li>
-<li>优点：可以切换，配置相对简单</li>
-<li>缺点：
-<ul>
-<li>需要额外安装插件</li>
-<li>开启后会在侧边栏的个人信息一览(Overview)里添加切换黑白背景的按钮，但是 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzF2OS9oZXhvLW5leHQtbmlnaHRtb2RlL2lzc3Vlcy8xMA==">当前版本没有默认使用暗色背景的选项<i class="fa fa-external-link-alt"></i></span></li>
-<li>默认切换按钮在Overview里，可能会有如下弊端
-<ul>
-<li>如果设置为默认隐藏侧边栏，则用户首次访问首页时，不知道有夜间模式</li>
-<li>在文章页面时，侧边栏是有两个标签组成，默认显示文章大纲。因此只有切换至Overview后才能后点击背景切换按钮</li>
-</ul></li>
-<li>bug：darkmode下，header位置被选中的category背景色变成了蓝色</li>
-</ul></li>
-</ul>
-<h1 id="方案3引入js库-darkmode.js">方案3：引入js库 <code>darkmode.js</code></h1>
-<h2 id="缘由非重点可略过">缘由（非重点可略过）</h2>
-<p>从<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">Next加入了对darkmode的原生支持的PR页面的讨论<i class="fa fa-external-link-alt"></i></span>可以看到，在某大佬X向Next官方贡献了原生darkmode的代码后，某网友向其呼吁加一步加上切换按钮。</p>
-<p>但大佬X似乎不打算加，并表示该网友可以使用js库 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpz">darkmode.js<i class="fa fa-external-link-alt"></i></span> 去实现。</p>
-<p>没想到网友其实是大佬Y，果然在<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">自己的博客<i class="fa fa-external-link-alt"></i></span>成功集成了darkmode.js。</p>
-<p>于是另一位网友向大佬Y询问如何集成的具体细节，但是没有得到回应。</p>
-<p>既然可行，那就不妨尝试一下，我也按照<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpz">darkmode.js官方的说明<i class="fa fa-external-link-alt"></i></span>操作一番，其中也遇到了些小问题：</p>
-<ul>
-<li>切换按钮无法点击</li>
-<li>切换到夜间模式后，所有图片的颜色也被翻转，这不是我们所期望的</li>
-</ul>
-<p>为解决这些问题，参考了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpzL2lzc3Vlcy80">官方相关issue<i class="fa fa-external-link-alt"></i></span>，并且抄了<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">大佬Y的作业<i class="fa fa-external-link-alt"></i></span>。</p>
-<h2 id="为next订制darkmode.js">为Next订制darkmode.js</h2>
-<p>可以参考这里我fork的next对比具体做了哪些配置和修改：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hleG8tdGhlbWUtbmV4dA==">dog-2/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p>
-<p>最终效果图见文章最后，下面是具体步骤：</p>
-<h3 id="将darkmode.js添加为next的submodule">1. 将darkmode.js添加为Next的submodule</h3>
-<p>.gitignore 最后添加 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">!<span class="built_in">source</span>/lib/darkmode-js</span><br></pre></td></tr></table></figure></p>
-<p>进入 <code>{blog_dir}/themes/next/</code>，执行如下命令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git submodule add https://github.com/sandoche/Darkmode.js.git <span class="built_in">source</span>/lib/darkmode-js/</span><br></pre></td></tr></table></figure></p>
-<h3 id="根据偏好修改配置文件">2. 根据偏好修改配置文件</h3>
-<p>根据偏好修改下列配置文件中的其它选项</p>
-<ul>
-<li>{blog_dir}/themes/next/languages/en.yml</li>
-<li>next配置文件中的配置</li>
-</ul>
-<div class="note warning">
-            <p>这里需要注意的是next有两种配置文件的形式，请确认自己是哪一种。 新Next的配置文件，有2种设置方式，请参考官方文档：</p><ul><li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></li></ul>
-          </div>
-<h3 id="定制vendors加入darkmode.js">3. 定制vendors加入darkmode.js</h3>
-<ol type="1">
-<li>修改 <code>{blog_dir}/themes/next/layout/_scripts/vendors.swig</code></li>
-<li>修改next配置文件中的针对darkmode以及darkmode-js的配置：
-<ul>
-<li>确保next原有<code>darkmode</code>选项设置为 <code>false</code></li>
-<li>添加darkmode-js开关</li>
-<li>添加darkmode-js自定义CDN选项（可选）</li>
-</ul></li>
-</ol>
-<h1 id="最终效果">最终效果</h1>
-<img src="/tech/hexo-dark-mode-note/1.gif" class="" title="darkmode.js效果">
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>Blog</tag>
-        <tag>Hexo</tag>
-        <tag>Hexo Next</tag>
-        <tag>Tech</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo &amp; Next 升级笔记</title>
-    <url>/tech/hexo-next-upgrade-note/</url>
-    <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Hexo &amp; Next Upgrade Note</strong></em></li>
-<li>Author: dog2</li>
-</ul>
-<hr />
-<p>几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。</p>
-<p>由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下：</p>
-<h2 id="目的">目的</h2>
-<ul>
-<li>node: <code>v6.17.1</code> =&gt; <code>v13.7.0</code></li>
-<li>hexo: <code>v3.2.x</code> =&gt; <code>v4.2.0</code></li>
-<li>next: <code>v4.x</code> =&gt; <code>v7.8.0</code></li>
-</ul>
-<h2 id="更新-node">更新 node</h2>
-<p>我的系统使用nvm管理多版本node，首先更新npm：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g npm</span><br></pre></td></tr></table></figure>
-<p>清除npm缓存，可能需要 sudo</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm cache clean -f</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="更新-hexo">更新 hexo</h2>
-<p>进入blog目录，执行如下命令：</p>
-<ul>
-<li>更新package.json中的hexo及个插件版本 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g npm-check</span><br><span class="line">npm install -g npm-upgrade</span><br><span class="line">npm-check</span><br><span class="line">npm-upgrade</span><br></pre></td></tr></table></figure></li>
-<li>更新hexo及所有插件 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure></li>
-<li>确认hexo版本号是否已更新 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo version</span><br></pre></td></tr></table></figure></li>
-</ul>
-<div class="note warning">
-            <h3 id="潜在错误">潜在错误</h3>此时运行 hexo generate 命令，若出现了如下错误：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>通过重新安装 <code>hexo-cli</code> 可以解决<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-          </div>
-<h2 id="更新-next-主题">更新 Next 主题</h2>
-<h3 id="备份可选">备份（可选）</h3>
-<p>我备份了如下旧配置文件：</p>
-<ul>
-<li><code>{blog_dir}/themes/next/_config.yml</code></li>
-<li><code>{blog_dir}/themes/next/languages/en.yml</code></li>
-<li><code>{blog_dir}/themes/next/languages/zh-Hans.yml</code></li>
-<li><code>{blog_dir}/themes/next/source/404.yml</code></li>
-</ul>
-<p>后来发现新版Next变化太大，很多配置项和方式都变了。 但是旧文件可以作为过去喜好的参考。</p>
-<h3 id="更新-next">更新 Next</h3>
-<p>想要更新Next时，发现已经有了天翻地覆的变化，连github的项目目录都变了，该项目已经社区化：</p>
-<ul>
-<li>旧目录 <code>~ v5.x</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2lpc3NuYW4vaGV4by10aGVtZS1uZXh0">https://github.com/iissnan/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></li>
-<li><p>新目录 <code>v6.x ~</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0">https://github.com/theme-next/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p></li>
-<li>删除旧的 next <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm -fm themes/next</span><br></pre></td></tr></table></figure></li>
-<li><p>克隆最新的 next <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
-</ul>
-<h3 id="配置-next">配置 Next</h3>
-<p>从官方文档获悉，Next的配置变了很多。</p>
-<p>其实首先该插一句，官网也变了。。。</p>
-<ul>
-<li>旧官网：<span class="exturl" data-url="aHR0cHM6Ly9ub3Rlcy5paXNzbmFuLmNvbS8=">https://notes.iissnan.com/<i class="fa fa-external-link-alt"></i></span></li>
-<li>新官网：<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy8=">https://theme-next.org/<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>新Next的配置文件，有2种设置方式，请参考官方文档： - <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span> - <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></p>
-<p>每个人的配置不尽相同，我只是简单的配置了一部分，这里给出大佬们的非常全面的配置以供参考 - <span class="exturl" data-url="aHR0cHM6Ly90ZGluZy50b3AvYXJjaGl2ZXMvNDJjMzhiMTAuaHRtbA==">Hexo-NexT (v7.0+) 主题配置<i class="fa fa-external-link-alt"></i></span> - <span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU0JUI4JUJCJUU5JUEyJTk4JUU3JUJFJThFJUU1JThDJTk2Lmh0bWw=">Next主题美化(仅7.1版本)<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="定制-next">定制 Next</h3>
-<h4 id="dark-mode-暗色背景夜间模式">Dark Mode 暗色背景（夜间模式）</h4>
-<p>这部分内容较多，我单独写到了另一篇文章里 <a href="/tech/hexo-dark-mode-note/">Hexo（Next主题）Dark Mode(暗色背景/夜间模式)折腾笔记</a></p>
-<h4 id="代码块mac-panel特效">代码块Mac Panel特效</h4>
-<p>这个属于美化，我没有尝试，请参见<span class="exturl" data-url="aHR0cHM6Ly9oYXNhaWsuY29tL3Bvc3RzL2Q3Mzk5ZTgwLmh0bWw=">大佬的订制<i class="fa fa-external-link-alt"></i></span>。</p>
-<h3 id="遗留问题">遗留问题</h3>
-<ol type="1">
-<li>当前版本的Next 相关文章（<code>hexo-related-popular-posts</code>插件）<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RlYTMvaGV4by1yZWxhdGVkLXBvcHVsYXItcG9zdHMvaXNzdWVzLzIx">无法使用<i class="fa fa-external-link-alt"></i></span>，不知道是不是我的姿势不对</li>
-</ol>
-<h2 id="参考链接">参考链接</h2>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly9zZWN1cml0eXRlY2guc2l0ZS96aC1DTi8zYmEzYmU5Lw==">Hexo版本升级指南<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vZW50cnkvNWI5NjUxOTVlNTFkNDUwZTU1MTlkMmM0">Hexo的DTraceProviderBindings MODULE_NOT_FOUND问题<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9zZXZlbmNoby5naXRodWIuaW8vYXJjaGl2ZXMvMTQ1MzRiZWIuaHRtbA==">Hexo博客NexT主题从v5.x.x更新到v6.x.x的记录及总结<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU1JThEJTg3JUU3JUJBJUE3LU1hYyVFOCVCRiU4MSVFNyVBNyVCQi5odG1s">Next升级+Mac迁移<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>Blog</tag>
-        <tag>Hexo</tag>
-        <tag>Hexo Next</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>堆溢出学习笔记(Win2K) (下)</title>
     <url>/tech/heap-overflow-learning-notes-2/</url>
     <content><![CDATA[<ul>
@@ -2529,122 +2228,179 @@
       </tags>
   </entry>
   <entry>
-    <title>让Hexo Next (v8.0.0) 支持LaTeX数学公式</title>
-    <url>/tech/making-hexo-next-theme-latex-math-equation-supported/</url>
+    <title>Hexo（Next主题）实现可切换的Dark Mode(暗色背景/夜间模式)</title>
+    <url>/tech/hexo-dark-mode-note/</url>
     <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported</strong></em></li>
+<li>Title(EN): <em><strong>Hexo Dark Mode Note</strong></em></li>
 <li>Author: dog2</li>
 </ul>
 <hr />
-<h1 id="按">按</h1>
-<ul>
-<li>环境
-<ul>
-<li>OS：Max OS 10.15</li>
-<li>node: 13.7.0</li>
-<li>hexo：4.2.1</li>
-<li>hexo-cli: 3.1.0</li>
-<li>hexo-theme-next: v8.0.0-rc.2</li>
-</ul></li>
-<li>需求：让hexo的next主题支持渲染LaTeX语法的数学公式。</li>
-<li>参考链接：
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL3RoaXJkLXBhcnR5LXNlcnZpY2VzL21hdGgtZXF1YXRpb25zLmh0bWw=">官方文档<i class="fa fa-external-link-alt"></i></span></li>
-</ul></li>
-</ul>
+<blockquote>
+<p>Dark Mode —— 中老年程序🐶的眼睛续命必备功能</p>
+</blockquote>
+<p>Mac、Win 纷纷推出了 Dark Mode，安卓也原生支持了随着夜幕降临自动调整屏幕亮度（蓝光）的功能，看来保护眼睛、关爱程序猿是大势所趋。</p>
+<p>这里，我们尝试了3种使Hexo Next主题切换为darkmode的方式。</p>
 <a id="more"></a>
-<h1 id="步骤">步骤</h1>
-<p>根据官方文档，让Next主题支持公式有有两种方式（无法正常渲染请刷新页面）：</p>
-<pre class="mermaid" style="text-align: center;">
-            graph LR
-            H[Hexo] ==> |主题| T(NexT)
-T ==> |公式渲染引擎1| MJ{MathJax}
-T -.-> |公式渲染引擎2| KT{KaTeX}
-style KT text-decoration:line-through
-
-MJ ==> |markdown渲染引擎1| PD(hexo-renderer-pandoc)
-MJ -.-> |markdown渲染引擎2| KR(hexo-renderer-kramed)
-MJ -.-> |化学公式插件| MC((mhchem))
-
-KT -.-> |markdown渲染引擎1| MDIP(hexo-renderer-markdown-it-plus)
-KT -.-> |markdown渲染引擎2| MDI(hexo-renderer-markdown-it)
-KT -.-> |公式复制插件| CPTEX((Copy-tex))
-KT -.-> |bug| KTBUG>解析$有Bug需手动修复]
-
-          </pre>
-<p>我的测试中只有上图中的实体粗线的方式成功，这里就记录一下这种方式的步骤，即</p>
+<h1 id="方案1官方最新版next">方案1：官方最新版Next</h1>
+<p>Next在最近的几个版本的更新中<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">加入了对darkmode的原生支持<i class="fa fa-external-link-alt"></i></span>，配置非常简单。</p>
 <ul>
-<li>NexT =&gt; MathJax =&gt; hexo-renderer-pandoc</li>
+<li>配置方法：参见 <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9pbmRleC5odG1sI0RhcmstTW9kZQ==">官方文档<i class="fa fa-external-link-alt"></i></span>和<span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU1JThEJTg3JUU3JUJBJUE3LU1hYyVFOCVCRiU4MSVFNyVBNyVCQi5odG1sI0Rhcmttb2Rl">大佬们的文章<i class="fa fa-external-link-alt"></i></span></li>
+<li>优点：配置非常简单</li>
+<li>缺点：
+<ul>
+<li>根据自己的测试，Safari和Firefox 没有问题，但是Chrome无效</li>
+<li>不能进行切换，而是根据系统偏好（是否是夜间模式）来判断 是否启用</li>
+</ul></li>
 </ul>
+<h1 id="方案2hexo-next-nightmode插件">方案2：hexo-next-nightmode插件</h1>
+<ul>
+<li>配置方法：请参见<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzF2OS9oZXhvLW5leHQtbmlnaHRtb2Rl">官方说明<i class="fa fa-external-link-alt"></i></span></li>
+<li>优点：可以切换，配置相对简单</li>
+<li>缺点：
+<ul>
+<li>需要额外安装插件</li>
+<li>开启后会在侧边栏的个人信息一览(Overview)里添加切换黑白背景的按钮，但是 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLzF2OS9oZXhvLW5leHQtbmlnaHRtb2RlL2lzc3Vlcy8xMA==">当前版本没有默认使用暗色背景的选项<i class="fa fa-external-link-alt"></i></span></li>
+<li>默认切换按钮在Overview里，可能会有如下弊端
+<ul>
+<li>如果设置为默认隐藏侧边栏，则用户首次访问首页时，不知道有夜间模式</li>
+<li>在文章页面时，侧边栏是有两个标签组成，默认显示文章大纲。因此只有切换至Overview后才能后点击背景切换按钮</li>
+</ul></li>
+<li>bug：darkmode下，header位置被选中的category背景色变成了蓝色</li>
+</ul></li>
+</ul>
+<h1 id="方案3引入js库-darkmode.js">方案3：引入js库 <code>darkmode.js</code></h1>
+<h2 id="缘由非重点可略过">缘由（非重点可略过）</h2>
+<p>从<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L3B1bGwvMTM4Ng==">Next加入了对darkmode的原生支持的PR页面的讨论<i class="fa fa-external-link-alt"></i></span>可以看到，在某大佬X向Next官方贡献了原生darkmode的代码后，某网友向其呼吁加一步加上切换按钮。</p>
+<p>但大佬X似乎不打算加，并表示该网友可以使用js库 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpz">darkmode.js<i class="fa fa-external-link-alt"></i></span> 去实现。</p>
+<p>没想到网友其实是大佬Y，果然在<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">自己的博客<i class="fa fa-external-link-alt"></i></span>成功集成了darkmode.js。</p>
+<p>于是另一位网友向大佬Y询问如何集成的具体细节，但是没有得到回应。</p>
+<p>既然可行，那就不妨尝试一下，我也按照<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpz">darkmode.js官方的说明<i class="fa fa-external-link-alt"></i></span>操作一番，其中也遇到了些小问题：</p>
+<ul>
+<li>切换按钮无法点击</li>
+<li>切换到夜间模式后，所有图片的颜色也被翻转，这不是我们所期望的</li>
+</ul>
+<p>为解决这些问题，参考了<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NhbmRvY2hlL0Rhcmttb2RlLmpzL2lzc3Vlcy80">官方相关issue<i class="fa fa-external-link-alt"></i></span>，并且抄了<span class="exturl" data-url="aHR0cHM6Ly95dXpob3V3YW4uY29tLw==">大佬Y的作业<i class="fa fa-external-link-alt"></i></span>。</p>
+<h2 id="为next订制darkmode.js">为Next订制darkmode.js</h2>
+<p>可以参考这里我fork的next对比具体做了哪些配置和修改：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hleG8tdGhlbWUtbmV4dA==">dog-2/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p>
+<p>最终效果图见文章最后，下面是具体步骤：</p>
+<h3 id="将darkmode.js添加为next的submodule">1. 将darkmode.js添加为Next的submodule</h3>
+<p>.gitignore 最后添加 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">!<span class="built_in">source</span>/lib/darkmode-js</span><br></pre></td></tr></table></figure></p>
+<p>进入 <code>{blog_dir}/themes/next/</code>，执行如下命令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git submodule add https://github.com/sandoche/Darkmode.js.git <span class="built_in">source</span>/lib/darkmode-js/</span><br></pre></td></tr></table></figure></p>
+<h3 id="根据偏好修改配置文件">2. 根据偏好修改配置文件</h3>
+<p>根据偏好修改下列配置文件中的其它选项</p>
+<ul>
+<li>{blog_dir}/themes/next/languages/en.yml</li>
+<li>next配置文件中的配置</li>
+</ul>
+<div class="note warning">
+            <p>这里需要注意的是next有两种配置文件的形式，请确认自己是哪一种。 新Next的配置文件，有2种设置方式，请参考官方文档：</p><ul><li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span></li><li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></li></ul>
+          </div>
+<h3 id="定制vendors加入darkmode.js">3. 定制vendors加入darkmode.js</h3>
 <ol type="1">
-<li><p>安装<span class="exturl" data-url="aHR0cHM6Ly9wYW5kb2Mub3JnL2luc3RhbGxpbmcuaHRtbA==">pandoc<i class="fa fa-external-link-alt"></i></span></p>
-<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install pandoc</span><br></pre></td></tr></table></figure></p></li>
-<li><p>将默认的markdown渲染引擎<code>hexo-renderer-marked</code>替换为<code>hexo-renderer-pandoc</code></p>
-<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm un hexo-renderer-marked</span><br><span class="line">npm i hexo-renderer-pandoc</span><br></pre></td></tr></table></figure></p></li>
-<li><p>修改next主题配置</p>
-<p><div class="note warning">
-            <p>Next的配置文件，有2种形式，请参考<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方文档<i class="fa fa-external-link-alt"></i></span></p>
-          </div></p>
-<p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Math Formulas Render Support</span></span><br><span class="line"><span class="attr">math:</span></span><br><span class="line"><span class="comment"># Default (true) will load mathjax / katex script on demand.</span></span><br><span class="line"><span class="comment"># That is it only render those page which has `mathjax: true` in Front-matter.</span></span><br><span class="line"><span class="comment"># If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span></span><br><span class="line"><span class="attr">mathjax:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># See: https://mhchem.github.io/MathJax-mhchem/</span></span><br><span class="line">    <span class="attr">mhchem:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-markdown-it-plus (or hexo-renderer-markdown-it with markdown-it-katex plugin) required for full Katex support.</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment"># See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex</span></span><br><span class="line">    <span class="attr">copy_tex:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">vendors:</span></span><br><span class="line">  <span class="comment"># MathJax</span></span><br><span class="line">  <span class="attr">mathjax:</span> <span class="string">//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js</span></span><br></pre></td></tr></table></figure></p>
-<p><code>per_page</code>按需设置，具体可参考注释和官网说明。其他选项需要跟上述设置保持一致。</p></li>
+<li>修改 <code>{blog_dir}/themes/next/layout/_scripts/vendors.swig</code></li>
+<li>修改next配置文件中的针对darkmode以及darkmode-js的配置：
+<ul>
+<li>确保next原有<code>darkmode</code>选项设置为 <code>false</code></li>
+<li>添加darkmode-js开关</li>
+<li>添加darkmode-js自定义CDN选项（可选）</li>
+</ul></li>
 </ol>
-<h1 id="测试数学公式">测试数学公式</h1>
-<p>代码来自NexT官网，Mathjax渲染的公式已经内置了丰富的右键菜单，可以复制公式代码。</p>
-<h2 id="简单公式">简单公式</h2>
-<p>带label的公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq1&#125;</span></span></span></span><br><span class="line"><span class="formula">e=mc^2</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{equation} \label{eq1}
-e=mc^2
-\end{equation}\]</span></p>
-<p>根据label引用上述公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq1&#125;</span></span>$</span> proposed by Einstein...</span><br></pre></td></tr></table></figure>
-<p>The famous matter-energy equation <span class="math inline">\(\eqref{eq1}\)</span> proposed by Einstein...</p>
-<h2 id="多行公式">多行公式</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq2&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">begin</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= d + e + f + g <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= h + i</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{equation} \label{eq2}
-\begin{aligned}
-a &amp;= b + c \\
-  &amp;= d + e + f + g \\
-  &amp;= h + i
-\end{aligned}
-\end{equation}\]</span></p>
-<p>引用上述多行公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq2&#125;</span></span>$</span> is a multi-line equation.</span><br></pre></td></tr></table></figure>
-<p>Equation <span class="math inline">\(\eqref{eq2}\)</span> is a multi-line equation.</p>
-<h2 id="多行多编号公式">多行多编号公式</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">label</span><span class="string">&#123;eq3&#125;</span></span> <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">x &amp;= yz <span class="tag">\<span class="name">label</span><span class="string">&#123;eq4&#125;</span></span><span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">l &amp;= m - n <span class="tag">\<span class="name">label</span><span class="string">&#123;eq5&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{align}
-a &amp;= b + c \label{eq3} \\
-x &amp;= yz \label{eq4}\\
-l &amp;= m - n \label{eq5}
-\end{align}\]</span></p>
-<p>引用上述多行公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">There are three aligned equations: equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq3&#125;</span></span>$</span>, equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq4&#125;</span></span>$</span> and equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq5&#125;</span></span>$</span>.</span><br></pre></td></tr></table></figure>
-<p>There are three aligned equations: equation <span class="math inline">\(\eqref{eq3}\)</span>, equation <span class="math inline">\(\eqref{eq4}\)</span> and equation <span class="math inline">\(\eqref{eq5}\)</span>.</p>
-<h2 id="无编号公式">无编号公式</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">-4 + 5x &amp;= 2+y <span class="tag">\<span class="name">nonumber</span></span>  <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> w+2 &amp;= -1+w <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> ab &amp;= cb</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[\begin{align}
--4 + 5x &amp;= 2+y \nonumber  \\
- w+2 &amp;= -1+w \\
- ab &amp;= cb
-\end{align}\]</span></p>
-<h2 id="用tag指定编号文字">用\tag指定编号文字</h2>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$x+1<span class="tag">\<span class="name">over</span></span><span class="tag">\<span class="name">sqrt</span><span class="string">&#123;1-x^2&#125;</span></span> <span class="tag">\<span class="name">tag</span><span class="string">&#123;i&#125;</span></span><span class="tag">\<span class="name">label</span><span class="string">&#123;eq_tag&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
-<p><span class="math display">\[x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}\]</span></p>
-<p>引用上述公式</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq_tag&#125;</span></span>$</span> use `<span class="tag">\<span class="name">tag</span><span class="string">&#123;&#125;</span></span>` instead of automatic numbering.</span><br></pre></td></tr></table></figure>
-<p>Equation <span class="math inline">\(\eqref{eq_tag}\)</span> use <code>\tag{}</code> instead of automatic numbering.</p>
+<h1 id="最终效果">最终效果</h1>
+<img src="/tech/hexo-dark-mode-note/1.gif" class="" title="darkmode.js效果">
 ]]></content>
       <categories>
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Blog</tag>
+        <tag>Tech</tag>
         <tag>Hexo</tag>
         <tag>Hexo Next</tag>
-        <tag>Tech</tag>
-        <tag>LaTeX</tag>
-        <tag>Math</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo &amp; Next 升级笔记</title>
+    <url>/tech/hexo-next-upgrade-note/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>Hexo &amp; Next Upgrade Note</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<p>几年没有碰Blog，最近打算重新开始写，因此需要更新hexo以及Next主题。</p>
+<p>由于不怎么懂前端，不出意外意外地遇到了一堆坑，这里记录一下：</p>
+<h2 id="目的">目的</h2>
+<ul>
+<li>node: <code>v6.17.1</code> =&gt; <code>v13.7.0</code></li>
+<li>hexo: <code>v3.2.x</code> =&gt; <code>v4.2.0</code></li>
+<li>next: <code>v4.x</code> =&gt; <code>v7.8.0</code></li>
+</ul>
+<h2 id="更新-node">更新 node</h2>
+<p>我的系统使用nvm管理多版本node，首先更新npm：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g npm</span><br></pre></td></tr></table></figure>
+<p>清除npm缓存，可能需要 sudo</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm cache clean -f</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="更新-hexo">更新 hexo</h2>
+<p>进入blog目录，执行如下命令：</p>
+<ul>
+<li>更新package.json中的hexo及个插件版本 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g npm-check</span><br><span class="line">npm install -g npm-upgrade</span><br><span class="line">npm-check</span><br><span class="line">npm-upgrade</span><br></pre></td></tr></table></figure></li>
+<li>更新hexo及所有插件 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure></li>
+<li>确认hexo版本号是否已更新 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo version</span><br></pre></td></tr></table></figure></li>
+</ul>
+<div class="note warning">
+            <h3 id="潜在错误">潜在错误</h3>此时运行 hexo generate 命令，若出现了如下错误：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">DTraceProviderBindings MODULE_NOT_FOUND;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>通过重新安装 <code>hexo-cli</code> 可以解决<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+          </div>
+<h2 id="更新-next-主题">更新 Next 主题</h2>
+<h3 id="备份可选">备份（可选）</h3>
+<p>我备份了如下旧配置文件：</p>
+<ul>
+<li><code>{blog_dir}/themes/next/_config.yml</code></li>
+<li><code>{blog_dir}/themes/next/languages/en.yml</code></li>
+<li><code>{blog_dir}/themes/next/languages/zh-Hans.yml</code></li>
+<li><code>{blog_dir}/themes/next/source/404.yml</code></li>
+</ul>
+<p>后来发现新版Next变化太大，很多配置项和方式都变了。 但是旧文件可以作为过去喜好的参考。</p>
+<h3 id="更新-next">更新 Next</h3>
+<p>想要更新Next时，发现已经有了天翻地覆的变化，连github的项目目录都变了，该项目已经社区化：</p>
+<ul>
+<li>旧目录 <code>~ v5.x</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2lpc3NuYW4vaGV4by10aGVtZS1uZXh0">https://github.com/iissnan/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></li>
+<li><p>新目录 <code>v6.x ~</code>：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0">https://github.com/theme-next/hexo-theme-next<i class="fa fa-external-link-alt"></i></span></p></li>
+<li>删除旧的 next <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm -fm themes/next</span><br></pre></td></tr></table></figure></li>
+<li><p>克隆最新的 next <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h3 id="配置-next">配置 Next</h3>
+<p>从官方文档获悉，Next的配置变了很多。</p>
+<p>其实首先该插一句，官网也变了。。。</p>
+<ul>
+<li>旧官网：<span class="exturl" data-url="aHR0cHM6Ly9ub3Rlcy5paXNzbmFuLmNvbS8=">https://notes.iissnan.com/<i class="fa fa-external-link-alt"></i></span></li>
+<li>新官网：<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZy8=">https://theme-next.org/<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>新Next的配置文件，有2种设置方式，请参考官方文档： - <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RoZW1lLW5leHQvaGV4by10aGVtZS1uZXh0L2Jsb2IvbWFzdGVyL2RvY3MvemgtQ04vREFUQS1GSUxFUy5tZA==">官方中文<i class="fa fa-external-link-alt"></i></span> - <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方英文<i class="fa fa-external-link-alt"></i></span></p>
+<p>每个人的配置不尽相同，我只是简单的配置了一部分，这里给出大佬们的非常全面的配置以供参考 - <span class="exturl" data-url="aHR0cHM6Ly90ZGluZy50b3AvYXJjaGl2ZXMvNDJjMzhiMTAuaHRtbA==">Hexo-NexT (v7.0+) 主题配置<i class="fa fa-external-link-alt"></i></span> - <span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU0JUI4JUJCJUU5JUEyJTk4JUU3JUJFJThFJUU1JThDJTk2Lmh0bWw=">Next主题美化(仅7.1版本)<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="定制-next">定制 Next</h3>
+<h4 id="dark-mode-暗色背景夜间模式">Dark Mode 暗色背景（夜间模式）</h4>
+<p>这部分内容较多，我单独写到了另一篇文章里 <a href="/tech/hexo-dark-mode-note/">Hexo（Next主题）Dark Mode(暗色背景/夜间模式)折腾笔记</a></p>
+<h4 id="代码块mac-panel特效">代码块Mac Panel特效</h4>
+<p>这个属于美化，我没有尝试，请参见<span class="exturl" data-url="aHR0cHM6Ly9oYXNhaWsuY29tL3Bvc3RzL2Q3Mzk5ZTgwLmh0bWw=">大佬的订制<i class="fa fa-external-link-alt"></i></span>。</p>
+<h3 id="遗留问题">遗留问题</h3>
+<ol type="1">
+<li>当前版本的Next 相关文章（<code>hexo-related-popular-posts</code>插件）<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RlYTMvaGV4by1yZWxhdGVkLXBvcHVsYXItcG9zdHMvaXNzdWVzLzIx">无法使用<i class="fa fa-external-link-alt"></i></span>，不知道是不是我的姿势不对</li>
+</ol>
+<h2 id="参考链接">参考链接</h2>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZWN1cml0eXRlY2guc2l0ZS96aC1DTi8zYmEzYmU5Lw==">Hexo版本升级指南<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vZW50cnkvNWI5NjUxOTVlNTFkNDUwZTU1MTlkMmM0">Hexo的DTraceProviderBindings MODULE_NOT_FOUND问题<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zZXZlbmNoby5naXRodWIuaW8vYXJjaGl2ZXMvMTQ1MzRiZWIuaHRtbA==">Hexo博客NexT主题从v5.x.x更新到v6.x.x的记录及总结<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9zaXJpdXNxLnRvcC9OZXh0JUU1JThEJTg3JUU3JUJBJUE3LU1hYyVFOCVCRiU4MSVFNyVBNyVCQi5odG1s">Next升级+Mac迁移<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Hexo Next</tag>
+        <tag>Blog</tag>
       </tags>
   </entry>
   <entry>
@@ -2700,144 +2456,28 @@ l &amp;= m - n \label{eq5}
       </tags>
   </entry>
   <entry>
-    <title>run Kali Linux in Docker and install Desktop Environment &amp; VNC</title>
-    <url>/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/</url>
+    <title>Python 3.8+里的asyncio和asyncio.Semaphore</title>
+    <url>/tech/asyncio-and-asyncio-semaphore-in-python-3-8/</url>
     <content><![CDATA[<ul>
-<li>Title(CN): <em><strong>在Docker中运行Kali Linux并安装桌面环境及VNC</strong></em></li>
-<li>Title(JP): <em><strong>Dockerを使ってKali Linux及びデスクトップ環境とVNC環境を構築</strong></em></li>
+<li>Title(EN): <em><strong>asyncio and asyncio.Semaphore in Python 3.8+</strong></em></li>
 <li>Author: dog2</li>
 </ul>
 <hr />
-<h1 id="overview">Overview</h1>
-<ul>
-<li>Environment：Mac OS（Windows）</li>
-<li>Needs ➡ HOWTO
-<ul>
-<li>run Kali Linux in docker ➡ using <span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS91L2thbGlsaW51eA==">kali linux official docker image<i class="fa fa-external-link-alt"></i></span></li>
-<li>install Kali Desktop Environment and VNC service for kali so it can be accessed from the host machine
-<ul>
-<li>➡ choose one kali desktop env from e17/gnome/i3/kde/lxde/mate/xfce and install</li>
-<li>➡ installing vnc server <code>tightvncserver</code></li>
-</ul></li>
-<li>it's better to access VNC without installing VNC client
-<ul>
-<li>➡ on <code>Mac OS</code>, the pre-installed app <code>Screen Sharing</code> can be used as a VNC client</li>
-<li>➡ use <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25vdm5jL25vVk5D">novnc<i class="fa fa-external-link-alt"></i></span> so that we can <strong>use browser as an VNC client</strong></li>
-</ul></li>
-</ul></li>
-</ul>
+<p>以前的程序放在Python 3.8里跑出错了，原来是由于Python升级3.8后协程库<code>asyncio</code>又双叒叕更新了。 新版本里<code>asyncio.Semaphore</code>的用法改变了，本文简单记录一下新写法。</p>
 <a id="more"></a>
-<h1 id="run-kali-linux-in-dokcer">run Kali Linux in dokcer</h1>
-<ol type="1">
-<li><p>pull docker image <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
-<li><p>run container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -t -d --name my-kali -p 25900:5900 -p 25901:5901 kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
-<li><p>go into container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it my-kali /bin/bash</span><br></pre></td></tr></table></figure></p></li>
-<li><p>update <figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">apt</span> <span class="string">update</span></span><br><span class="line"><span class="attr">apt</span> <span class="string">upgrade</span></span><br></pre></td></tr></table></figure></p></li>
-</ol>
-<div class="note warning">
-            <p><code>kalilinux/kali-bleeding-edge</code> is a small size image, so there is nothing in it but some essential linux components. You should install all the kali pentest tools by your self. As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available installations are（the <code>New</code> column）:</p><table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Old</th><th>New</th><th>Notes</th></tr></thead><tbody><tr class="odd"><td>kali-linux-full</td><td>kali-linux-large</td><td>Our previous default tools for AMD64/i386 images</td></tr><tr class="even"><td>kali-linux-all</td><td>kali-linux-everything</td><td>Every metapackage and tool listed here</td></tr><tr class="odd"><td>kali-linux-top10</td><td>kali-tools-top10</td><td>The most commonly used tools</td></tr><tr class="even"><td>kali-desktop-live</td><td>kali-desktop-live (same)</td><td>Used during a live session when booted from the image</td></tr></tbody></table><p>I chose <code>kali-linux-everything</code>:</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install kali-linux-everything</span><br></pre></td></tr></table></figure><p>and it took me 4 hours to finish it and the container size came out to be 15GB+ 😂</p>
-          </div>
-<h1 id="install-desktop-environment">install Desktop Environment</h1>
-<p>As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available Desktop Environment are</p>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Old</th>
-<th>New</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>kali-desktop-common</td>
-<td>kali-desktop-core</td>
-<td>Any key tools required for a GUI image</td>
-</tr>
-<tr class="even">
-<td>new</td>
-<td>kali-desktop-e17</td>
-<td>Enlightenment (WM)</td>
-</tr>
-<tr class="odd">
-<td>kali-desktop-gnome</td>
-<td>kali-desktop-gnome (same)</td>
-<td>GNOME (DE)</td>
-</tr>
-<tr class="even">
-<td>new</td>
-<td>kali-desktop-i3</td>
-<td>i3 (WM)</td>
-</tr>
-<tr class="odd">
-<td>kali-desktop-kde</td>
-<td>kali-desktop-kde (same)</td>
-<td>KDE (DE)</td>
-</tr>
-<tr class="even">
-<td>kali-desktop-lxde</td>
-<td>kali-desktop-lxde (same)</td>
-<td>LXDE (WM)</td>
-</tr>
-<tr class="odd">
-<td>new</td>
-<td>kali-desktop-mate</td>
-<td>MATE (DE)</td>
-</tr>
-<tr class="even">
-<td>kali-desktop-xfce</td>
-<td>kali-desktop-xfce (same)</td>
-<td>XFCE (WM)</td>
-</tr>
-</tbody>
-</table>
-<p>old version of offical kali image used <code>kali-desktop-gnome</code> as default desktop env, but the newests version has changed into <code>kali-desktop-xfce</code>, its has smaller size and is friendly to low-cost machines.</p>
-<p>so I ran</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install kali-desktop-xfce</span><br></pre></td></tr></table></figure>
-<h1 id="install-tightvncserver">install tightvncserver</h1>
-<p>old version of kali might use <code>vnc4server</code> as vncserver but it has gone in the new kali, now through apt install we have no choice but <code>tightvncserver</code> .</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install tightvncserver</span><br></pre></td></tr></table></figure>
-<p>run <code>vncpasswd</code> for the first time to initiate your VNC password</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vncpasswd</span><br></pre></td></tr></table></figure>
-<p>then run the vncserver, before it you need to set bash environment variable</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> USER=root</span><br><span class="line">tightvncserver :0 -geometry 1280x800 -depth 16 -pixelformat rgb565</span><br></pre></td></tr></table></figure>
-<p>the default port of vnc server is <code>5900</code>, note that my mac is host machine so that the port is <code>25900</code>, which was mapped when ran <code>docker run</code> command at the beginning. The password was the one you set when running <code>vncpasswd</code>.</p>
-<p>so now I can access it from my mac through <code>Screen Sharing</code>, you can try with your VNC client to connect to <code>127.0.0.1:25900</code>, you will got it</p>
-<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/1.gif" class="" title="access through VNC client">
-<h1 id="install-novnc">install novnc</h1>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install net-tools</span><br><span class="line">apt install novnc</span><br></pre></td></tr></table></figure>
-<p>tunnel vncserver on port <code>5900</code> into WebSockets vpc server on port <code>5901</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/novnc/utils/launch.sh --listen 5901 --vnc localhost:5900</span><br></pre></td></tr></table></figure>
-<p>then access http://127.0.0.1:25901/vnc.html through your browser and your will get into noVNC, and setting the WebSocket <code>Host</code> to <code>127.0.0.1</code> and <code>Port</code> to <code>25901</code> so that we can connect to VNC server. The password was the one you set when running <code>vncpasswd</code>.</p>
-<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/2.gif" class="" title="access through web broswer(noVNC WebSocket)">
-<h1 id="reference">reference</h1>
-<ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cucG9mdHV0LmNvbS9ob3ctdG8taW5zdGFsbC1hbmQtYWNjZXNzLXRpZ2h0dm5jLXJlbW90ZS1kZXNrdG9wLWluLWxpbnV4Lw==">How To Install and Access TightVNC Remote Desktop In Linux<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">Major Metapackage Makeover<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvZG9jcy9nZW5lcmFsLXVzZS9ub3ZuYy1rYWxpLWluLWJyb3dzZXIv">Kali In The Browser (noVNC)<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cudGVjbWludC5jb20vc2V0LXVuc2V0LWVudmlyb25tZW50LXZhcmlhYmxlcy1pbi1saW51eC8=">当 Kali 遇见 Docker<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NkaWh2YWkvYXJ0aWNsZS9kZXRhaWxzLzEwMzgyMjQ5OCNWTkNfMTI=">【备忘录】树莓派安装Kali Linux并安装VNC<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9xaWl0YS5jb20vcm9jaW5hbnRlLWVpbi9pdGVtcy82ODBmMjBkMzdhN2U1MzZkMzA3Yg==">Dockerを使ってKali Linuxの環境を構築した時のメモ<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
+<p>代码说明：用<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy9hc3luYy8=">支持异步<i class="fa fa-external-link-alt"></i></span>的http库<span class="exturl" data-url="aHR0cHM6Ly93d3cucHl0aG9uLWh0dHB4Lm9yZy8=">httpx<i class="fa fa-external-link-alt"></i></span>简单爬数据，用<code>asyncio.Semaphore</code>控制并发数，而<code>asyncio.Semaphore</code>在Python 3.8中需要配合上下文管理器<code>contextvars.ContextVar</code>使用。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> httpx</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> contextvars <span class="keyword">import</span> ContextVar</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crawl</span><span class="params">(concurrency=<span class="number">3</span>)</span>:</span></span><br><span class="line">    context = ContextVar(<span class="string">"concurrent"</span>)  <span class="comment"># 定义全局上下文管理器</span></span><br><span class="line">    URL_BASE = <span class="string">'https://github.com/topics?page='</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_one</span><span class="params">(i)</span>:</span></span><br><span class="line">        sem = context.get()  <span class="comment"># 获取上下文关键字</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> sem:</span><br><span class="line">            <span class="keyword">async</span> <span class="keyword">with</span> httpx.AsyncClient() <span class="keyword">as</span> client:</span><br><span class="line">                r = <span class="keyword">await</span> client.get(<span class="string">f"<span class="subst">&#123;URL_BASE&#125;</span><span class="subst">&#123;i&#125;</span>"</span>)</span><br><span class="line">                <span class="keyword">return</span> len(r.text)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">crawl_all</span><span class="params">()</span>:</span></span><br><span class="line">        context.set(asyncio.Semaphore(concurrency)) <span class="comment">#上下文管理器赋值，concurrency控制并发数</span></span><br><span class="line">        tasks = [asyncio.create_task(crawl_one(i)) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">30</span>)] <span class="comment"># 将协程封装成任务共30个</span></span><br><span class="line">        done, pending = <span class="keyword">await</span> asyncio.wait(tasks) <span class="comment"># 执行所有任务</span></span><br><span class="line">        <span class="keyword">return</span> done</span><br><span class="line"></span><br><span class="line">    tasks_done = asyncio.run(crawl_all())</span><br><span class="line">    <span class="keyword">return</span> [t.result() <span class="keyword">for</span> t <span class="keyword">in</span> tasks_done]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> crawl(concurrency=<span class="number">1</span>):</span><br><span class="line">        print(r)</span><br></pre></td></tr></table></figure>
+<p>参考链接： - <span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYy14LWEvcC8xMDg2ODQ5Ny5odG1s">Python 协程模块 asyncio 使用指南<i class="fa fa-external-link-alt"></i></span></p>
 ]]></content>
       <categories>
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Tech</tag>
         <tag>Dev</tag>
-        <tag>Mac OS</tag>
-        <tag>Security</tag>
-        <tag>Tools</tag>
-        <tag>Docker</tag>
-        <tag>Kali</tag>
-        <tag>Pentest</tag>
-        <tag>Setup</tag>
-        <tag>VNC</tag>
+        <tag>Python</tag>
+        <tag>Async</tag>
+        <tag>Coroutine</tag>
+        <tag>Semaphore</tag>
       </tags>
   </entry>
   <entry>
@@ -3360,11 +3000,184 @@ l &amp;= m - n \label{eq5}
         <category>Tech</category>
       </categories>
       <tags>
+        <tag>Mac OS</tag>
         <tag>Tech</tag>
         <tag>Dev</tag>
-        <tag>Mac OS</tag>
         <tag>Tools</tag>
         <tag>Setup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>让Hexo Next (v8.0.0) 支持LaTeX数学公式</title>
+    <url>/tech/making-hexo-next-theme-latex-math-equation-supported/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>Making Hexo Next v8.0.0 Theme LaTeX Math Equation Supported</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="按">按</h1>
+<ul>
+<li>环境
+<ul>
+<li>OS：Max OS 10.15</li>
+<li>node: 13.7.0</li>
+<li>hexo：4.2.1</li>
+<li>hexo-cli: 3.1.0</li>
+<li>hexo-theme-next: v8.0.0-rc.2</li>
+</ul></li>
+<li>需求：让hexo的next主题支持渲染LaTeX语法的数学公式。</li>
+<li>参考链接：
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL3RoaXJkLXBhcnR5LXNlcnZpY2VzL21hdGgtZXF1YXRpb25zLmh0bWw=">官方文档<i class="fa fa-external-link-alt"></i></span></li>
+</ul></li>
+</ul>
+<a id="more"></a>
+<h1 id="步骤">步骤</h1>
+<p>根据官方文档，让Next主题支持公式有有两种方式（无法正常渲染请刷新页面）：</p>
+<pre class="mermaid" style="text-align: center;">
+            graph LR
+            H[Hexo] ==> |主题| T(NexT)
+T ==> |公式渲染引擎1| MJ{MathJax}
+T -.-> |公式渲染引擎2| KT{KaTeX}
+style KT text-decoration:line-through
+
+MJ ==> |markdown渲染引擎1| PD(hexo-renderer-pandoc)
+MJ -.-> |markdown渲染引擎2| KR(hexo-renderer-kramed)
+MJ -.-> |化学公式插件| MC((mhchem))
+
+KT -.-> |markdown渲染引擎1| MDIP(hexo-renderer-markdown-it-plus)
+KT -.-> |markdown渲染引擎2| MDI(hexo-renderer-markdown-it)
+KT -.-> |公式复制插件| CPTEX((Copy-tex))
+KT -.-> |bug| KTBUG>解析$有Bug需手动修复]
+
+          </pre>
+<p>我的测试中只有上图中的实体粗线的方式成功，这里就记录一下这种方式的步骤，即</p>
+<ul>
+<li>NexT =&gt; MathJax =&gt; hexo-renderer-pandoc</li>
+</ul>
+<ol type="1">
+<li><p>安装<span class="exturl" data-url="aHR0cHM6Ly9wYW5kb2Mub3JnL2luc3RhbGxpbmcuaHRtbA==">pandoc<i class="fa fa-external-link-alt"></i></span></p>
+<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install pandoc</span><br></pre></td></tr></table></figure></p></li>
+<li><p>将默认的markdown渲染引擎<code>hexo-renderer-marked</code>替换为<code>hexo-renderer-pandoc</code></p>
+<p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm un hexo-renderer-marked</span><br><span class="line">npm i hexo-renderer-pandoc</span><br></pre></td></tr></table></figure></p></li>
+<li><p>修改next主题配置</p>
+<p><div class="note warning">
+            <p>Next的配置文件，有2种形式，请参考<span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9kb2NzL2dldHRpbmctc3RhcnRlZC9jb25maWd1cmF0aW9u">官方文档<i class="fa fa-external-link-alt"></i></span></p>
+          </div></p>
+<p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Math Formulas Render Support</span></span><br><span class="line"><span class="attr">math:</span></span><br><span class="line"><span class="comment"># Default (true) will load mathjax / katex script on demand.</span></span><br><span class="line"><span class="comment"># That is it only render those page which has `mathjax: true` in Front-matter.</span></span><br><span class="line"><span class="comment"># If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span></span><br><span class="line"><span class="attr">mathjax:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># See: https://mhchem.github.io/MathJax-mhchem/</span></span><br><span class="line">    <span class="attr">mhchem:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># hexo-renderer-markdown-it-plus (or hexo-renderer-markdown-it with markdown-it-katex plugin) required for full Katex support.</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment"># See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex</span></span><br><span class="line">    <span class="attr">copy_tex:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">vendors:</span></span><br><span class="line">  <span class="comment"># MathJax</span></span><br><span class="line">  <span class="attr">mathjax:</span> <span class="string">//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js</span></span><br></pre></td></tr></table></figure></p>
+<p><code>per_page</code>按需设置，具体可参考注释和官网说明。其他选项需要跟上述设置保持一致。</p></li>
+</ol>
+<h1 id="测试数学公式">测试数学公式</h1>
+<p>代码来自NexT官网，Mathjax渲染的公式已经内置了丰富的右键菜单，可以复制公式代码。</p>
+<h2 id="简单公式">简单公式</h2>
+<p>带label的公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq1&#125;</span></span></span></span><br><span class="line"><span class="formula">e=mc^2</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{equation} \label{eq1}
+e=mc^2
+\end{equation}\]</span></p>
+<p>根据label引用上述公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq1&#125;</span></span>$</span> proposed by Einstein...</span><br></pre></td></tr></table></figure>
+<p>The famous matter-energy equation <span class="math inline">\(\eqref{eq1}\)</span> proposed by Einstein...</p>
+<h2 id="多行公式">多行公式</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;equation&#125;</span></span> <span class="tag">\<span class="name">label</span><span class="string">&#123;eq2&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">begin</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= d + e + f + g <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">  &amp;= h + i</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;aligned&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;equation&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{equation} \label{eq2}
+\begin{aligned}
+a &amp;= b + c \\
+  &amp;= d + e + f + g \\
+  &amp;= h + i
+\end{aligned}
+\end{equation}\]</span></p>
+<p>引用上述多行公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq2&#125;</span></span>$</span> is a multi-line equation.</span><br></pre></td></tr></table></figure>
+<p>Equation <span class="math inline">\(\eqref{eq2}\)</span> is a multi-line equation.</p>
+<h2 id="多行多编号公式">多行多编号公式</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">a &amp;= b + c <span class="tag">\<span class="name">label</span><span class="string">&#123;eq3&#125;</span></span> <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">x &amp;= yz <span class="tag">\<span class="name">label</span><span class="string">&#123;eq4&#125;</span></span><span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula">l &amp;= m - n <span class="tag">\<span class="name">label</span><span class="string">&#123;eq5&#125;</span></span></span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{align}
+a &amp;= b + c \label{eq3} \\
+x &amp;= yz \label{eq4}\\
+l &amp;= m - n \label{eq5}
+\end{align}\]</span></p>
+<p>引用上述多行公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">There are three aligned equations: equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq3&#125;</span></span>$</span>, equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq4&#125;</span></span>$</span> and equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq5&#125;</span></span>$</span>.</span><br></pre></td></tr></table></figure>
+<p>There are three aligned equations: equation <span class="math inline">\(\eqref{eq3}\)</span>, equation <span class="math inline">\(\eqref{eq4}\)</span> and equation <span class="math inline">\(\eqref{eq5}\)</span>.</p>
+<h2 id="无编号公式">无编号公式</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$<span class="tag">\<span class="name">begin</span><span class="string">&#123;align&#125;</span></span></span></span><br><span class="line"><span class="formula">-4 + 5x &amp;= 2+y <span class="tag">\<span class="name">nonumber</span></span>  <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> w+2 &amp;= -1+w <span class="tag">\<span class="name">\</span></span></span></span><br><span class="line"><span class="formula"> ab &amp;= cb</span></span><br><span class="line"><span class="formula"><span class="tag">\<span class="name">end</span><span class="string">&#123;align&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[\begin{align}
+-4 + 5x &amp;= 2+y \nonumber  \\
+ w+2 &amp;= -1+w \\
+ ab &amp;= cb
+\end{align}\]</span></p>
+<h2 id="用tag指定编号文字">用\tag指定编号文字</h2>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line"><span class="formula">$$x+1<span class="tag">\<span class="name">over</span></span><span class="tag">\<span class="name">sqrt</span><span class="string">&#123;1-x^2&#125;</span></span> <span class="tag">\<span class="name">tag</span><span class="string">&#123;i&#125;</span></span><span class="tag">\<span class="name">label</span><span class="string">&#123;eq_tag&#125;</span></span>$$</span></span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}\]</span></p>
+<p>引用上述公式</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">Equation <span class="formula">$<span class="tag">\<span class="name">eqref</span><span class="string">&#123;eq_tag&#125;</span></span>$</span> use `<span class="tag">\<span class="name">tag</span><span class="string">&#123;&#125;</span></span>` instead of automatic numbering.</span><br></pre></td></tr></table></figure>
+<p>Equation <span class="math inline">\(\eqref{eq_tag}\)</span> use <code>\tag{}</code> instead of automatic numbering.</p>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>LaTeX</tag>
+        <tag>Math</tag>
+        <tag>Tech</tag>
+        <tag>Hexo</tag>
+        <tag>Hexo Next</tag>
+        <tag>Blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇</title>
+    <url>/tech/shell-interaction-in-python-1-telnet/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>Shell Interaction in Python #1: Telent</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h3 id="背景">背景</h3>
+<p>我们常常需要使用编程语言实现与某些终端交互，以实现交互过程的可控性。具体到这类涉及终端交互的漏洞，只有编写合适的PoC/Exp，并与目标有正确的交互逻辑，才能进行漏洞验证。</p>
+<p>这里，我们以Juniper后门漏洞CVE-2015-7755为例，介绍如何使用Python编写Telnet交互程序，且:</p>
+<ul>
+<li>要求该程序是可以用于高并发扫描的。</li>
+<li>实现Exp，获取相关敏感信息。</li>
+</ul>
+<p>Juniper后门漏洞相关信息可参见<span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS9uZXdzLzkwMzIzLmh0bWw=">Freebuf相关文章<i class="fa fa-external-link-alt"></i></span>。简而言之，即可使用任意用户名及密码 <strong><em>&lt;&lt;&lt; %s(un='%s') = %u</em></strong> 来登录一些Juniper ScreenOS设备的Telnet及SSh服务。</p>
+<h3 id="难点">难点</h3>
+<h4 id="模块选择">模块选择</h4>
+<p>初版PoC程序我使用了相对底层的socket模块来简单实现，用于检测单个目标没有问题，但在高并发扫描的时候效率极低，猜测是I/O阻塞的原因。</p>
+<p>转而使用系统库内置模块telnetlib：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L3RlbG5ldGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi90ZWxuZXRsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>使用telnet模块后并发扫描的效率就非常高了，CPU及带宽占用率都上去了。简单翻阅telnetlib的源码，发现它是有I/O控制的。</p>
+<h4 id="exp">Exp</h4>
+<p>Juniper设备使用get命令来获取设备的各类信息，可以使用 <em><strong>get ?</strong></em> 来查看相关命令，其中最重要的是2个：</p>
+<ul>
+<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
+<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
+</ul>
+<p>但存在一个问题，如上2个命令返回的全部信息总量通常比较大，一般&gt;=40KB，而服务端不是一次性将信息全部输出给客户端的，而是分批输出到管道中的，客户端需要不断地键入回车，来顺序获取各个信息分段。</p>
+<p>这就要求程序能不断获取结果信息，并正确判断最后一个分段以适时终止。</p>
+<a id="more"></a>
+<h3 id="代码">代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib <span class="keyword">as</span> tl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poc</span><span class="params">(host, port=<span class="number">23</span>, timeout=<span class="number">10</span>, successFlag=<span class="string">'ping other host'</span>, doExp=True)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(cmd, maxTo=<span class="number">3</span>)</span>:</span></span><br><span class="line">        data = <span class="string">'--- more ---'</span></span><br><span class="line">        ret = <span class="string">''</span></span><br><span class="line">        flag = <span class="string">'-&gt;'</span></span><br><span class="line">        <span class="keyword">while</span> <span class="string">'-&gt;'</span> <span class="keyword">in</span> flag:</span><br><span class="line">            flag = telnetConn.read_until(<span class="string">'-&gt;'</span>, timeout=timeout)</span><br><span class="line">        toNum = <span class="number">0</span>  <span class="comment"># the max timeout times</span></span><br><span class="line">        telnetConn.write(cmd)</span><br><span class="line">        <span class="keyword">while</span> (<span class="string">'- more -'</span> <span class="keyword">in</span> data) <span class="keyword">and</span> (toNum &lt; maxTo):</span><br><span class="line">            telnetConn.write(<span class="string">'\n'</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data = telnetConn.read_until(<span class="string">'- more -'</span>, timeout=timeout)</span><br><span class="line">                ret += data</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                toNum += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    telnetConn = tl.Telnet(host=host, port=port, timeout=timeout)</span><br><span class="line">    ret = <span class="string">''</span></span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'login: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'login'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, ret, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    telnetConn.write(<span class="string">'root'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'password: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'password'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    telnetConn.write(<span class="string">"&lt;&lt;&lt; %s(un='%s') = %u"</span> + <span class="string">'\n'</span>)</span><br><span class="line">    banner = telnetConn.read_some()</span><br><span class="line">    telnetConn.write(<span class="string">'?'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    help = telnetConn.read_until(banner, timeout=timeout)</span><br><span class="line">    techsupport = <span class="string">''</span></span><br><span class="line">    event = <span class="string">''</span></span><br><span class="line">    success = successFlag <span class="keyword">in</span> help.lower()</span><br><span class="line">    <span class="keyword">if</span> success <span class="keyword">and</span> doExp:</span><br><span class="line">        techsupport = exp(cmd=<span class="string">'get tech-support'</span>)</span><br><span class="line">        event = exp(cmd=<span class="string">'get event'</span>)</span><br><span class="line">    <span class="keyword">return</span> success, banner, help, techsupport, event</span><br></pre></td></tr></table></figure>
+<p>代码说明：</p>
+<ul>
+<li>5 - 21行：实现了exp函数，用于在执行某个命令cmd，并获取全部的返回信息。其中， <strong>-&gt;</strong> 字符串是juniper的shell输入提示符，我们通过判断它来过滤掉上一次的多余输出。在连续获取结果分段的过程中，若出现超时，则会最多尝试maxTo次。</li>
+<li>23 - 42行：主代码逻辑，登陆了远端telnet，并执行了?命令，判断返回的信息中是否包含success_flag变量对应的字符串，默认是'ping other host'，若存在则断定存在该漏洞。若doExp为True，则表示执行Exp，则程序会调用exp()函数分别执行上节中提到2个get命令并获取全部返回信息。 <em><strong>这里需要特别指出的是，返回的techsupport字符串中可能含有各种特殊编码的字符串，因此若需对其进行转码操作请再三考虑，以防改变原始数据</strong></em>。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Security</tag>
+        <tag>CVE</tag>
+        <tag>PoC/Exp</tag>
+        <tag>Telnet</tag>
+        <tag>Vul</tag>
       </tags>
   </entry>
   <entry>
@@ -3454,62 +3267,304 @@ l &amp;= m - n \label{eq5}
         <tag>Security</tag>
         <tag>CVE</tag>
         <tag>PoC/Exp</tag>
-        <tag>SSH</tag>
         <tag>Vul</tag>
+        <tag>SSH</tag>
       </tags>
   </entry>
   <entry>
-    <title>Python实现终端交互 —— 以Juniper后门CVE-2015-7755为例（一）: Telnet篇</title>
-    <url>/tech/shell-interaction-in-python-1-telnet/</url>
+    <title>run Kali Linux in Docker and install Desktop Environment &amp; VNC</title>
+    <url>/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/</url>
     <content><![CDATA[<ul>
-<li>Title(EN): <em><strong>Shell Interaction in Python #1: Telent</strong></em></li>
+<li>Title(CN): <em><strong>在Docker中运行Kali Linux并安装桌面环境及VNC</strong></em></li>
+<li>Title(JP): <em><strong>Dockerを使ってKali Linux及びデスクトップ環境とVNC環境を構築</strong></em></li>
 <li>Author: dog2</li>
 </ul>
 <hr />
-<h3 id="背景">背景</h3>
-<p>我们常常需要使用编程语言实现与某些终端交互，以实现交互过程的可控性。具体到这类涉及终端交互的漏洞，只有编写合适的PoC/Exp，并与目标有正确的交互逻辑，才能进行漏洞验证。</p>
-<p>这里，我们以Juniper后门漏洞CVE-2015-7755为例，介绍如何使用Python编写Telnet交互程序，且:</p>
+<h1 id="overview">Overview</h1>
 <ul>
-<li>要求该程序是可以用于高并发扫描的。</li>
-<li>实现Exp，获取相关敏感信息。</li>
-</ul>
-<p>Juniper后门漏洞相关信息可参见<span class="exturl" data-url="aHR0cDovL3d3dy5mcmVlYnVmLmNvbS9uZXdzLzkwMzIzLmh0bWw=">Freebuf相关文章<i class="fa fa-external-link-alt"></i></span>。简而言之，即可使用任意用户名及密码 <strong><em>&lt;&lt;&lt; %s(un='%s') = %u</em></strong> 来登录一些Juniper ScreenOS设备的Telnet及SSh服务。</p>
-<h3 id="难点">难点</h3>
-<h4 id="模块选择">模块选择</h4>
-<p>初版PoC程序我使用了相对底层的socket模块来简单实现，用于检测单个目标没有问题，但在高并发扫描的时候效率极低，猜测是I/O阻塞的原因。</p>
-<p>转而使用系统库内置模块telnetlib：</p>
+<li>Environment：Mac OS（Windows）</li>
+<li>Needs ➡ HOWTO
 <ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvMi9saWJyYXJ5L3RlbG5ldGxpYi5odG1s">文档<i class="fa fa-external-link-alt"></i></span></li>
-<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dGhvbi9jcHl0aG9uL2Jsb2IvMi43L0xpYi90ZWxuZXRsaWIucHk=">源码<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-<p>使用telnet模块后并发扫描的效率就非常高了，CPU及带宽占用率都上去了。简单翻阅telnetlib的源码，发现它是有I/O控制的。</p>
-<h4 id="exp">Exp</h4>
-<p>Juniper设备使用get命令来获取设备的各类信息，可以使用 <em><strong>get ?</strong></em> 来查看相关命令，其中最重要的是2个：</p>
+<li>run Kali Linux in docker ➡ using <span class="exturl" data-url="aHR0cHM6Ly9odWIuZG9ja2VyLmNvbS91L2thbGlsaW51eA==">kali linux official docker image<i class="fa fa-external-link-alt"></i></span></li>
+<li>install Kali Desktop Environment and VNC service for kali so it can be accessed from the host machine
 <ul>
-<li><em><strong>get tech-support</strong></em> : 它综合了大部分get子命令的结果。</li>
-<li><em><strong>get event</strong></em> : 包含了设备日志。</li>
+<li>➡ choose one kali desktop env from e17/gnome/i3/kde/lxde/mate/xfce and install</li>
+<li>➡ installing vnc server <code>tightvncserver</code></li>
+</ul></li>
+<li>it's better to access VNC without installing VNC client
+<ul>
+<li>➡ on <code>Mac OS</code>, the pre-installed app <code>Screen Sharing</code> can be used as a VNC client</li>
+<li>➡ use <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL25vdm5jL25vVk5D">novnc<i class="fa fa-external-link-alt"></i></span> so that we can <strong>use browser as an VNC client</strong></li>
+</ul></li>
+</ul></li>
 </ul>
-<p>但存在一个问题，如上2个命令返回的全部信息总量通常比较大，一般&gt;=40KB，而服务端不是一次性将信息全部输出给客户端的，而是分批输出到管道中的，客户端需要不断地键入回车，来顺序获取各个信息分段。</p>
-<p>这就要求程序能不断获取结果信息，并正确判断最后一个分段以适时终止。</p>
 <a id="more"></a>
-<h3 id="代码">代码</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib <span class="keyword">as</span> tl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poc</span><span class="params">(host, port=<span class="number">23</span>, timeout=<span class="number">10</span>, successFlag=<span class="string">'ping other host'</span>, doExp=True)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exp</span><span class="params">(cmd, maxTo=<span class="number">3</span>)</span>:</span></span><br><span class="line">        data = <span class="string">'--- more ---'</span></span><br><span class="line">        ret = <span class="string">''</span></span><br><span class="line">        flag = <span class="string">'-&gt;'</span></span><br><span class="line">        <span class="keyword">while</span> <span class="string">'-&gt;'</span> <span class="keyword">in</span> flag:</span><br><span class="line">            flag = telnetConn.read_until(<span class="string">'-&gt;'</span>, timeout=timeout)</span><br><span class="line">        toNum = <span class="number">0</span>  <span class="comment"># the max timeout times</span></span><br><span class="line">        telnetConn.write(cmd)</span><br><span class="line">        <span class="keyword">while</span> (<span class="string">'- more -'</span> <span class="keyword">in</span> data) <span class="keyword">and</span> (toNum &lt; maxTo):</span><br><span class="line">            telnetConn.write(<span class="string">'\n'</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                data = telnetConn.read_until(<span class="string">'- more -'</span>, timeout=timeout)</span><br><span class="line">                ret += data</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">                toNum += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    telnetConn = tl.Telnet(host=host, port=port, timeout=timeout)</span><br><span class="line">    ret = <span class="string">''</span></span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'login: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'login'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, ret, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    telnetConn.write(<span class="string">'root'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    ret = telnetConn.read_until(<span class="string">'password: '</span>, timeout=timeout)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'password'</span> <span class="keyword">not</span> <span class="keyword">in</span> ret.lower():</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    telnetConn.write(<span class="string">"&lt;&lt;&lt; %s(un='%s') = %u"</span> + <span class="string">'\n'</span>)</span><br><span class="line">    banner = telnetConn.read_some()</span><br><span class="line">    telnetConn.write(<span class="string">'?'</span> + <span class="string">'\n'</span>)</span><br><span class="line">    help = telnetConn.read_until(banner, timeout=timeout)</span><br><span class="line">    techsupport = <span class="string">''</span></span><br><span class="line">    event = <span class="string">''</span></span><br><span class="line">    success = successFlag <span class="keyword">in</span> help.lower()</span><br><span class="line">    <span class="keyword">if</span> success <span class="keyword">and</span> doExp:</span><br><span class="line">        techsupport = exp(cmd=<span class="string">'get tech-support'</span>)</span><br><span class="line">        event = exp(cmd=<span class="string">'get event'</span>)</span><br><span class="line">    <span class="keyword">return</span> success, banner, help, techsupport, event</span><br></pre></td></tr></table></figure>
-<p>代码说明：</p>
+<h1 id="run-kali-linux-in-dokcer">run Kali Linux in dokcer</h1>
+<ol type="1">
+<li><p>pull docker image <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
+<li><p>run container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -t -d --name my-kali -p 25900:5900 -p 25901:5901 kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
+<li><p>go into container <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it my-kali /bin/bash</span><br></pre></td></tr></table></figure></p></li>
+<li><p>update <figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">apt</span> <span class="string">update</span></span><br><span class="line"><span class="attr">apt</span> <span class="string">upgrade</span></span><br></pre></td></tr></table></figure></p></li>
+</ol>
+<div class="note warning">
+            <p><code>kalilinux/kali-bleeding-edge</code> is a small size image, so there is nothing in it but some essential linux components. You should install all the kali pentest tools by your self. As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available installations are（the <code>New</code> column）:</p><table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Old</th><th>New</th><th>Notes</th></tr></thead><tbody><tr class="odd"><td>kali-linux-full</td><td>kali-linux-large</td><td>Our previous default tools for AMD64/i386 images</td></tr><tr class="even"><td>kali-linux-all</td><td>kali-linux-everything</td><td>Every metapackage and tool listed here</td></tr><tr class="odd"><td>kali-linux-top10</td><td>kali-tools-top10</td><td>The most commonly used tools</td></tr><tr class="even"><td>kali-desktop-live</td><td>kali-desktop-live (same)</td><td>Used during a live session when booted from the image</td></tr></tbody></table><p>I chose <code>kali-linux-everything</code>:</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install kali-linux-everything</span><br></pre></td></tr></table></figure><p>and it took me 4 hours to finish it and the container size came out to be 15GB+ 😂</p>
+          </div>
+<h1 id="install-desktop-environment">install Desktop Environment</h1>
+<p>As written in <span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">here<i class="fa fa-external-link-alt"></i></span>, the available Desktop Environment are</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Old</th>
+<th>New</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kali-desktop-common</td>
+<td>kali-desktop-core</td>
+<td>Any key tools required for a GUI image</td>
+</tr>
+<tr class="even">
+<td>new</td>
+<td>kali-desktop-e17</td>
+<td>Enlightenment (WM)</td>
+</tr>
+<tr class="odd">
+<td>kali-desktop-gnome</td>
+<td>kali-desktop-gnome (same)</td>
+<td>GNOME (DE)</td>
+</tr>
+<tr class="even">
+<td>new</td>
+<td>kali-desktop-i3</td>
+<td>i3 (WM)</td>
+</tr>
+<tr class="odd">
+<td>kali-desktop-kde</td>
+<td>kali-desktop-kde (same)</td>
+<td>KDE (DE)</td>
+</tr>
+<tr class="even">
+<td>kali-desktop-lxde</td>
+<td>kali-desktop-lxde (same)</td>
+<td>LXDE (WM)</td>
+</tr>
+<tr class="odd">
+<td>new</td>
+<td>kali-desktop-mate</td>
+<td>MATE (DE)</td>
+</tr>
+<tr class="even">
+<td>kali-desktop-xfce</td>
+<td>kali-desktop-xfce (same)</td>
+<td>XFCE (WM)</td>
+</tr>
+</tbody>
+</table>
+<p>old version of offical kali image used <code>kali-desktop-gnome</code> as default desktop env, but the newests version has changed into <code>kali-desktop-xfce</code>, its has smaller size and is friendly to low-cost machines.</p>
+<p>so I ran</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install kali-desktop-xfce</span><br></pre></td></tr></table></figure>
+<h1 id="install-tightvncserver">install tightvncserver</h1>
+<p>old version of kali might use <code>vnc4server</code> as vncserver but it has gone in the new kali, now through apt install we have no choice but <code>tightvncserver</code> .</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install tightvncserver</span><br></pre></td></tr></table></figure>
+<p>run <code>vncpasswd</code> for the first time to initiate your VNC password</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vncpasswd</span><br></pre></td></tr></table></figure>
+<p>then run the vncserver, before it you need to set bash environment variable</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> USER=root</span><br><span class="line">tightvncserver :0 -geometry 1280x800 -depth 16 -pixelformat rgb565</span><br></pre></td></tr></table></figure>
+<p>the default port of vnc server is <code>5900</code>, note that my mac is host machine so that the port is <code>25900</code>, which was mapped when ran <code>docker run</code> command at the beginning. The password was the one you set when running <code>vncpasswd</code>.</p>
+<p>so now I can access it from my mac through <code>Screen Sharing</code>, you can try with your VNC client to connect to <code>127.0.0.1:25900</code>, you will got it</p>
+<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/1.gif" class="" title="access through VNC client">
+<h1 id="install-novnc">install novnc</h1>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install net-tools</span><br><span class="line">apt install novnc</span><br></pre></td></tr></table></figure>
+<p>tunnel vncserver on port <code>5900</code> into WebSockets vpc server on port <code>5901</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/share/novnc/utils/launch.sh --listen 5901 --vnc localhost:5900</span><br></pre></td></tr></table></figure>
+<p>then access http://127.0.0.1:25901/vnc.html through your browser and your will get into noVNC, and setting the WebSocket <code>Host</code> to <code>127.0.0.1</code> and <code>Port</code> to <code>25901</code> so that we can connect to VNC server. The password was the one you set when running <code>vncpasswd</code>.</p>
+<img src="/tech/run-kali-in-docker-and-install-desktop-environment-and-vnc/2.gif" class="" title="access through web broswer(noVNC WebSocket)">
+<h1 id="reference">reference</h1>
 <ul>
-<li>5 - 21行：实现了exp函数，用于在执行某个命令cmd，并获取全部的返回信息。其中， <strong>-&gt;</strong> 字符串是juniper的shell输入提示符，我们通过判断它来过滤掉上一次的多余输出。在连续获取结果分段的过程中，若出现超时，则会最多尝试maxTo次。</li>
-<li>23 - 42行：主代码逻辑，登陆了远端telnet，并执行了?命令，判断返回的信息中是否包含success_flag变量对应的字符串，默认是'ping other host'，若存在则断定存在该漏洞。若doExp为True，则表示执行Exp，则程序会调用exp()函数分别执行上节中提到2个get命令并获取全部返回信息。 <em><strong>这里需要特别指出的是，返回的techsupport字符串中可能含有各种特殊编码的字符串，因此若需对其进行转码操作请再三考虑，以防改变原始数据</strong></em>。</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cucG9mdHV0LmNvbS9ob3ctdG8taW5zdGFsbC1hbmQtYWNjZXNzLXRpZ2h0dm5jLXJlbW90ZS1kZXNrdG9wLWluLWxpbnV4Lw==">How To Install and Access TightVNC Remote Desktop In Linux<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvbmV3cy9tYWpvci1tZXRhcGFja2FnZS1tYWtlb3Zlci8=">Major Metapackage Makeover<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cua2FsaS5vcmcvZG9jcy9nZW5lcmFsLXVzZS9ub3ZuYy1rYWxpLWluLWJyb3dzZXIv">Kali In The Browser (noVNC)<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cudGVjbWludC5jb20vc2V0LXVuc2V0LWVudmlyb25tZW50LXZhcmlhYmxlcy1pbi1saW51eC8=">当 Kali 遇见 Docker<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NkaWh2YWkvYXJ0aWNsZS9kZXRhaWxzLzEwMzgyMjQ5OCNWTkNfMTI=">【备忘录】树莓派安装Kali Linux并安装VNC<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9xaWl0YS5jb20vcm9jaW5hbnRlLWVpbi9pdGVtcy82ODBmMjBkMzdhN2U1MzZkMzA3Yg==">Dockerを使ってKali Linuxの環境を構築した時のメモ<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 ]]></content>
       <categories>
         <category>Tech</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>Mac OS</tag>
+        <tag>Tech</tag>
+        <tag>Dev</tag>
         <tag>Security</tag>
-        <tag>CVE</tag>
-        <tag>PoC/Exp</tag>
-        <tag>Vul</tag>
-        <tag>Telnet</tag>
+        <tag>Tools</tag>
+        <tag>Setup</tag>
+        <tag>Docker</tag>
+        <tag>Kali</tag>
+        <tag>Pentest</tag>
+        <tag>VNC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Django REST Framework 学习笔记（七）：序列化模块 serialziers 之 Serialzier类</title>
+    <url>/tech/drf-learning-notes-7-the-serialzier-class-in-serialziers-module/</url>
+    <content><![CDATA[<ul>
+<li>Title(EN): <em><strong>Django REST Framework Learning Notes (7): the Serialzier class in serialziers module</strong></em></li>
+<li>Author: dog2</li>
+</ul>
+<hr />
+<h1 id="基本信息">基本信息</h1>
+<ul>
+<li>源码：<a href="https://github.com/encode/django-rest-framework/blob/master/rest_framework/serializers.py" target="_blank" rel="noopener"><code>rest_framework.response</code></a></li>
+<li>官方文档
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvc2VyaWFsaXplcnMv">API Guild - Serializers<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvZmllbGRzLw==">API Guild - Serializer fields<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZGphbmdvLXJlc3QtZnJhbWV3b3JrLm9yZy9hcGktZ3VpZGUvcmVsYXRpb25zLw==">API Guild - Serializer relations<i class="fa fa-external-link-alt"></i></span></li>
+</ul></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2RvZy0yL2hlbGxvX2RyZi90cmVlL21hc3Rlci9ubzdfZHJmX1NlcmlhbGl6ZXI=">本文demo代码Github<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>DRF常用序列化类主要有</p>
+<ul>
+<li><code>rest_framework.serialziers.Serializer</code></li>
+<li><code>rest_framework.serialziers.ModelSerializer</code></li>
+<li><code>rest_framework.serialziers.ListSerializer</code></li>
+</ul>
+<p>本篇介绍<code>rest_framework.serialziers.Serializer</code></p>
+<a id="more"></a>
+<h1 id="源码分析">源码分析</h1>
+<p>根据基类<code>rest_framework.serialziers.BaseSerializer</code>构造函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, instance=None, data=empty, **kwargs)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>定义好Serialzier类后，就可以创建Serializer对象了。Serializer的构造方法为</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Serializer(instance=<span class="literal">None</span>,data=empty,**kwargs)</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>用于序列化时，将模型类对象传入<code>instance</code>参数</li>
+<li>用于反序列化时，将要被反序列化的数据传入<code>data</code>参数</li>
+<li>除了<code>instance</code>和<code>data</code>参数外，在构造S<code>erializer</code>对象时，还可以通过<code>context</code>参数额外添加数据。通过<code>context</code>参数附加的数据，可以通过<code>Serializer</code>对象的<code>context</code>属性获取。 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializer = AccountSerializer(account, context=&#123;<span class="string">'request'</span>:request&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="用法">用法</h1>
+<p>序列化器的使用分两个阶段：</p>
+<ol type="1">
+<li><p>在客户端请求时，使用序列化器可以完成对数据的反序列化（就是前段往后端传递数据，反序列化之后保存数据）</p></li>
+<li><p>在服务器响应时，使用序列化器可以完成对数据的序列化（服务器取出数据，序列化之后往前段发送展示）</p></li>
+</ol>
+<h2 id="序列化">序列化</h2>
+<p>序列化是将数据返回给前台。DRF的序列化使用流程如下：</p>
+<ol type="1">
+<li>查询出一个用户对象</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> user</span><br><span class="line">user = User.object.get(id=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>构造序列化器对象</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> user.serializers <span class="keyword">import</span> UserSerializer</span><br><span class="line">user_obj = Userserializer(user)  <span class="comment">#放入查询出的user对象</span></span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>获取序列化对象，通过data属性可以获取序列化后的数据</li>
+</ol>
+<p>上面查出来的user_ser是一个serializer对象，需要取出具体的数据传给前端，所有要用到 user_ser.data取出具体数据</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_ser = Userserializer(user).data</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>如果要被序列化的数据是包含多条数据的（也可以说被[ ]嵌套的，<code>queryset</code>类型数据，不管是多条还是单条）,需要添加<code>many=True</code>参数</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user = models.User.objects.all()</span><br><span class="line">user_ser =  Userserialzier(user,many=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<ol start="5" type="1">
+<li>自定义序列化属性</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">serializers.SerializerMethodField()</span><br></pre></td></tr></table></figure>
+<h2 id="反序列化使用流程">反序列化使用流程</h2>
+<p>反序列化是将前天传来的数据数据存入数据库。DRF的反序列化使用流程如下：</p>
+<h3 id="数据验证">数据验证</h3>
+<ol type="1">
+<li><p>使用序列化器进行反序列化时，需要对数据进行验证后，才能获取验证成功的数据或保存成模型类对象。</p></li>
+<li><p>在获取反序列化的数据前，必须调用<code>is_valid()</code>方法进行验证，验证成功返回<code>True</code>，否则返回<code>False</code>。</p></li>
+<li><p>验证失败，可以通过序列化对象的<code>errors</code>属性获取错误信息，返回字典，包含了字段和字段的错误。</p></li>
+<li><p>验证通过，可以通过序列化器对象的<code>validated_data</code>属性获取数据</p></li>
+</ol>
+<h3 id="保存数据">保存数据</h3>
+<p>序列化类中必须重写<code>create</code>方法用于新增，重写<code>update</code>方法用于修改。视图中使用<code>create</code>和<code>save</code>方法。</p>
+<p>从源码可知<code>save</code>方法内部调用的是序列化类中的<code>create</code>方法，所以新增必须要在序列化类中重写<code>create</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="用法示例">用法示例</h2>
+<h3 id="序列化-1">序列化</h3>
+<h4 id="模型层-models.py">模型层 <code>models.py</code></h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    SEX_CHOICES = [</span><br><span class="line">        [<span class="number">0</span>,<span class="string">'男'</span>],</span><br><span class="line">        [<span class="number">1</span>,<span class="string">'女'</span>],</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line">    pwd = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    phone = models.CharField(max_length=<span class="number">11</span>,null=<span class="literal">True</span>,default=<span class="literal">None</span>)</span><br><span class="line">    sex = models.IntegerField(choices=SEX_CHOICES,default=<span class="number">0</span>)</span><br><span class="line">    icon = models.ImageField(upload_to=<span class="string">'icon'</span>,default=<span class="string">'icon/default.jpg'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table=<span class="string">'old_boy_user'</span></span><br><span class="line">        verbose_name=<span class="string">'用户'</span></span><br><span class="line">        verbose_name_plural=verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s'</span> %self.name</span><br></pre></td></tr></table></figure>
+<h4 id="配置层-settings.py">配置层 <code>settings.py</code></h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 注册rest_framework</span></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="string">'rest_framework'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># media资源</span></span><br><span class="line">MEDIA_URL = <span class="string">'/media/'</span>  <span class="comment"># 后期高级序列化类与视图类，会使用该配置</span></span><br><span class="line">MEDIA_ROOT = os.path.join(BASE_DIR, <span class="string">'media'</span>)  <span class="comment"># media资源路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 国际化配置</span></span><br><span class="line">LANGUAGE_CODE = <span class="string">'zh-hans'</span></span><br><span class="line">TIME_ZONE = <span class="string">'Asia/Shanghai'</span></span><br><span class="line">USE_I18N = <span class="literal">True</span></span><br><span class="line">USE_L10N = <span class="literal">True</span></span><br><span class="line">USE_TZ = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h4 id="序列化层-apiserializers.py">序列化层 <code>api/serializers.py</code></h4>
+<ol type="1">
+<li><code>api</code>应用下创建<code>serializers.py</code>文件</li>
+<li>设置需要返回给前台数据样式 那些<code>model</code>类有对应的字段，不需要返回的就不用设置了</li>
+<li>设置方法字段，字段名可以随意，字段值由 <code>get_字段名</code> 提供，来完成一些需要处理在返回的数据，类似于<code>forms</code>组件</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers, exceptions</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSerializer</span><span class="params">(serializers.Serializer)</span>:</span>   <span class="comment">#创建一个序列化类</span></span><br><span class="line">    name = serializers.CharField()      </span><br><span class="line">    phone = serializers.CharField()</span><br><span class="line">    <span class="comment"># 序列化提供给前台的字段个数由后台决定，可以少提供，但是提供的数据库对应的字段，名字一定要与数据库字段相同</span></span><br><span class="line">    <span class="comment"># sex = serializers.IntegerField()</span></span><br><span class="line">    <span class="comment"># icon = serializers.ImageField()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义序列化属性</span></span><br><span class="line">    <span class="comment"># 属性名随意，值由固定的命名规范方法提供:</span></span><br><span class="line">    <span class="comment">#       get_属性名(self, 参与序列化的model对象)</span></span><br><span class="line">    <span class="comment">#       返回值就是自定义序列化属性的值</span></span><br><span class="line">    gender = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_gender</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># choice类型的解释型值 get_字段_display() 来访问</span></span><br><span class="line">        <span class="keyword">return</span> obj.get_sex_display()</span><br><span class="line"></span><br><span class="line">　　 <span class="comment">#自定义序列化属性icon</span></span><br><span class="line">    icon = serializers.SerializerMethodField()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_icon</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="comment"># settings.MEDIA_URL: 自己配置的 /media/，给后面高级序列化与视图类准备的</span></span><br><span class="line">        <span class="comment"># obj.icon不能直接作为数据返回，因为内容虽然是字符串，但是类型是ImageFieldFile类型</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'%s%s%s'</span> % (<span class="string">r'http://127.0.0.1:8000'</span>, settings.MEDIA_URL, str(obj.icon))</span><br></pre></td></tr></table></figure>
+<h4 id="视图层-views.py">视图层 <code>views.py</code></h4>
+<ol type="1">
+<li>从数据库中将要序列化给前台的<code>model</code>对象，或是多个<code>model</code>对象查询出来</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj = models.User.objects.get(pk=pk)</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">user_obj_list = models.User.objects.all()</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>序列化: <code>对象.data</code> 就是可以返回给前台的序列化数据</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> Response(&#123;</span><br><span class="line">    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'results'</span>: user_ser.data</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>完整代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs.get(<span class="string">'pk'</span>)</span><br><span class="line">        <span class="keyword">if</span> pk:  <span class="comment">#单查</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 用户对象不能直接作为数据返回给前台</span></span><br><span class="line">                user_obj = models.User.objects.get(pk=pk)</span><br><span class="line">                <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">                user_ser = serializers.UserSerializer(user_obj)</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="string">'results'</span>: user_ser.data   <span class="comment">#如果你在序列化的时候没有.data,那么在传给前端的时候必须要.data</span></span><br><span class="line">                &#125;)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                    <span class="string">'status'</span>: <span class="number">2</span>,</span><br><span class="line">                    <span class="string">'msg'</span>: <span class="string">'用户不存在'</span>,</span><br><span class="line">                &#125;)</span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment">#群查</span></span><br><span class="line">            <span class="comment"># 用户对象列表(queryset)不能直接作为数据返回给前台</span></span><br><span class="line">            user_obj_list = models.User.objects.all()</span><br><span class="line">            <span class="comment"># 序列化一下用户对象</span></span><br><span class="line">            user_ser_data = serializers.UserSerializer(user_obj_list, many=<span class="literal">True</span>).data</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'results'</span>: user_ser_data</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="反序列化">反序列化</h3>
+<h4 id="反序列层-apiserializers.py">反序列层 <code>api/serializers.py</code></h4>
+<ol type="1">
+<li>设置必填与选填序列化字段，设置校验规则</li>
+<li>为需要额外校验的字段提供局部钩子函数，如果该字段不入库，且不参与全局钩子校验，可以将值取出校验 <code>pop</code></li>
+<li>为有联合关系的字段们提供全局钩子函数，如果某些字段不入库，可以将值取出校验</li>
+<li><strong>必须重写<code>create</code>方法，完成校验通过的数据入库工作，得到新增的对象</strong></li>
+</ol>
+<p>完整代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDeserializer</span><span class="params">(serializers.Serializer)</span>:</span></span><br><span class="line">    <span class="comment"># 1) 哪些字段必须反序列化</span></span><br><span class="line">    <span class="comment"># 2) 字段都有哪些安全校验</span></span><br><span class="line">    <span class="comment"># 3) 哪些字段需要额外提供校验  钩子函数</span></span><br><span class="line">    <span class="comment"># 4) 哪些字段间存在联合校验</span></span><br><span class="line">    <span class="comment"># 注：反序列化字段都是用来入库的，不会出现自定义方法属性，会出现可以设置校验规则的自定义属性,不入数据库的</span></span><br><span class="line">    name = serializers.CharField(</span><br><span class="line">        max_length=<span class="number">64</span>,</span><br><span class="line">        min_length=<span class="number">3</span>,</span><br><span class="line">        error_messages=&#123;</span><br><span class="line">            <span class="string">'max_length'</span>: <span class="string">'太长'</span>,</span><br><span class="line">            <span class="string">'min_length'</span>: <span class="string">'太短'</span></span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    pwd = serializers.CharField()</span><br><span class="line">    phone = serializers.CharField(required=<span class="literal">False</span>)</span><br><span class="line">    sex = serializers.IntegerField(required=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 自定义有校验规则的反序列化字段,例如确认密码字段re_pwd</span></span><br><span class="line">    re_pwd = serializers.CharField(required=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 小结：</span></span><br><span class="line">    <span class="comment"># name，pwd，re_pwd为必填字段</span></span><br><span class="line">    <span class="comment"># phone，sex为选填字段</span></span><br><span class="line">    <span class="comment"># 五个字段都必须提供完成的校验规则</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 局部钩子：validate_要校验的字段名(self, 当前要校验字段的值)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'g'</span> <span class="keyword">in</span> value.lower():  <span class="comment"># 名字中不能出现g</span></span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(<span class="string">'名字非法，是个鸡贼！'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 全局钩子：validate(self, 通过系统与局部钩子校验之后的所有数据)</span></span><br><span class="line">    <span class="comment"># 校验规则：校验通过返回原值，校验失败，抛出异常</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span><span class="params">(self, attrs)</span>:</span>    <span class="comment">#attrs是字典格式</span></span><br><span class="line">        pwd = attrs.get(<span class="string">'pwd'</span>)</span><br><span class="line">        re_pwd = attrs.pop(<span class="string">'re_pwd'</span>)     <span class="comment">#因为re_pwd不需要入数据库，所以在全局钩子校验中删除掉这个字段</span></span><br><span class="line">        <span class="keyword">if</span> pwd != re_pwd:</span><br><span class="line">            <span class="keyword">raise</span> exceptions.ValidationError(&#123;<span class="string">'pwd&amp;re_pwd'</span>: <span class="string">'两次密码不一致'</span>&#125;)</span><br><span class="line">        <span class="keyword">return</span> attrs</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 要完成新增，必须自己重写 create 方法，validated_data是校验的数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, validated_data)</span>:</span></span><br><span class="line">        <span class="comment"># 尽量在所有校验规则完毕之后，数据可以直接入库</span></span><br><span class="line">        <span class="keyword">return</span> models.User.objects.create(**validated_data)</span><br></pre></td></tr></table></figure>
+<h4 id="视图层-views.py-1">视图层 views.py</h4>
+<ol type="1">
+<li>反序列化数据必须赋值<code>data</code>，结果就是得到一个<code>serializer</code>对象</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser = serializers.UserDeserializer(data=request_data)</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>把数据放到自定义<code>serializer</code>中校验，数据校验成功返回<code>True</code>,失败返回<code>False</code></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_ser.is_valid()</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>不通过返回 <code>book_ser.errors</code> 给前台，通过 <code>book_ser.save()</code> 得到新增的对象，再正常返回</li>
+</ol>
+<p>完整代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="comment"># 只考虑单增</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 请求数据</span></span><br><span class="line">        request_data = request.data</span><br><span class="line">        <span class="comment"># 数据是否合法（增加对象需要一个字典数据）</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(request_data, dict) <span class="keyword">or</span> request_data == &#123;&#125;:</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'数据有误'</span>,</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment"># 数据类型合法，但数据内容不一定合法，需要校验数据，校验(参与反序列化)的数据需要赋值给data</span></span><br><span class="line">        book_ser = serializers.UserDeserializer(data=request_data)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 序列化对象调用is_valid()完成校验，校验失败的失败信息都会被存储在 序列化对象.errors</span></span><br><span class="line">        <span class="keyword">if</span> book_ser.is_valid():</span><br><span class="line">            <span class="comment"># 校验通过，完成新增</span></span><br><span class="line">            book_obj = book_ser.save()</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="string">'msg'</span>: <span class="string">'ok'</span>,</span><br><span class="line">                <span class="string">'results'</span>: serializers.UserSerializer(book_obj).data</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 校验失败</span></span><br><span class="line">            <span class="keyword">return</span> Response(&#123;</span><br><span class="line">                <span class="string">'status'</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="string">'msg'</span>: book_ser.errors,</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="总结">总结</h1>
+<ol type="1">
+<li>使用序列化器的时候一定要注意，序列化器声明了以后，不会自动执行，需要我们在视图中进行调用才可以</li>
+<li>序列化器无法直接接收数据，需要我们在视图中创建序列化器对象时把使用的数据传递过来。（<code>data</code>, <code>instance</code>传参）
+<ul>
+<li>序列化：是数据对象从数据库中查出，通过instance传入序列化器中，必须通过data属性才能将序列化后的数据传给前端，不能直接传序列化对象</li>
+<li>反序列化：是数据是通过request.data从前端获取到数据，通过data传入序列化器中进行校验，保存到数据库中</li>
+</ul></li>
+<li>序列化器的字段声明类似于我们前面使用过的表单系统</li>
+<li>开发restful api时，序列化器会帮我们把模型数据转换成字典</li>
+<li>drf提供的视图会帮我们把字典转换成json，或者把客户端发过来的数据转换成字典</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>Tech</tag>
+        <tag>Learning Notes</tag>
+        <tag>Backend</tag>
+        <tag>Django</tag>
+        <tag>Django REST Framework</tag>
+        <tag>DRF</tag>
+        <tag>Dev</tag>
       </tags>
   </entry>
 </search>
