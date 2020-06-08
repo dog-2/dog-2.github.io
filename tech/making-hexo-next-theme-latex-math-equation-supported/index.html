@@ -591,12 +591,12 @@ l &amp;= m - n \label{eq5}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">136k</span>
+    <span title="Symbols count total">138k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:04</span>
+    <span title="Reading time total">2:05</span>
 </div>
   <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
@@ -822,6 +822,26 @@ if (document.querySelectorAll('pre.mermaid').length) {
       });
   </script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '0a6abf1ddcb44aded17b',
+      clientSecret: '39a0069a3560f03a62f9ab33632e71a07975f81d',
+      repo        : 'blog_gitalk',
+      owner       : 'dog-2',
+      admin       : ['dog-2'],
+      id          : '9c0a33f7761559bf564ec88ecbfc75fe',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
 <script>
   function loadCount() {
     var d = document, s = d.createElement('script');
@@ -851,26 +871,6 @@ if (document.querySelectorAll('pre.mermaid').length) {
       (d.head || d.body).appendChild(s);
     }
   });
-</script>
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
-
-<script>
-NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID    : '0a6abf1ddcb44aded17b',
-      clientSecret: '39a0069a3560f03a62f9ab33632e71a07975f81d',
-      repo        : 'blog_gitalk',
-      owner       : 'dog-2',
-      admin       : ['dog-2'],
-      id          : '9c0a33f7761559bf564ec88ecbfc75fe',
-        language: '',
-      distractionFreeMode: true
-    });
-    gitalk.render('gitalk-container');
-  }, window.Gitalk);
-});
 </script>
 
 </body>

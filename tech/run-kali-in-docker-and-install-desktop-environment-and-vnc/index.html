@@ -285,7 +285,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.2k</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -333,6 +333,13 @@
 <ol type="1">
 <li><p>pull docker image <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
 <li><p>run container <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -t -d --name my-kali -p 25900:5900 -p 25901:5901 kalilinux/kali-bleeding-edge</span><br></pre></td></tr></table></figure></p></li>
+</ol>
+<p>notice that if your host OS is Linux, you can as well use the host network mode of docker <code>--network host</code> instead of the port mapping bellow, it will not only become simple in next steps but also be useful to optimize performance.</p>
+<p>It is sad that host network mode can not Work on windows and Mac according to <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmRvY2tlci5jb20vbmV0d29yay9ob3N0Lw==">docker doc<i class="fa fa-external-link-alt"></i></span>:</p>
+<blockquote>
+<p>The host networking driver only works on Linux hosts, and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server.</p>
+</blockquote>
+<ol start="3" type="1">
 <li><p>go into container <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it my-kali /bin/bash</span><br></pre></td></tr></table></figure></p></li>
 <li><p>update <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apt</span> <span class="string">update</span></span><br><span class="line"><span class="attr">apt</span> <span class="string">upgrade</span></span><br></pre></td></tr></table></figure></p></li>
 </ol>
@@ -670,12 +677,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">136k</span>
+    <span title="Symbols count total">138k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:04</span>
+    <span title="Reading time total">2:05</span>
 </div>
   <div class="powered-by">Powered by <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZy9tdXNlLw==">NexT.Muse</span>
   </div>
@@ -901,6 +908,26 @@ if (document.querySelectorAll('pre.mermaid').length) {
       });
   </script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '0a6abf1ddcb44aded17b',
+      clientSecret: '39a0069a3560f03a62f9ab33632e71a07975f81d',
+      repo        : 'blog_gitalk',
+      owner       : 'dog-2',
+      admin       : ['dog-2'],
+      id          : 'f848c78e3bc2c7760e27125498855b20',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
 <script>
   function loadCount() {
     var d = document, s = d.createElement('script');
@@ -930,26 +957,6 @@ if (document.querySelectorAll('pre.mermaid').length) {
       (d.head || d.body).appendChild(s);
     }
   });
-</script>
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
-
-<script>
-NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID    : '0a6abf1ddcb44aded17b',
-      clientSecret: '39a0069a3560f03a62f9ab33632e71a07975f81d',
-      repo        : 'blog_gitalk',
-      owner       : 'dog-2',
-      admin       : ['dog-2'],
-      id          : 'f848c78e3bc2c7760e27125498855b20',
-        language: '',
-      distractionFreeMode: true
-    });
-    gitalk.render('gitalk-container');
-  }, window.Gitalk);
-});
 </script>
 
 </body>
